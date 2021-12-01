@@ -10,14 +10,9 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(title: Text("Welcome to FINDER"),),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Center(
-          child: Column(
-            children: [
-                Text(auth.currentUser.email,style: TextStyle(fontSize: 25),),
-                ElevatedButton(
+      appBar:AppBar(title: Text(auth.currentUser.email,style: TextStyle(fontSize: 25)),
+        actions: [
+          ElevatedButton(
                   child: Text("Sign Out"),
                   onPressed: (){
                       auth.signOut().then((value){
@@ -28,9 +23,9 @@ class WelcomeScreen extends StatelessWidget {
                       });
                   }, 
                 )
-            ],),
+        ],
         ),
-      ),
+     
     );
   }
 }
