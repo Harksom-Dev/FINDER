@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:loginsystem/model/database.dart';
 import 'package:loginsystem/model/profile.dart';
 
 import 'home.dart';
@@ -18,7 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Profile profile = Profile();
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-
+  
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -81,6 +82,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 if (formKey.currentState.validate()) {
                                   formKey.currentState.save();
                                   try {
+                                    //try to get email and passfrom profie() and store to map
+                                    Map<String,String> userInfoMap = {
+                                      "email": profile.email
+                                      //can add more attribute for further update
+                                    };
+                                    //call uploaduserinfo from database.dart to update user to firestore
+                                    DatabaseMethods().uploadUserInfo(userInfoMap);
+                                    
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                             email: profile.email,
@@ -95,6 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         return HomeScreen();
                                       }));
                                     });
+                                    
                                   } on FirebaseAuthException catch (e) {
                                     print(e.code);
                                     String message;
