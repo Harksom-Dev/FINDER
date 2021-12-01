@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:loginsystem/model/profile.dart';
+import 'package:loginsystem/screen/chatRoomScreen.dart';
 import 'package:loginsystem/screen/welcome.dart';
 
 
@@ -83,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           formKey.currentState.reset();
                                           Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (context){
-                                              return WelcomeScreen();
+                                              return ChatRoom();
                                           }));
                                       });
                                   }on FirebaseAuthException catch(e){
