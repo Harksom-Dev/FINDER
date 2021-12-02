@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/model/database.dart';
 import 'package:loginsystem/model/profile.dart';
 
@@ -89,7 +90,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     };
                                     //call uploaduserinfo from database.dart to update user to firestore
                                     DatabaseMethods().uploadUserInfo(userInfoMap);
-                                    
+                                    //save register user using helperfunction
+                                    HelperFunction.saveUserLoggedInSharedPreference(true);
+                                    HelperFunction.saveUserEmailSharedPreference(profile.email);
+
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                             email: profile.email,

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/model/database.dart';
+import 'package:loginsystem/screen/conversation_screen.dart';
 
 class SearchScreen extends StatefulWidget {
 
@@ -18,25 +20,6 @@ class _SearchScreenState extends State<SearchScreen> {
   //maybe change to jsonquery or something
   QuerySnapshot searchSnapshot;
 
-
-
-
-  initiateSearch(){
-    databaseMethods.getUserByEmail(searchTextEditingController.text).then((val){
-      setState(() {
-        searchSnapshot = val;
-      });
-    });
-  }
-
-
-
-  // create chatroom, send user to conversation screen,pushreplacement
-  createChatroomAndStartConversation(String userEmail){             //so long function name ;-;
-    // List<String> users = [userEmail]
-    // databaseMethods.createChatRoom(, )
-  }
-
   Widget searchList(){
     return searchSnapshot != null ? ListView.builder(
       itemCount: searchSnapshot.docs.length,
@@ -47,6 +30,67 @@ class _SearchScreenState extends State<SearchScreen> {
         );
       }): Container();
   }
+
+
+  initiateSearch(){
+    databaseMethods.getUserByEmail(searchTextEditingController.text).then((val){
+      setState(() {
+        searchSnapshot = val;
+      });
+    });
+  }
+
+// create chatroom, send user to conversation screen,pushreplacement
+  createChatroomAndStartConversation({String userEmail}){             //so long function name ;-;
+
+    if(userEmail != Constants.myEmail){
+      String chatRoomId = getChatRoomId(userEmail,Constants.myEmail);
+    List<String> users = [userEmail,Constants.myEmail];
+    Map<String,dynamic> chatRoomMap = {
+      "users":users,
+      "chartroomid":chatRoomId
+    };
+    DatabaseMethods().createChatRoom(chatRoomId,chatRoomMap);
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> ConversationScreen()));
+    }else{
+      print("");
+    }
+    
+  }
+
+  Widget SearchTile({String userEmail}){
+    
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(userEmail,style: TextStyle(),)
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: (){
+              createChatroomAndStartConversation(
+                userEmail: userEmail
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(30)
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 8),
+              child:Text("Messages") ,
+            ),
+          )
+        ],
+        ),
+    );
+  }
+  
 
   @override
   void initState() {
@@ -105,39 +149,24 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-class SearchTile extends StatelessWidget {
 
-  final String userEmail;
-  SearchTile({this.userEmail});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(userEmail,style: TextStyle(),)
-            ],
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: (){
 
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(30)
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 8),
-              child:Text("Messages") ,
-            ),
-          )
-        ],
-        ),
-    );
+// class SearchTile extends StatelessWidget {
+
+//   final String userEmail;
+  
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return 
+//   }
+// }
+
+getChatRoomId(String a,String b){
+  if(a.substring(0,1).codeUnitAt(0) > b.substring(0,1).codeUnitAt(0)){
+    return "$b\_$a";
+  }else{
+    return "$a\_$b";
   }
 }

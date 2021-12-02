@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/model/profile.dart';
 import 'package:loginsystem/screen/chatRoomScreen.dart';
 import 'package:loginsystem/screen/welcome.dart';
@@ -77,6 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (formKey.currentState.validate()) {
                                   formKey.currentState.save();
                                   try{
+
+                                    //add login to pref
+                                    HelperFunction.saveUserEmailSharedPreference(profile.email);
+                                    HelperFunction.saveUserLoggedInSharedPreference(true);
                                     await FirebaseAuth.instance.signInWithEmailAndPassword(
                                       email: profile.email, 
                                       password: profile.password)
