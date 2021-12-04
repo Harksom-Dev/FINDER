@@ -20,11 +20,11 @@ class HelperFunction{
   /// geting data from sharedprefs
   static Future<bool> getUserLoggedInSharedPreference() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getBool(sharedPreferenceUserLoggedInKey);
+    return  prefs.getBool(sharedPreferenceUserLoggedInKey);
   }
 
    static Future<String> getUserEmailSharedPreference() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getString(sharedPreferenceUserEmailKey);
+    return  prefs.getString(sharedPreferenceUserEmailKey);
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loginsystem/helper/constants.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/model/database.dart';
 import 'package:loginsystem/screen/conversation_screen.dart';
 
@@ -10,6 +11,8 @@ class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
+
+
 
 class _SearchScreenState extends State<SearchScreen> {
 
@@ -95,8 +98,11 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     initiateSearch();
+
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
