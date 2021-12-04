@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
     List<String> users = [userEmail,Constants.myEmail];
     Map<String,dynamic> chatRoomMap = {
       "users":users,
-      "chartroomid":chatRoomId
+      "chatroomid":chatRoomId
     };
     DatabaseMethods().createChatRoom(chatRoomId,chatRoomMap);
     Navigator.push(context, MaterialPageRoute(builder: (context)=> ConversationScreen(
