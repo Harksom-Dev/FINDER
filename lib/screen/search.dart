@@ -54,7 +54,9 @@ class _SearchScreenState extends State<SearchScreen> {
       "chartroomid":chatRoomId
     };
     DatabaseMethods().createChatRoom(chatRoomId,chatRoomMap);
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> ConversationScreen()));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> ConversationScreen(
+      chatRoomId
+    )));
     }else{
       print("");
     }
