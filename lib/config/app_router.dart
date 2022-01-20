@@ -1,9 +1,11 @@
+import 'package:finder_ui/models/models.dart';
 import 'package:finder_ui/screens/chat/chat_screen.dart';
 import 'package:finder_ui/screens/edit_profile/editprofile_screen.dart';
 import 'package:finder_ui/screens/home/home_screen.dart';
 import 'package:finder_ui/screens/messagebox/messagebox_screen.dart';
 import 'package:finder_ui/screens/profile/profile_screen.dart';
 import 'package:finder_ui/screens/review/review_screen.dart';
+import 'package:finder_ui/screens/screens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +28,8 @@ class AppRouter {
         return ChatScreen.route();
       case ReviewScreen.routeName:
         return ReviewScreen.route();
+      case UsersScreen.routeName:
+        return UsersScreen.route(user: setting.arguments as User);
       default:
         return _errorRoute();
     }

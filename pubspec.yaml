@@ -37,6 +37,8 @@ dependencies:
   flutter_tindercard: ^0.1.7
   flutter_svg: ^0.23.0+1
   equatable: ^2.0.0
+  flutter_bloc: ^7.2.0
+
 
 dev_dependencies:
   flutter_test:

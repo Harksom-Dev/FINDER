@@ -1,10 +1,15 @@
+import 'package:finder_ui/blocs/swipe/swipe_bloc.dart';
 import 'package:finder_ui/config/theme.dart';
 import 'package:finder_ui/models/user_model.dart';
 import 'package:finder_ui/widgets/custom_appbar.dart';
 import 'package:finder_ui/widgets/user_card.dart';
 import 'package:finder_ui/widgets/user_image_small.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:finder_ui/widgets/choice_button.dart';
+import 'package:finder_ui/widgets/Menu_button.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/';
@@ -20,93 +25,143 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      body: Center(
-          child: Column(
-        children: [
-          UserCard(user: User.users[0]),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 4.0,
-              horizontal: 60,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: BlocBuilder<SwipeBloc, SwipeState>(
+        builder: (context, state) {
+          // which ui to render
+          if (state is SwipeLoading) {
+            // if we at the
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is SwipeLoaded) {
+            // swipe loaded state
+            return Column(
               children: [
-                ChoiceButton(
-                    width: 60,
-                    height: 60,
-                    hasGradient: false,
-                    color: Colors.white,
-                    icon: Icons.clear_rounded,
-                    size: 25),
-                ChoiceButton(
-                    width: 70,
-                    height: 70,
-                    hasGradient: true,
-                    color: Colors.white,
-                    icon: Icons.favorite,
-                    size: 30),
-              ],
-            ),
-          ),
-        ],
-      )),
-    );
-  }
-}
-
-class ChoiceButton extends StatelessWidget {
-  final double width;
-  final double height;
-  final double size;
-  final Color color;
-  final bool hasGradient;
-  final IconData icon;
-
-  const ChoiceButton({
-    Key? key,
-    required this.width,
-    required this.height,
-    required this.color,
-    required this.hasGradient,
-    required this.icon,
-    required this.size,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          gradient: hasGradient
-              ? LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).accentColor,
-                  ],
-                )
-              : LinearGradient(
-                  colors: [
-                    Colors.deepPurple,
-                    Colors.purple,
-                    Colors.red,
-                  ],
+                InkWell(
+                  onDoubleTap: () {
+                    Navigator.pushNamed(context, '/users',
+                        arguments: state.users[0]);
+                  },
+                  child: Draggable<User>(
+                    data: state.users[0],
+                    child: UserCard(user: state.users[0]),
+                    feedback: UserCard(user: state.users[0]),
+                    childWhenDragging: UserCard(user: state.users[1]),
+                    onDragEnd: (drag) {
+                      if (drag.velocity.pixelsPerSecond.dx < 0) {
+                        context.read<SwipeBloc>()
+                          ..add(SwipeLeftEvent(user: state.users[0]));
+                        print("swipe left");
+                      } else {
+                        context.read<SwipeBloc>()
+                          ..add(SwipeRightEvent(user: state.users[0]));
+                        print('Swipe Right');
+                      }
+                    },
+                  ),
                 ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withAlpha(50),
-              spreadRadius: 6,
-              blurRadius: 4,
-              offset: Offset(3, 3),
-            ),
-          ]),
-      child: Icon(
-        icon,
-        color: color,
-        size: size,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 6,
+                    horizontal: 60,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                        // button
+                        onTap: () {
+                          // cross button (X)
+                          context.read<SwipeBloc>()
+                            ..add(SwipeLeftEvent(user: state.users[0]));
+                          print("swipe left");
+                        },
+                        child: ChoiceButton(
+                            width: 60,
+                            height: 60,
+                            hasGradient: false,
+                            color: Colors.white,
+                            icon: Icons.clear_rounded,
+                            size: 25),
+                      ),
+                      InkWell(
+                        // like button
+                        onTap: () {
+                          context.read<SwipeBloc>()
+                            ..add(SwipeRightEvent(user: state.users[0]));
+                          print("swipe Right");
+                        },
+                        child: ChoiceButton(
+                            width: 74,
+                            height: 74,
+                            hasGradient: true,
+                            color: Colors.white,
+                            icon: Icons.favorite,
+                            size: 30),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(90),
+                        spreadRadius: 3,
+                      ),
+                    ],
+                  ),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 60,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          // home
+                          onTap: () {
+                            // cross button (X)
+                            Navigator.pushNamed(context, "/");
+                            print("homepage !");
+                          },
+                          child: Menubutton(
+                              width: 50,
+                              height: 50,
+                              hasGradient: false,
+                              color: Colors.black,
+                              icon: Icons.home,
+                              size: 25),
+                        ),
+                        InkWell(
+                          // home
+                          onTap: () {
+                            Navigator.pushNamed(context, "/messagebox");
+                            print("Message box !");
+                          },
+                          child: Menubutton(
+                              width: 50,
+                              height: 50,
+                              hasGradient: false,
+                              color: Colors.black,
+                              icon: Icons.messenger_sharp,
+                              size: 30),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return Text("Something Went Wrong");
+          }
+        },
       ),
     );
   }
