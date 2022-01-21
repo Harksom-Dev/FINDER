@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:loginsystem/helper/constants.dart';
-import 'package:loginsystem/model/database.dart';
+import 'package:finder_ui/helper/constants.dart';
+import 'package:finder_ui/model/database.dart';
 
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;

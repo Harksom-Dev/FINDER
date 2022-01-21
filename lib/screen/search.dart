@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:loginsystem/helper/constants.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/model/database.dart';
-import 'package:loginsystem/screen/conversation_screen.dart';
+import 'package:finder_ui/helper/constants.dart';
+import 'package:finder_ui/helper/helperfunction.dart';
+import 'package:finder_ui/model/database.dart';
+import 'package:finder_ui/screen/conversation_screen.dart';
 
 class SearchScreen extends StatefulWidget {
 

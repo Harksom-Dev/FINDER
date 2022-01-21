@@ -10,12 +10,11 @@ import 'models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/screen/chatRoomScreen.dart';
-import 'package:loginsystem/screen/home.dart';
+import 'package:finder_ui/helper/helperfunction.dart';
+import 'package:finder_ui/screen/chatRoomScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -38,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   getLoggedInState()async{
     await HelperFunction.getUserLoggedInSharedPreference().then((value){
       setState(() {
-        userIsLoggedIn = value;
+        userIsLoggedIn = value!;
       });
     });
   }
@@ -59,7 +58,7 @@ class _MyAppState extends State<MyApp> {
         onGenerateRoute: AppRouter.onGenerateRoute,
         initialRoute: HomeScreen.routeName,
       ),
-      home: userIsLoggedIn ? ChatRoom() : HomeScreen()
+      // home: userIsLoggedIn ? ChatRoom() : HomeScreen()
     );
   }
 }

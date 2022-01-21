@@ -3,11 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/model/database.dart';
-import 'package:loginsystem/model/profile.dart';
+import 'package:finder_ui/helper/helperfunction.dart';
+import 'package:finder_ui/model/database.dart';
+import 'package:finder_ui/model/profile.dart';
 
-import 'home.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override

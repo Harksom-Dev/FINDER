@@ -1,15 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:loginsystem/helper/constants.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/model/database.dart';
-import 'package:loginsystem/screen/conversation_screen.dart';
-import 'package:loginsystem/screen/search.dart';
+import 'package:finder_ui/helper/constants.dart';
+import 'package:finder_ui/helper/helperfunction.dart';
+import 'package:finder_ui/model/database.dart';
+import 'package:finder_ui/screen/conversation_screen.dart';
+import 'package:finder_ui/screen/search.dart';
 
-import 'home.dart';
 
 class ChatRoom extends StatefulWidget {
 
+  static const String routeName = '/chatRoomScreen';
+
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => ChatRoom(),
+      settings: RouteSettings(name: routeName),
+    );
+  }
   @override
   _ChatRoomState createState() => _ChatRoomState();
 }
@@ -18,7 +25,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   final auth = FirebaseAuth.instance;
   DatabaseMethods databaseMethods = new DatabaseMethods();
-  Stream chatRoomStream;
+  late Stream chatRoomStream;
 
   Widget chatRoomList(){
     return StreamBuilder(
