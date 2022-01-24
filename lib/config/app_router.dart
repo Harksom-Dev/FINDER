@@ -1,4 +1,5 @@
 import 'package:loginsystem/models/models.dart';
+import 'package:loginsystem/screen/chatroom_screen.dart';
 import 'package:loginsystem/screen/conversation_screen.dart';
 import 'package:loginsystem/screen/first_auth.dart';
 import 'package:loginsystem/screen/login.dart';
@@ -48,6 +49,8 @@ class AppRouter {
         return SearchScreen.route();
       case first_auth.routeName:
         return first_auth.route();
+      case ChatRoom.routeName:
+        return ChatRoom.route();
       default:
         return _errorRoute();
     }

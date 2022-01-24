@@ -13,6 +13,7 @@ class HelperFunction{
 
   static Future<bool> saveUserEmailSharedPreference(String userEmail) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("current login is ${userEmail}");
     return await prefs.setString(sharedPreferenceUserEmailKey, userEmail);
   }
 
@@ -33,14 +34,16 @@ class HelperFunction{
 
   static Future<String> getUserEmailSharedPreference() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var f = prefs.getString(sharedPreferenceUserEmailKey);
+    String? f = prefs.getString(sharedPreferenceUserEmailKey);
+    
     var len = '';
     if (f != null) {
-      var len = f; // Safe 
+      len = f; // Safe 
     }
     else {
-      var len = '';
+      len = '';
     }
+
     return  len;
   }
 }

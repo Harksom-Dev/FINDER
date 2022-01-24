@@ -96,10 +96,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                       password: profile.password)
                                       .then((value){
                                           formKey.currentState!.reset();
-                                          Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context){
-                                              return ChatRoom();
-                                          }));
+                                          // Navigator.pushReplacement(context,
+                                          // MaterialPageRoute(builder: (context){
+                                          //     return ChatRoom();
+                                          // }));
+                                          Navigator.pushNamed(context, "/");
+                                            print("swipe screen is home!");
                                       });
                                   }on FirebaseAuthException catch(e){
                                       Fluttertoast.showToast(

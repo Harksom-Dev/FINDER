@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                           InkWell(
                             // home
                             onTap: () {
-                              Navigator.pushNamed(context, "/messagebox");
+                              Navigator.pushNamed(context, "/realmessageBox");
                               print("Message box !");
                             },
                             child: Menubutton(

@@ -29,11 +29,11 @@ class _ChatRoomState extends State<ChatRoom> {
 
   final auth = FirebaseAuth.instance;
   DatabaseMethods databaseMethods = new DatabaseMethods();
-  late Stream chatRoomStream;
+  Stream? chatRoomStream;
 
   Widget chatRoomList(){
-    return StreamBuilder<QuerySnapshot>(
-      // stream: chatRoomStream,
+    return StreamBuilder<dynamic>(
+      stream: chatRoomStream,           
       builder: (context,snapshot){
         
         return snapshot.hasData ? ListView.builder(
@@ -60,6 +60,7 @@ class _ChatRoomState extends State<ChatRoom> {
   getUserInfo() async {
     Constants.myEmail = (await HelperFunction.getUserEmailSharedPreference());
     databaseMethods.getChatRoom(Constants.myEmail).then((value){
+
       setState(() {
         chatRoomStream = value;
       });
@@ -81,10 +82,12 @@ class _ChatRoomState extends State<ChatRoom> {
                   child: Text("Sign Out"),
                   onPressed: (){
                       auth.signOut().then((value){
-                        Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context){
-                            return HomeScreen();
-                        }));
+                        // Navigator.pushReplacement(context,
+                        // MaterialPageRoute(builder: (context){
+                        //     return HomeScreen();
+                        // }));
+                        Navigator.pushNamed(context, "/first");
+                          print("first auth!");
                       });
                   }, 
                 )
@@ -93,9 +96,8 @@ class _ChatRoomState extends State<ChatRoom> {
         floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) => SearchScreen()
-            ));
+          Navigator.pushNamed(context, "/search");
+            print("searching");
         },
         ),
     );

@@ -5,7 +5,7 @@ import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/model/database.dart';
 
 class ConversationScreen extends StatefulWidget {
-  static const String routeName = '/realmessagebox';
+  static const String routeName = '/realchat';
 
   static Route route({required String chatroomId}) {
     return MaterialPageRoute(
@@ -23,12 +23,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
-  late Stream chatMessageStream;
+  Stream? chatMessageStream;
 
   Widget ChatMessageList(){
     
-    return StreamBuilder<QuerySnapshot>(
-      // stream: chatMessageStream,
+    return StreamBuilder<dynamic>(
+      stream: chatMessageStream,
       builder: (context,snapshot){
         print(snapshot);
         if(!snapshot.hasData){

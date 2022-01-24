@@ -112,10 +112,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       Fluttertoast.showToast(
                                           msg: "Account has been created.",
                                           gravity: ToastGravity.TOP);
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return HomeScreen();
-                                      }));
+                                      Navigator.pushNamed(context, "/");
+                                        print("swipescreen !");
                                     });
                                     
                                   } on FirebaseAuthException catch (e) {

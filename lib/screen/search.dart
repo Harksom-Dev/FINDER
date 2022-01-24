@@ -6,6 +6,7 @@ import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/model/database.dart';
 import 'package:loginsystem/screen/conversation_screen.dart';
 
+
 class SearchScreen extends StatefulWidget {
 
   @override
@@ -30,15 +31,15 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchTextEditingController = new TextEditingController();
 
   //maybe change to jsonquery or something
-  late QuerySnapshot searchSnapshot;
+  QuerySnapshot? searchSnapshot;
 
   Widget searchList(){
     return searchSnapshot != null ? ListView.builder(
-      itemCount: searchSnapshot.docs.length,
+      itemCount: searchSnapshot!.docs.length,
       shrinkWrap: true,
       itemBuilder: (context,index){
         return SearchTile(
-          userEmail: searchSnapshot.docs[index].get("email"),  // func get may change
+          userEmail: searchSnapshot!.docs[index].get("email"),  // func get may change
         );
       }): Container();
   }
@@ -54,7 +55,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 // create chatroom, send user to conversation screen,pushreplacement
   createChatroomAndStartConversation({required String userEmail}){             //so long function name ;-;
-
+    print(Constants);
     if(userEmail != Constants.myEmail){
       String chatRoomId = getChatRoomId(userEmail,Constants.myEmail);
     List<String> users = [userEmail,Constants.myEmail];
@@ -181,6 +182,8 @@ class _SearchScreenState extends State<SearchScreen> {
 // }
 
 getChatRoomId(String a,String b){
+  print(a);
+  print(b);
   if(a.substring(0,1).codeUnitAt(0) > b.substring(0,1).codeUnitAt(0)){
     return "$b\_$a";
   }else{
