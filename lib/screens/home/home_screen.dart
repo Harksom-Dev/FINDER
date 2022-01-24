@@ -1,15 +1,15 @@
-import 'package:finder_ui/blocs/swipe/swipe_bloc.dart';
-import 'package:finder_ui/config/theme.dart';
-import 'package:finder_ui/models/user_model.dart';
-import 'package:finder_ui/widgets/custom_appbar.dart';
-import 'package:finder_ui/widgets/user_card.dart';
-import 'package:finder_ui/widgets/user_image_small.dart';
+import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
+import 'package:loginsystem/config/theme.dart';
+import 'package:loginsystem/models/user_model.dart';
+import 'package:loginsystem/widgets/custom_appbar.dart';
+import 'package:loginsystem/widgets/user_card.dart';
+import 'package:loginsystem/widgets/user_image_small.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:finder_ui/widgets/choice_button.dart';
-import 'package:finder_ui/widgets/Menu_button.dart';
+import 'package:loginsystem/widgets/choice_button.dart';
+import 'package:loginsystem/widgets/Menu_button.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/';

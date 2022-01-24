@@ -1,14 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:finder_ui/helper/constants.dart';
-import 'package:finder_ui/helper/helperfunction.dart';
-import 'package:finder_ui/model/database.dart';
-import 'package:finder_ui/screen/conversation_screen.dart';
+import 'package:loginsystem/helper/constants.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
+import 'package:loginsystem/model/database.dart';
+import 'package:loginsystem/screen/conversation_screen.dart';
 
 class SearchScreen extends StatefulWidget {
 
   @override
+  static const String routeName = '/search';
+
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => SearchScreen(),
+      settings: RouteSettings(name: routeName),
+    );
+  }
+
   _SearchScreenState createState() => _SearchScreenState();
 }
 
@@ -21,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchTextEditingController = new TextEditingController();
 
   //maybe change to jsonquery or something
-  QuerySnapshot searchSnapshot;
+  late QuerySnapshot searchSnapshot;
 
   Widget searchList(){
     return searchSnapshot != null ? ListView.builder(
@@ -44,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 // create chatroom, send user to conversation screen,pushreplacement
-  createChatroomAndStartConversation({String userEmail}){             //so long function name ;-;
+  createChatroomAndStartConversation({required String userEmail}){             //so long function name ;-;
 
     if(userEmail != Constants.myEmail){
       String chatRoomId = getChatRoomId(userEmail,Constants.myEmail);
@@ -63,7 +72,7 @@ class _SearchScreenState extends State<SearchScreen> {
     
   }
 
-  Widget SearchTile({String userEmail}){
+  Widget SearchTile({required String userEmail}){
     
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),

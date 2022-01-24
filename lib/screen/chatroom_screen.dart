@@ -1,15 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loginsystem/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:finder_ui/helper/constants.dart';
-import 'package:finder_ui/helper/helperfunction.dart';
-import 'package:finder_ui/model/database.dart';
-import 'package:finder_ui/screen/conversation_screen.dart';
-import 'package:finder_ui/screen/search.dart';
+import 'package:loginsystem/helper/constants.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
+import 'package:loginsystem/model/database.dart';
+import 'package:loginsystem/screen/conversation_screen.dart';
+import 'package:loginsystem/screen/search.dart';
 
 
+// ignore: use_key_in_widget_constructors
 class ChatRoom extends StatefulWidget {
 
-  static const String routeName = '/chatRoomScreen';
+  static const String routeName = '/realmessageBox';
 
   static Route route() {
     return MaterialPageRoute(
@@ -17,6 +20,7 @@ class ChatRoom extends StatefulWidget {
       settings: RouteSettings(name: routeName),
     );
   }
+
   @override
   _ChatRoomState createState() => _ChatRoomState();
 }
@@ -28,17 +32,18 @@ class _ChatRoomState extends State<ChatRoom> {
   late Stream chatRoomStream;
 
   Widget chatRoomList(){
-    return StreamBuilder(
-      stream: chatRoomStream,
+    return StreamBuilder<QuerySnapshot>(
+      // stream: chatRoomStream,
       builder: (context,snapshot){
+        
         return snapshot.hasData ? ListView.builder(
-          itemCount: snapshot.data.docs.length,
+          itemCount: snapshot.data!.docs.length,
           itemBuilder: (context,index){
             return ChatRoomTile(
-              snapshot.data.docs[index]["chatroomid"]
+              snapshot.data!.docs[index]["chatroomid"]
                 .toString().replaceAll("_", "")
                 .replaceAll(Constants.myEmail, ""),
-                snapshot.data.docs[index]["chatroomid"]
+                snapshot.data!.docs[index]["chatroomid"]
             );
           }) : Container();
       });
@@ -53,7 +58,7 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   getUserInfo() async {
-    Constants.myEmail = await HelperFunction.getUserEmailSharedPreference();
+    Constants.myEmail = (await HelperFunction.getUserEmailSharedPreference());
     databaseMethods.getChatRoom(Constants.myEmail).then((value){
       setState(() {
         chatRoomStream = value;
@@ -66,8 +71,11 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
+      var user = auth.currentUser!.email;
     return Scaffold(
-      appBar:AppBar(title: Text(auth.currentUser.email,style: TextStyle(fontSize: 25)),
+      // ignore: prefer_const_constructors
+      
+      appBar:AppBar(title: Text(user!,style: TextStyle(fontSize: 25)),
       actions: [
           ElevatedButton(
                   child: Text("Sign Out"),

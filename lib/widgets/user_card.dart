@@ -1,5 +1,5 @@
-import 'package:finder_ui/models/user_model.dart';
-import 'package:finder_ui/widgets/user_image_small.dart';
+import 'package:loginsystem/models/user_model.dart';
+import 'package:loginsystem/widgets/user_image_small.dart';
 import 'package:flutter/material.dart';
 
 class UserCard extends StatelessWidget {

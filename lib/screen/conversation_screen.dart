@@ -1,12 +1,20 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:finder_ui/helper/constants.dart';
-import 'package:finder_ui/model/database.dart';
+import 'package:loginsystem/helper/constants.dart';
+import 'package:loginsystem/model/database.dart';
 
 class ConversationScreen extends StatefulWidget {
+  static const String routeName = '/realmessagebox';
+
+  static Route route({required String chatroomId}) {
+    return MaterialPageRoute(
+      builder: (context) => ConversationScreen(chatroomId),  // not sure
+      settings: RouteSettings(name: routeName),
+    );
+  }
   final String chatRoomId;
   ConversationScreen(this.chatRoomId);
-
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
 }
@@ -15,12 +23,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
-  Stream chatMessageStream;
+  late Stream chatMessageStream;
 
   Widget ChatMessageList(){
     
-    return StreamBuilder(
-      stream: chatMessageStream,
+    return StreamBuilder<QuerySnapshot>(
+      // stream: chatMessageStream,
       builder: (context,snapshot){
         print(snapshot);
         if(!snapshot.hasData){
@@ -29,9 +37,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
         );
       }
         return ListView.builder(
-          itemCount: snapshot.data.docs.length,
+          itemCount: snapshot.data!.docs.length,
           itemBuilder: (context,index){
-            return MessageTile(snapshot.data.docs[index]["message"],snapshot.data.docs[index]["sendBy"] == Constants.myEmail);   // difference from tutorial
+            return MessageTile(snapshot.data!.docs[index]["message"],snapshot.data!.docs[index]["sendBy"] == Constants.myEmail);   // difference from tutorial
           });
         },
       );

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:finder_ui/models/models.dart';
+import 'package:loginsystem/models/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 part 'swipe_event.dart';

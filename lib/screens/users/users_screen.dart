@@ -1,6 +1,6 @@
-import 'package:finder_ui/config/theme.dart';
-import 'package:finder_ui/models/user_model.dart';
-import 'package:finder_ui/widgets/choice_button.dart';
+import 'package:loginsystem/config/theme.dart';
+import 'package:loginsystem/models/user_model.dart';
+import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:flutter/material.dart';
 
 class UsersScreen extends StatelessWidget {

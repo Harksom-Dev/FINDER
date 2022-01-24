@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "49047118517",
+    "project_id": "finder-login-application",
+    "storage_bucket": "finder-login-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49047118517:android:bacb0710dc0417e99994fc",
+        "android_client_info": {
+          "package_name": "com.harkzom.finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "49047118517-m24lpbqkal02lqlsu8c9653v2osf0osh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.harkzom.finder",
+            "certificate_hash": "f93500abe5893f5c19564566459f7ba6ede315f4"
+          }
+        },
+        {
+          "client_id": "49047118517-77pjj40uhmnds5l87g0uf005c0v3hfqo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChxsbx9BcsAFNF_9nL2d2ggg1q4YZqcss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "49047118517-77pjj40uhmnds5l87g0uf005c0v3hfqo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
