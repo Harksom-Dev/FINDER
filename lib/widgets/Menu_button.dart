@@ -24,8 +24,8 @@ class Menubutton extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.white,
-        /*boxShadow: [
+          //color: Colors.white,
+          /*boxShadow: [
         BoxShadow(
           color: Colors.grey.withAlpha(50),
           spreadRadius: 6,
@@ -33,7 +33,7 @@ class Menubutton extends StatelessWidget {
           offset: Offset(3, 3),
         ),
       ] */
-      ),
+          ),
       child: Icon(
         icon,
         color: color,

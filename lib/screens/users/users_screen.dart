@@ -28,7 +28,7 @@ class UsersScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 1.8,
             child: Stack(
               children: [
                 Padding(
@@ -75,8 +75,9 @@ class UsersScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   '${user.name}, ${user.age}',
@@ -110,10 +111,11 @@ class UsersScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(6.0),
                           margin: const EdgeInsets.only(top: 5.0, right: 5.0),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(20),
                               gradient: LinearGradient(colors: [
-                                Theme.of(context).primaryColorDark,
-                                Theme.of(context).primaryColorLight,
+                                Color(0xFFF594B7),
+                                //Color(0xFF99A3FC),
+                                Color(0xFFB6CBFE),
                               ])),
                           child: Text(
                             interest,

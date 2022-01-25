@@ -29,15 +29,14 @@ class ChoiceButton extends StatelessWidget {
           gradient: hasGradient
               ? LinearGradient(
                   colors: [
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).accentColor,
+                    Color(0xFFFF594B7),
+                    Color(0xFFFAD7FFB),
                   ],
                 )
               : LinearGradient(
                   colors: [
-                    Colors.deepPurple,
-                    Colors.purple,
-                    Colors.red,
+                    Color(0xFFFAD7FFB),
+                    Color(0xFFF92B2FD),
                   ],
                 ),
           boxShadow: [
