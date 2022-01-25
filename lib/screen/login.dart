@@ -3,19 +3,30 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/model/profile.dart';
+import 'package:loginsystem/screen/chatroom_screen.dart';
 import 'package:loginsystem/screen/welcome.dart';
 
 
 class LoginScreen extends StatefulWidget {
   @override
+  static const String routeName = '/login';
+
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => LoginScreen(),
+      settings: RouteSettings(name: routeName),
+    );
+  }
+
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   
   final formKey = GlobalKey<FormState>();
-  Profile profile = Profile();
+  Profile profile = Profile(email: '', password: '');
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   @override
@@ -53,8 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               EmailValidator(errorText: "Email is invalid")
                             ]),
                             keyboardType: TextInputType.emailAddress,
-                            onSaved: (String email) {
-                              profile.email = email;
+                            onSaved:(String? email)  {
+                              profile.email = email!;
                             },
                           ),
                           SizedBox(
@@ -64,8 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             validator: RequiredValidator(errorText: "The password should not be empty"),
                               obscureText: true,
-                              onSaved: (String password) {
-                              profile.password = password;
+                              onSaved: (String? password) {
+                              profile.password = password!;
                             },
                           ),
                           SizedBox(
@@ -73,22 +84,28 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: ElevatedButton(
                               child: Text("Sign In",style: TextStyle(fontSize: 20)),
                               onPressed: () async{
-                                if (formKey.currentState.validate()) {
-                                  formKey.currentState.save();
+                                if (formKey.currentState!.validate()) {
+                                  formKey.currentState!.save();
                                   try{
+
+                                    //add login to pref
+                                    HelperFunction.saveUserEmailSharedPreference(profile.email);
+                                    HelperFunction.saveUserLoggedInSharedPreference(true);
                                     await FirebaseAuth.instance.signInWithEmailAndPassword(
                                       email: profile.email, 
                                       password: profile.password)
                                       .then((value){
-                                          formKey.currentState.reset();
-                                          Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context){
-                                              return WelcomeScreen();
-                                          }));
+                                          formKey.currentState!.reset();
+                                          // Navigator.pushReplacement(context,
+                                          // MaterialPageRoute(builder: (context){
+                                          //     return ChatRoom();
+                                          // }));
+                                          Navigator.pushNamed(context, "/");
+                                            print("swipe screen is home!");
                                       });
                                   }on FirebaseAuthException catch(e){
                                       Fluttertoast.showToast(
-                                        msg: e.message,
+                                        msg: e.message!,
                                         gravity: ToastGravity.CENTER
                                       );
                                   }

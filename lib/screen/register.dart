@@ -1,24 +1,35 @@
+import 'package:loginsystem/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
+import 'package:loginsystem/model/database.dart';
 import 'package:loginsystem/model/profile.dart';
 
-import 'home.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
+  static const String routeName = '/register';
+
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => RegisterScreen(),
+      settings: RouteSettings(name: routeName),
+    );
+  }
+
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
 
-  Profile profile = Profile();
+  Profile profile = Profile(email: '', password: '');
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-
+  
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -56,8 +67,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               EmailValidator(errorText: "Email is invalid")
                             ]),
                             keyboardType: TextInputType.emailAddress,
-                            onSaved: (String email) {
-                              profile.email = email;
+                            onSaved: (String? email) {
+                              profile.email = email!;
                             },
                           ),
                           SizedBox(
@@ -68,8 +79,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             validator: RequiredValidator(
                                 errorText: "Please enter your password."),
                             obscureText: true,
-                            onSaved: (String password) {
-                              profile.password = password;
+                            onSaved: (String? password) {
+                              profile.password = password!;
                             },
                           ),
                           SizedBox(
@@ -78,23 +89,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               child: Text("Create account",
                                   style: TextStyle(fontSize: 20)),
                               onPressed: () async {
-                                if (formKey.currentState.validate()) {
-                                  formKey.currentState.save();
+                                if (formKey.currentState!.validate()) {
+                                  formKey.currentState!.save();
                                   try {
+                                    //try to get email and passfrom profie() and store to map
+                                    Map<String,String> userInfoMap = {
+                                      "email": profile.email
+                                      //can add more attribute for further update
+                                    };
+                                    //call uploaduserinfo from database.dart to update user to firestore
+                                    DatabaseMethods().uploadUserInfo(userInfoMap);
+                                    //save register user using helperfunction
+                                    HelperFunction.saveUserLoggedInSharedPreference(true);
+                                    HelperFunction.saveUserEmailSharedPreference(profile.email);
+
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                             email: profile.email,
                                             password: profile.password)
                                         .then((value) {
-                                      formKey.currentState.reset();
+                                      formKey.currentState!.reset();
                                       Fluttertoast.showToast(
                                           msg: "Account has been created.",
                                           gravity: ToastGravity.TOP);
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return HomeScreen();
-                                      }));
+                                      Navigator.pushNamed(context, "/");
+                                        print("swipescreen !");
                                     });
+                                    
                                   } on FirebaseAuthException catch (e) {
                                     print(e.code);
                                     String message;
@@ -105,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       message =
                                           "Password must be at least 6 characters.";
                                     } else {
-                                      message = e.message;
+                                      message = e.message!;
                                     }
                                     Fluttertoast.showToast(
                                         msg: message,

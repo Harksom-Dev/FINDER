@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:loginsystem/screen/login.dart';
 import 'package:loginsystem/screen/register.dart';
 
-class HomeScreen extends StatelessWidget {
+class first_auth extends StatelessWidget {
   @override
+
+  static const String routeName = '/first';
+
+  static Route route() {
+    return MaterialPageRoute(
+      builder: (_) => first_auth(),
+      settings: RouteSettings(name: routeName),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register/Login"),
+        title: Text("Temporary firstpage"),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 50, 10, 0),
@@ -22,11 +32,14 @@ class HomeScreen extends StatelessWidget {
                   label:
                       Text("Sign Up", style: TextStyle(fontSize: 20)),
                       onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context){
-                          return RegisterScreen();
-                      })
-                    );
+                    //   Navigator.pushReplacement(context, MaterialPageRoute(
+                    //     builder: (context){
+                    //       return RegisterScreen();
+                    //   })
+                    // );
+                      Navigator.pushNamed(context, "/register");
+                              print("sign up !");
+                    
                   },
                 ),
               ),
@@ -36,11 +49,14 @@ class HomeScreen extends StatelessWidget {
                   icon: Icon(Icons.login),
                   label: Text("Sign In", style: TextStyle(fontSize: 20)),
                   onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context){
-                          return LoginScreen();
-                      })
-                    );
+                    // Navigator.pushReplacement(context, MaterialPageRoute(
+                    //     builder: (context){
+                    //       return LoginScreen();
+                    //   })
+                    // );
+
+                    Navigator.pushNamed(context, "/login");
+                              print("sign In !");
                   },
                 ),
               )

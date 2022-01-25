@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "49047118517-m24lpbqkal02lqlsu8c9653v2osf0osh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.harkzom.finder",
+            "certificate_hash": "f93500abe5893f5c19564566459f7ba6ede315f4"
+          }
+        },
+        {
           "client_id": "49047118517-77pjj40uhmnds5l87g0uf005c0v3hfqo.apps.googleusercontent.com",
           "client_type": 3
         }
