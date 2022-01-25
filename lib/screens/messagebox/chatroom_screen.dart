@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/model/database.dart';
-import 'package:loginsystem/screen/conversation_screen.dart';
-import 'package:loginsystem/screen/search.dart';
+import 'package:loginsystem/models/database.dart';
+import 'package:loginsystem/screens/chat/conversation_screen.dart';
+import 'package:loginsystem/screens/messagebox/search.dart';
 
 
 // ignore: use_key_in_widget_constructors

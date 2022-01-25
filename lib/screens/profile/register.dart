@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/model/database.dart';
-import 'package:loginsystem/model/profile.dart';
+import 'package:loginsystem/models/database.dart';
+import 'package:loginsystem/models/profile.dart';
 
 
 class RegisterScreen extends StatefulWidget {

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/model/profile.dart';
-import 'package:loginsystem/screen/chatroom_screen.dart';
-import 'package:loginsystem/screen/welcome.dart';
+import 'package:loginsystem/models/profile.dart';
+import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
+
 
 
 class LoginScreen extends StatefulWidget {

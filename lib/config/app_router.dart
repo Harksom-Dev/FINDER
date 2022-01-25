@@ -1,11 +1,10 @@
 import 'package:loginsystem/models/models.dart';
-import 'package:loginsystem/screen/chatroom_screen.dart';
-import 'package:loginsystem/screen/conversation_screen.dart';
-import 'package:loginsystem/screen/first_auth.dart';
-import 'package:loginsystem/screen/login.dart';
-import 'package:loginsystem/screen/register.dart';
-import 'package:loginsystem/screen/search.dart';
-import 'package:loginsystem/screen/welcome.dart';
+import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
+import 'package:loginsystem/screens/chat/conversation_screen.dart';
+import 'package:loginsystem/screens/home/first_auth.dart';
+import 'package:loginsystem/screens/profile/login.dart';
+import 'package:loginsystem/screens/profile/register.dart';
+import 'package:loginsystem/screens/messagebox/search.dart';
 import 'package:loginsystem/screens/chat/chat_screen.dart';
 import 'package:loginsystem/screens/edit_profile/editprofile_screen.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
@@ -37,8 +36,6 @@ class AppRouter {
         return ReviewScreen.route();
       case UsersScreen.routeName:
         return UsersScreen.route(user: setting.arguments as User);
-      case WelcomeScreen.routeName:
-        return WelcomeScreen.route(); //main login 
       case ConversationScreen.routeName:  //chatroom
         return ConversationScreen.route(chatroomId : setting.arguments as String); // trying to pass a value through route
       case LoginScreen.routeName: // login

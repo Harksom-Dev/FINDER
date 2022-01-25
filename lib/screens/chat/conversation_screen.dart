@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/constants.dart';
-import 'package:loginsystem/model/database.dart';
+import 'package:loginsystem/models/database.dart';
 
 class ConversationScreen extends StatefulWidget {
   static const String routeName = '/realchat';

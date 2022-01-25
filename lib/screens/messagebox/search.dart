@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/model/database.dart';
-import 'package:loginsystem/screen/conversation_screen.dart';
+import 'package:loginsystem/models/database.dart';
+import 'package:loginsystem/screens/chat/conversation_screen.dart';
 
 
 class SearchScreen extends StatefulWidget {

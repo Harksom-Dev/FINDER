@@ -2,8 +2,7 @@ import 'package:loginsystem/blocs/swipe/swipe_bloc.dart'
     show LoadUsersEvent, SwipeBloc;
 import 'package:loginsystem/config/app_router.dart';
 import 'package:loginsystem/config/theme.dart';
-import 'package:loginsystem/screen/first_auth.dart';
-import 'package:loginsystem/screen/welcome.dart';
+import 'package:loginsystem/screens/home/first_auth.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
 import 'package:loginsystem/screens/users/users_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/screen/chatroom_screen.dart';
+import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
 
 void main() {
   runApp(MyApp());
