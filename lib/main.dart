@@ -15,6 +15,7 @@ import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -25,24 +26,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   bool userIsLoggedIn = false;
 
   @override
-  void initState()  {
+  void initState() {
     Firebase.initializeApp();
     getLoggedInState();
     super.initState();
   }
 
-  getLoggedInState()async{
-    await HelperFunction.getUserLoggedInSharedPreference().then((value){
+  getLoggedInState() async {
+    await HelperFunction.getUserLoggedInSharedPreference().then((value) {
       setState(() {
         userIsLoggedIn = value;
       });
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +56,10 @@ class _MyAppState extends State<MyApp> {
         theme: theme(),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute:  userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
+        initialRoute:
+            userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
       ),
       // home: userIsLoggedIn ? ChatRoom() : HomeScreen()
     );
   }
 }
-
