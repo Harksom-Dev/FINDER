@@ -8,7 +8,6 @@ import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/profile.dart';
 
-
 class RegisterScreen extends StatefulWidget {
   @override
   static const String routeName = '/register';
@@ -29,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Profile profile = Profile(email: '', password: '');
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-  
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -59,11 +58,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Enter your email", style: TextStyle(fontSize: 20)),
+                          Text("Enter your email",
+                              style: TextStyle(fontSize: 20)),
                           TextFormField(
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: "Please enter your email address."),
+                                  errorText:
+                                      "Please enter your email address."),
                               EmailValidator(errorText: "Email is invalid")
                             ]),
                             keyboardType: TextInputType.emailAddress,
@@ -74,7 +75,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           SizedBox(
                             height: 15,
                           ),
-                          Text("Create a password", style: TextStyle(fontSize: 20)),
+                          Text("Create a password",
+                              style: TextStyle(fontSize: 20)),
                           TextFormField(
                             validator: RequiredValidator(
                                 errorText: "Please enter your password."),
@@ -93,15 +95,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   formKey.currentState!.save();
                                   try {
                                     //try to get email and passfrom profie() and store to map
-                                    Map<String,String> userInfoMap = {
+                                    Map<String, String> userInfoMap = {
                                       "email": profile.email
                                       //can add more attribute for further update
                                     };
                                     //call uploaduserinfo from database.dart to update user to firestore
-                                    DatabaseMethods().uploadUserInfo(userInfoMap);
+                                    DatabaseMethods()
+                                        .uploadUserInfo(userInfoMap);
                                     //save register user using helperfunction
-                                    HelperFunction.saveUserLoggedInSharedPreference(true);
-                                    HelperFunction.saveUserEmailSharedPreference(profile.email);
+                                    HelperFunction
+                                        .saveUserLoggedInSharedPreference(true);
+                                    HelperFunction
+                                        .saveUserEmailSharedPreference(
+                                            profile.email);
 
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
@@ -113,15 +119,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           msg: "Account has been created.",
                                           gravity: ToastGravity.TOP);
                                       Navigator.pushNamed(context, "/");
-                                        print("swipescreen !");
+                                      print("swipescreen !");
                                     });
-                                    
                                   } on FirebaseAuthException catch (e) {
                                     print(e.code);
                                     String message;
                                     if (e.code == 'email-already-in-use') {
-                                      message =
-                                          "This email is already taken";
+                                      message = "This email is already taken";
                                     } else if (e.code == 'weak-password') {
                                       message =
                                           "Password must be at least 6 characters.";
