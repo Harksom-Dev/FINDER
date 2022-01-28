@@ -29,6 +29,7 @@ class _ChatRoomState extends State<ChatRoom> {
   final auth = FirebaseAuth.instance;
   DatabaseMethods databaseMethods = new DatabaseMethods();
   Stream? chatRoomStream;
+  ScrollController _scrollController = ScrollController();
 
   Widget chatRoomList() {
     return StreamBuilder<dynamic>(
@@ -57,6 +58,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   snapshot.hasData
                       ? ListView.builder(
                           itemCount: snapshot.data!.docs.length,
+                          controller: _scrollController,
                           itemBuilder: (context, index) {
                             return SingleChildScrollView(
                               child: Column(
@@ -106,7 +108,6 @@ class _ChatRoomState extends State<ChatRoom> {
     var user = auth.currentUser!.email;
     return Scaffold(
       // ignore: prefer_const_constructors
-
       appBar: AppBar(
         title: Row(
           //mainAxisAlignment: MainAxisAlignment.start,
@@ -153,11 +154,14 @@ class ChatRoomTile extends StatelessWidget {
   final String userEmail;
   final String chatRoomId;
   ChatRoomTile(this.userEmail, this.chatRoomId);
+  ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        /*_scrollController.animateTo(_scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut); */
         Navigator.push(
             context,
             MaterialPageRoute(

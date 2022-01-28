@@ -25,11 +25,14 @@ class _ConversationScreenState extends State<ConversationScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
   Stream? chatMessageStream;
+  ScrollController _scrollController = ScrollController();
 
   Widget ChatMessageList() {
     return StreamBuilder<dynamic>(
       stream: chatMessageStream,
       builder: (context, snapshot) {
+        /*_scrollController.animateTo(_scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut);*/
         print(snapshot);
         if (!snapshot.hasData) {
           return Center(
@@ -37,12 +40,20 @@ class _ConversationScreenState extends State<ConversationScreen> {
           );
         }
         return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
+            itemCount: snapshot.data!.docs.length + 1,
+            shrinkWrap: true,
+            controller: _scrollController,
+            scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
+              if (index == snapshot.data!.docs.length) {
+                return Container(
+                  height: 30,
+                );
+              }
               return MessageTile(
-                  snapshot.data!.docs[index]["message"],
-                  snapshot.data!.docs[index]["sendBy"] ==
-                      Constants.myEmail); // difference from tutorial
+                snapshot.data!.docs[index]["message"],
+                snapshot.data!.docs[index]["sendBy"] == Constants.myEmail,
+              ); // difference from tutorial
             });
       },
     );
@@ -67,6 +78,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
       setState(() {
         chatMessageStream = value;
       });
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     });
     super.initState();
   }
@@ -75,44 +88,58 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.userEmail,
-            style: Theme.of(context).textTheme.headline4),
+        title: Column(
+          children: [
+            Text(widget.userEmail,
+                style: Theme.of(context).textTheme.headline4),
+          ],
+        ),
       ),
       body: Container(
-        child: Stack(
+        child: Column(
           children: [
-            ChatMessageList(),
+            Expanded(
+              child: ChatMessageList(),
+            ),
             Container(
-              alignment: Alignment.bottomCenter,
+              height: 70,
               child: Container(
-                color: Color(0x54FFFFFF),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                child: Row(
-                  children: [
-                    Expanded(
+                // user
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  color: Color(0x54FFFFFF),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
                         child: TextField(
-                      controller: messageController,
-                      decoration: InputDecoration(
-                          hintText: "Message...", border: InputBorder.none),
-                    )),
-                    // Image.asset("assets/images/Icon-192.png")
-                    GestureDetector(
-                      onTap: () {
-                        sendMessage();
-                      },
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                const Color(0x36FFFFFF),
-                                const Color(0x0FFFFFFF)
-                              ]),
-                              borderRadius: BorderRadius.circular(48)),
-                          padding: EdgeInsets.all(10),
-                          child: Icon(Icons.send)),
-                    )
-                  ],
+                          controller: messageController,
+                          decoration: InputDecoration(
+                              hintText: "Message...", border: InputBorder.none),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeOut);
+                          sendMessage();
+                        },
+                        child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(colors: [
+                                  const Color(0x36FFFFFF),
+                                  const Color(0x0FFFFFFF)
+                                ]),
+                                borderRadius: BorderRadius.circular(48)),
+                            padding: EdgeInsets.all(10),
+                            child: Icon(Icons.send)),
+                      )
+                    ],
+                  ),
                 ),
               ),
             )
@@ -127,6 +154,7 @@ class MessageTile extends StatelessWidget {
   final String message;
   final bool isSendByMe;
   MessageTile(this.message, this.isSendByMe);
+  ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
