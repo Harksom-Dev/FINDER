@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:loginsystem/screens/profile/login.dart';
-import 'package:loginsystem/screens/profile/register.dart';
-import 'package:loginsystem/widgets/Menu_button.dart';
 
 class first_auth extends StatelessWidget {
   @override
