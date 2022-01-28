@@ -6,9 +6,7 @@ import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/screens/chat/conversation_screen.dart';
 
-
 class SearchScreen extends StatefulWidget {
-
   @override
   static const String routeName = '/search';
 
@@ -22,31 +20,33 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-
-
 class _SearchScreenState extends State<SearchScreen> {
-
   DatabaseMethods databaseMethods = new DatabaseMethods();
   //create search text controler to hander about text frlom user
-  TextEditingController searchTextEditingController = new TextEditingController();
+  TextEditingController searchTextEditingController =
+      new TextEditingController();
 
   //maybe change to jsonquery or something
   QuerySnapshot? searchSnapshot;
 
-  Widget searchList(){
-    return searchSnapshot != null ? ListView.builder(
-      itemCount: searchSnapshot!.docs.length,
-      shrinkWrap: true,
-      itemBuilder: (context,index){
-        return SearchTile(
-          userEmail: searchSnapshot!.docs[index].get("email"),  // func get may change
-        );
-      }): Container();
+  Widget searchList() {
+    return searchSnapshot != null
+        ? ListView.builder(
+            itemCount: searchSnapshot!.docs.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return SearchTile(
+                userEmail: searchSnapshot!.docs[index]
+                    .get("email"), // func get may change
+              );
+            })
+        : Container();
   }
 
-
-  initiateSearch(){
-    databaseMethods.getUserByEmail(searchTextEditingController.text).then((val){
+  initiateSearch() {
+    databaseMethods
+        .getUserByEmail(searchTextEditingController.text)
+        .then((val) {
       setState(() {
         searchSnapshot = val;
       });
@@ -54,58 +54,56 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 // create chatroom, send user to conversation screen,pushreplacement
-  createChatroomAndStartConversation({required String userEmail}){             //so long function name ;-;
+  createChatroomAndStartConversation({required String userEmail}) {
+    //so long function name ;-;
     print(Constants);
-    if(userEmail != Constants.myEmail){
-      String chatRoomId = getChatRoomId(userEmail,Constants.myEmail);
-    List<String> users = [userEmail,Constants.myEmail];
-    Map<String,dynamic> chatRoomMap = {
-      "users":users,
-      "chatroomid":chatRoomId
-    };
-    DatabaseMethods().createChatRoom(chatRoomId,chatRoomMap);
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> ConversationScreen(
-      chatRoomId
-    )));
-    }else{
+    if (userEmail != Constants.myEmail) {
+      String chatRoomId = getChatRoomId(userEmail, Constants.myEmail);
+      List<String> users = [userEmail, Constants.myEmail];
+      Map<String, dynamic> chatRoomMap = {
+        "users": users,
+        "chatroomid": chatRoomId
+      };
+      DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ConversationScreen(chatRoomId, userEmail)));
+    } else {
       print("");
     }
-    
   }
 
-  Widget SearchTile({required String userEmail}){
-    
+  Widget SearchTile({required String userEmail}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(userEmail,style: TextStyle(),)
+              Text(
+                userEmail,
+                style: TextStyle(),
+              )
             ],
           ),
           Spacer(),
           GestureDetector(
-            onTap: (){
-              createChatroomAndStartConversation(
-                userEmail: userEmail
-              );
+            onTap: () {
+              createChatroomAndStartConversation(userEmail: userEmail);
             },
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(30)
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 8),
-              child:Text("Messages") ,
+                  color: Colors.blue, borderRadius: BorderRadius.circular(30)),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              child: Text("Messages"),
             ),
           )
         ],
-        ),
+      ),
     );
   }
-  
 
   @override
   void initState() {
@@ -113,8 +111,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -125,68 +121,60 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             Container(
               color: Color(0x54FFFFFF),
-              padding: EdgeInsets.symmetric(horizontal: 24,vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: searchTextEditingController,
-                      decoration: InputDecoration(
+                      child: TextField(
+                    controller: searchTextEditingController,
+                    decoration: InputDecoration(
                         hintText: "search username...",
-                      
-                        border: InputBorder.none
-                      ),
-                    )
-                    ),
+                        border: InputBorder.none),
+                  )),
                   // Image.asset("assets/images/Icon-192.png")
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       initiateSearch();
                     },
                     child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        gradient:LinearGradient(
-                          colors: [
-                            const Color(0x36FFFFFF),
-                            const Color(0x0FFFFFFF)
-                          ]
-                        ),
-                        borderRadius: BorderRadius.circular(48)
-                      ),
-                      padding: EdgeInsets.all(10),
-                      child: Icon(Icons.search)),
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                              const Color(0x36FFFFFF),
+                              const Color(0x0FFFFFFF)
+                            ]),
+                            borderRadius: BorderRadius.circular(48)),
+                        padding: EdgeInsets.all(10),
+                        child: Icon(Icons.search)),
                   )
-                ],),
+                ],
+              ),
             ),
             searchList()
-        ],),
+          ],
+        ),
       ),
     );
   }
 }
 
-
-
-
 // class SearchTile extends StatelessWidget {
 
 //   final String userEmail;
-  
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return 
+//     return
 //   }
 // }
 
-getChatRoomId(String a,String b){
+getChatRoomId(String a, String b) {
   print(a);
   print(b);
-  if(a.substring(0,1).codeUnitAt(0) > b.substring(0,1).codeUnitAt(0)){
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
     return "$b\_$a";
-  }else{
+  } else {
     return "$a\_$b";
   }
 }

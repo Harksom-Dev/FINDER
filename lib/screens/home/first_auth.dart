@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:loginsystem/screens/profile/login.dart';
 import 'package:loginsystem/screens/profile/register.dart';
+import 'package:loginsystem/widgets/Menu_button.dart';
 
 class first_auth extends StatelessWidget {
   @override
-
   static const String routeName = '/first';
 
   static Route route() {
@@ -16,50 +16,136 @@ class first_auth extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Temporary firstpage"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 50, 10, 0),
-        child: SingleChildScrollView(
+      /*appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+      ),  */
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFFF594B7),
+                Color(0xFFBD84EC),
+                Color(0xFF906CCC),
+              ]),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 150.0),
           child: Column(
             children: [
-              Text("FINDER", style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),),
+              Image.asset("assets/finderlogo.png"),
               SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  icon: Icon(Icons.add),
-                  label:
-                      Text("Sign Up", style: TextStyle(fontSize: 20)),
-                      onPressed: () {
-                    //   Navigator.pushReplacement(context, MaterialPageRoute(
-                    //     builder: (context){
-                    //       return RegisterScreen();
-                    //   })
-                    // );
-                      Navigator.pushNamed(context, "/register");
-                              print("sign up !");
-                    
-                  },
+                height: 20,
+              ),
+              Text(
+                "Connect with other people",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 18,
                 ),
               ),
               SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  icon: Icon(Icons.login),
-                  label: Text("Sign In", style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    // Navigator.pushReplacement(context, MaterialPageRoute(
-                    //     builder: (context){
-                    //       return LoginScreen();
-                    //   })
-                    // );
-
-                    Navigator.pushNamed(context, "/login");
-                              print("sign In !");
+                height: 20,
+              ),
+              SizedBox(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/register");
+                    print("sign up !");
                   },
+                  child: Container(
+                    width: 335,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Color(0xFFF95B5B),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/icon/googleiconwhite.png",
+                          width: 24,
+                          height: 24,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Sign in with Google",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              )
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/login");
+                    print("sign In !");
+                  },
+                  child: Container(
+                    width: 335,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.email_rounded),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "Sign in with Email",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Text("already a Member ?",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    )),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, "/login");
+                  print("LogIn !");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text("Login",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
+              ),
             ],
           ),
         ),

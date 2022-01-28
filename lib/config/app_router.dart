@@ -21,23 +21,26 @@ class AppRouter {
 
     switch (setting.name) {
       case '/':
-        return HomeScreen.route();  //swipe screen for now
+        return HomeScreen.route(); //swipe screen for now
       case HomeScreen.routeName:
         return HomeScreen.route();
-      case ProfileScreen.routeName: 
+      case ProfileScreen.routeName:
         return ProfileScreen.route();
       case EditProfileScreen.routeName:
         return EditProfileScreen.route();
       case MessageBoxScreen.routeName:
         return MessageBoxScreen.route();
-      case ChatScreen.routeName:  //chatroom_screen(real message box)
+      case ChatScreen.routeName: //chatroom_screen(real message box)
         return ChatScreen.route();
       case ReviewScreen.routeName:
         return ReviewScreen.route();
       case UsersScreen.routeName:
         return UsersScreen.route(user: setting.arguments as User);
-      case ConversationScreen.routeName:  //chatroom
-        return ConversationScreen.route(chatroomId : setting.arguments as String); // trying to pass a value through route
+      case ConversationScreen.routeName: //chatroom
+        return ConversationScreen.route(
+            chatroomId: setting.arguments as String,
+            userEmail: setting.arguments
+                as String); // trying to pass a value through route
       case LoginScreen.routeName: // login
         return LoginScreen.route();
       case RegisterScreen.routeName:
