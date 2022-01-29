@@ -41,4 +41,10 @@ class DatabaseMethods {
       .snapshots();
   }
 
+
+  testdb() async{
+    return await FirebaseFirestore.instance.collection("users")
+      .doc('user1')
+      .snapshots();
+  }
 }

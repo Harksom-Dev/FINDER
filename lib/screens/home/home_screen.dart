@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
 import 'package:loginsystem/config/theme.dart';
+import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/custom_appbar.dart';
 import 'package:loginsystem/widgets/user_card.dart';
@@ -130,6 +132,7 @@ class HomeScreen extends StatelessWidget {
                             onTap: () {
                               // cross button (X)
                               Navigator.pushNamed(context, "/");
+                              
                               print("homepage !");
                             },
                             child: Menubutton(

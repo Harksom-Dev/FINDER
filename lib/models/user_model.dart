@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -26,6 +27,25 @@ class User extends Equatable {
         bio,
         interested,
       ];
+
+  static User fromSnapshot(DocumentSnapshot snap){  //this funct convert data from firebase to 1 of User
+    User user = User(
+      id: snap['id'],
+      name:snap['name'],
+      age:snap['age'],
+      imageUrls: snap['imageUrls'],
+      interested: snap['interested'],
+      bio: snap['bio']);
+
+      return user;
+  }
+  
+  static List<User> userfromSnapshot(QuerySnapshot snap){   //this func need to get snap from firebase lib and turn in to list<User>
+    print(snap.docs);
+    // List<User> users = 
+    return users;
+  }
+
 
   static List<User> users = [
     User(
