@@ -23,9 +23,13 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   @override
   Stream<List<User>> getAllUsers() {    //trting to get all of users data collectiong from firebase and pass it to userfromSnapshot in user_model
-    // TODO: implement getAllUsers    
-    print('hellp');
     return _firebaseFirestore.collection('users').snapshots().map((snap) => User.userfromSnapshot(snap));    //maybe use forloop for add a user in this snapshot
+  }
+
+  @override
+  testdb() async {
+    return await FirebaseFirestore.instance.collection("users")
+      .snapshots();
   }
   
 }

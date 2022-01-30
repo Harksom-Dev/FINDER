@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/models/database.dart';
+import 'package:loginsystem/models/database_repository.dart';
 
 class ConversationScreen extends StatefulWidget {
   static const String routeName = '/realchat';
@@ -24,6 +25,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
   Stream? chatMessageStream;
+  //testing a db func to get all user
+  DatabaseRepository _databaseRepository = new DatabaseRepository();
 
   Widget ChatMessageList(){
     

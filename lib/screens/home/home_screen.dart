@@ -132,7 +132,6 @@ class HomeScreen extends StatelessWidget {
                             onTap: () {
                               // cross button (X)
                               Navigator.pushNamed(context, "/");
-                              
                               print("homepage !");
                             },
                             child: Menubutton(

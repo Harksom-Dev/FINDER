@@ -5,6 +5,7 @@ import 'package:loginsystem/config/theme.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/screens/home/first_auth.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
+import 'package:loginsystem/screens/test/test.dart';
 import 'package:loginsystem/screens/users/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,9 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
 
-void main()  {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -62,6 +63,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.onGenerateRoute,
         initialRoute:  userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
+        // home: const StreamBuilderTest(),    //tempory page to check about database
       ),
       // home: userIsLoggedIn ? ChatRoom() : HomeScreen()
     );

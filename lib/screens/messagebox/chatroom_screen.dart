@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   final auth = FirebaseAuth.instance;
   DatabaseMethods databaseMethods = new DatabaseMethods();
+  DatabaseRepository _databaseRepository = new DatabaseRepository();
   Stream? chatRoomStream;
 
   Widget chatRoomList(){
@@ -60,7 +62,6 @@ class _ChatRoomState extends State<ChatRoom> {
   getUserInfo() async {
     Constants.myEmail = (await HelperFunction.getUserEmailSharedPreference());
     databaseMethods.getChatRoom(Constants.myEmail).then((value){
-
       setState(() {
         chatRoomStream = value;
       });
