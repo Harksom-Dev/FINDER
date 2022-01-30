@@ -84,6 +84,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           "Please enter your email address."),
                                   EmailValidator(errorText: "Email is invalid")
                                 ]),
+                                // decoration: InputDecoration(
+                                //   border: OutlineInputBorder(),
+                                // ),
                                 keyboardType: TextInputType.emailAddress,
                                 onSaved: (String? email) {
                                   profile.email = email!;
