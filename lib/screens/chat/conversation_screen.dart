@@ -69,7 +69,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
     databaseMethods.getConversationMessages(widget.chatRoomId).then((value){
       setState(() {
         chatMessageStream = value;
-        
       });
     });
     super.initState();

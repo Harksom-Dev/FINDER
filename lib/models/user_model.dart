@@ -41,7 +41,8 @@ class User extends Equatable {
   }
   
   static List<User> userfromSnapshot(QuerySnapshot snap){   //this func need to get snap from firebase lib and turn in to list<User>
-    print(snap.docs);
+    var test = snap.docs;
+    print('testttt  $test');
     // List<User> users = 
     return users;
   }

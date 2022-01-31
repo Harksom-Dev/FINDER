@@ -42,6 +42,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     // _databaseRepository.getAllUsers().listen((event) {
     //   print("hello");
     // });
+    _databaseRepository.getAllUsers();
     yield SwipeLoaded(users: event.users);
   }
 
@@ -51,6 +52,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   ) async* {
     if (state is SwipeLoaded) {
       try {
+        print('is this line work?');
         yield SwipeLoaded(users: List.from(state.users)..remove(event.user));
       } catch (_) {}
     }
