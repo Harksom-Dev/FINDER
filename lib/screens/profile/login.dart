@@ -54,26 +54,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ]),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                   child: Form(
                     key: formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 50,
+                          height: 35,
                         ),
                         Image.asset("assets/icon/finder_logo.png"),
                         Container(
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(50)),
-                          padding: EdgeInsets.fromLTRB(30, 30, 30, 50),
+                          padding: EdgeInsets.fromLTRB(30, 30, 30, 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 30,
+                                height: 15,
                               ),
                               Text("Email address: ",
                                   style: TextStyle(fontSize: 15)),
@@ -106,11 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   profile.password = password!;
                                 },
                               ),
-                              SizedBox(
-                                height: 20,
-                              ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(50, 10, 50, 0),
+                                padding: EdgeInsets.fromLTRB(50, 20, 50, 0),
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton(
