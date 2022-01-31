@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loginsystem/provider/google_sign_in.dart';
+import 'package:provider/provider.dart';
+
 
 class LoggedInWidget extends StatelessWidget {
 
@@ -24,13 +27,13 @@ class LoggedInWidget extends StatelessWidget {
               radius: 40,
             ),
             const SizedBox(height: 8),
-            Text('Logged in as: ${user.displayName}'),
-            Text('email in as: ${user.email}'),
+            Text('Logged in as: ${user.displayName}', style: const TextStyle(fontSize: 20)),
+            Text('email is: ${user.email}', style: const TextStyle(fontSize: 20)),
             TextButton(
               child: const Text('Logout'),
               onPressed: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacementNamed('/first');
+                final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.logout();
               },
             ),
           ],

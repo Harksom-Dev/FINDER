@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loginsystem/screens/home/first_auth.dart';
 import 'package:loginsystem/widgets/auth/logged_in_widget.dart';
 
 class TestHome extends StatelessWidget {
@@ -30,7 +31,7 @@ class TestHome extends StatelessWidget {
             return const Center(child: Text('Something went wrong!'));
           }
           else {//todo must be logout
-            return const Center(child: CircularProgressIndicator());
+            return const FirstAuth();
           }
         },
       ),
