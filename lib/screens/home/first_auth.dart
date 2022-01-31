@@ -1,29 +1,36 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_constructors
 
-class first_auth extends StatelessWidget {
-  @override
+import 'package:flutter/material.dart';
+import 'package:loginsystem/provider/google_sign_in.dart';
+import 'package:provider/provider.dart';
+
+class FirstAuth extends StatelessWidget {
+  
   static const String routeName = '/first';
+
+  const FirstAuth({Key? key}) : super(key: key);
 
   static Route route() {
     return MaterialPageRoute(
-      builder: (_) => first_auth(),
+      builder: (_) => FirstAuth(),
       settings: RouteSettings(name: routeName),
     );
   }
-
-  Widget build(BuildContext context) {
-    return Scaffold(
+  @override
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+    create: (context) => GoogleSignInProvider(),
+    child: Scaffold(
       /*appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-      ),  */
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      ),*/
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: const [
                 Color(0xFFF594B7),
                 Color(0xFFBD84EC),
                 Color(0xFF906CCC),
@@ -51,8 +58,11 @@ class first_auth extends StatelessWidget {
               SizedBox(
                 child: InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, "/register");
-                    print("sign up !");
+                    //todo: implement google login here!
+                    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                    provider.googleLogin();
+                    Navigator.pushNamed(context, "/google login"); 
+                    print("google auth !");
                   },
                   child: Container(
                     width: 335,
@@ -103,7 +113,7 @@ class first_auth extends StatelessWidget {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Icon(Icons.email_rounded),
                         SizedBox(
                           width: 15,
@@ -147,6 +157,6 @@ class first_auth extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),  
+  );
 }
