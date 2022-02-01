@@ -52,6 +52,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   ) async* {
     if (state is SwipeLoaded) {
       try {
+        // ignore: avoid_print
         print('is this line work?');
         yield SwipeLoaded(users: List.from(state.users)..remove(event.user));
       } catch (_) {}

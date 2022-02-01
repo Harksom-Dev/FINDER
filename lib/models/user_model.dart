@@ -27,26 +27,35 @@ class User extends Equatable {
         bio,
         interested,
       ];
-
-  static User fromSnapshot(DocumentSnapshot snap){  //this funct convert data from firebase to 1 of User
+  static User fromSnapshot(DocumentSnapshot snap) {
+    //this funct convert data from firebase to 1 of User
     User user = User(
-      id: snap['id'],
-      name:snap['name'],
-      age:snap['age'],
-      imageUrls: snap['imageUrls'],
-      interested: snap['interested'],
-      bio: snap['bio']);
+        id: snap['id'],
+        name: snap['name'],
+        age: snap['age'],
+        imageUrls: snap['imageUrls'],
+        interested: snap['interested'],
+        bio: snap['bio']);
 
-      return user;
+    return user;
   }
+// static List<User> users = [];
+  static List<User> userfromSnapshot(QuerySnapshot snap) {
+    //this func need to get snap from firebase lib and turn in to list<User>
+    // users = 
+    print("heloooooo");
+    return snap.docs
+        .map((doc) => User(
+            id: doc['id'],
+            name: doc['name'],
+            age: doc['age'],
+            imageUrls: doc['imageUrls'],
+            bio: doc['bio'],
+            interested: doc['interested']))
+        .toList();
+    // List<User> users =
+  } 
   
-  static List<User> userfromSnapshot(QuerySnapshot snap){   //this func need to get snap from firebase lib and turn in to list<User>
-    var test = snap.docs;
-    print('testttt  $test');
-    // List<User> users = 
-    return users;
-  }
-
 
   static List<User> users = [
     User(

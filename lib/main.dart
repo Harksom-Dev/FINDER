@@ -31,12 +31,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   bool userIsLoggedIn = false;
-  // final DatabaseRepository _databaseRepository = DatabaseRepository();
+  final DatabaseRepository _databaseRepository = DatabaseRepository();
   @override
   void initState()  {
     // Firebase.initializeApp();
     getLoggedInState();
-    // _databaseRepository.getAllUsers();  //assume that we gonna get all users in firebase to list in User class in initstate
+    _databaseRepository.getAllUsers();  //assume that we gonna get all users in firebase to list in User class in initstate
     super.initState();
   }
 
@@ -62,8 +62,8 @@ class _MyAppState extends State<MyApp> {
         theme: theme(),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute:  userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
-        // home: const StreamBuilderTest(),    //tempory page to check about database
+        // initialRoute:  userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
+        home: const StreamBuilderTest(),    //tempory page to check about database
       ),
       // home: userIsLoggedIn ? ChatRoom() : HomeScreen()
     );

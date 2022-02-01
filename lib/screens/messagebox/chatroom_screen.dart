@@ -37,7 +37,14 @@ class _ChatRoomState extends State<ChatRoom> {
     return StreamBuilder<dynamic>(
       stream: chatRoomStream,           
       builder: (context,snapshot){
-        
+      //testing some firebase output
+      if(snapshot.hasData){
+        print("helopooooooo");
+
+        snapshot.data.docs.forEach((doc) {
+        print(doc["chatroomid"]);
+          });
+        } 
         return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context,index){
