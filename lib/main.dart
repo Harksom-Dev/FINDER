@@ -23,13 +23,15 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
+  List<User> userlist = [];
   bool userIsLoggedIn = false;
   final DatabaseRepository _databaseRepository = DatabaseRepository();
   @override
@@ -37,6 +39,7 @@ class _MyAppState extends State<MyApp> {
     // Firebase.initializeApp();
     getLoggedInState();
     _databaseRepository.getAllUsers();  //assume that we gonna get all users in firebase to list in User class in initstate
+    
     super.initState();
   }
 
@@ -46,6 +49,8 @@ class _MyAppState extends State<MyApp> {
         userIsLoggedIn = value;
       });
     });
+    userlist  = await _databaseRepository.usertoList();
+    User.set(userlist);
   }
 
 
@@ -62,8 +67,8 @@ class _MyAppState extends State<MyApp> {
         theme: theme(),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.onGenerateRoute,
-        // initialRoute:  userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
-        home: const StreamBuilderTest(),    //tempory page to check about database
+        initialRoute:  userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
+        // home: const StreamBuilderTest(),    //tempory page to check about database
       ),
       // home: userIsLoggedIn ? ChatRoom() : HomeScreen()
     );

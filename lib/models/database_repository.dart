@@ -32,5 +32,23 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
       .snapshots();
 
   }
+
+  @override
+  Future<List<User>> usertoList() async {
+  QuerySnapshot qshot = 
+      await FirebaseFirestore.instance.collection('users').get();
+
+    return qshot.docs.map(
+        (doc) => User(
+            id: doc['id'],
+            name: doc['name'],
+            age: doc['age'],
+            imageUrls: doc['imageUrls'],
+            bio: doc['bio'],
+            interested: doc['interested']
+            )
+      ).toList();
+
+  }
   
 }

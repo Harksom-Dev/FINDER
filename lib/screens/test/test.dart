@@ -47,7 +47,7 @@ class _StreamBuilderTestState extends State<StreamBuilderTest> {
     print('hiiii');
     print(users);
     userlist.addAll(users);
-    print(userlist);
+    // print(userlist);
     
     _databaseRepository.testdb().then((value){
       setState(() {
@@ -81,7 +81,7 @@ class _StreamBuilderTestState extends State<StreamBuilderTest> {
               return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (ctx, index) =>
-                  Text(snapshot.data!.docs[index]['name']),
+                  Text(snapshot.data!.docs[index]['interested'][0]),
             );
             }else{
               print("oh ooooooo");

@@ -5,9 +5,9 @@ class User extends Equatable {
   final int id;
   final String name;
   final int age;
-  final List<String> imageUrls;
+  final List<dynamic> imageUrls;
   final String bio;
-  final List<String> interested;
+  final List<dynamic> interested;
 
   const User({
     required this.id,
@@ -39,6 +39,10 @@ class User extends Equatable {
 
     return user;
   }
+  static set(List<User> user){
+    users.clear();
+    users.addAll(users);
+  }
 // static List<User> users = [];
   static List<User> userfromSnapshot(QuerySnapshot snap) {
     //this func need to get snap from firebase lib and turn in to list<User>
@@ -55,6 +59,7 @@ class User extends Equatable {
         .toList();
     // List<User> users =
   } 
+  
   
 
   static List<User> users = [
