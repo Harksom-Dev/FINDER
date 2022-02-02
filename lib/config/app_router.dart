@@ -6,14 +6,7 @@ import 'package:loginsystem/screens/home/first_auth.dart';
 import 'package:loginsystem/screens/profile/login.dart';
 import 'package:loginsystem/screens/profile/register.dart';
 import 'package:loginsystem/screens/messagebox/search.dart';
-import 'package:loginsystem/screens/chat/chat_screen.dart';
-import 'package:loginsystem/screens/edit_profile/editprofile_screen.dart';
-import 'package:loginsystem/screens/home/home_screen.dart';
-import 'package:loginsystem/screens/messagebox/messagebox_screen.dart';
-import 'package:loginsystem/screens/profile/profile_screen.dart';
-import 'package:loginsystem/screens/review/review_screen.dart';
 import 'package:loginsystem/screens/screens.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
