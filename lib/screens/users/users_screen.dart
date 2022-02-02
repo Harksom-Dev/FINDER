@@ -2,6 +2,7 @@ import 'package:loginsystem/config/theme.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:flutter/material.dart';
+import 'package:loginsystem/widgets/user_image_small.dart';
 
 class UsersScreen extends StatelessWidget {
   static const String routeName = '/users';
@@ -127,6 +128,32 @@ class UsersScreen extends StatelessWidget {
                         ),
                       )
                       .toList(),
+                ),
+                Row(
+                  children: [
+                    UserImageSmall(imageUrl: user.imageUrls[1]),
+                    UserImageSmall(imageUrl: user.imageUrls[2]),
+                    SizedBox(width: 150),
+                    /*Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 100, 0),
+                          child: Container(
+                            width: 25,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.black,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 50, 0),
+                              child: Icon(
+                                Icons.info_outline,
+                                size: 25,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ), 
+                          ),
+                        )*/
+                  ],
                 )
               ],
             ),

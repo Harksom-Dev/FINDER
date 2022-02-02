@@ -33,7 +33,7 @@ class AppRouter {
       case ChatScreen.routeName: //chatroom_screen(real message box)
         return ChatScreen.route();
       case ReviewScreen.routeName:
-        return ReviewScreen.route();
+        return ReviewScreen.route(userEmail: setting.arguments as String);
       case UsersScreen.routeName:
         return UsersScreen.route(user: setting.arguments as User);
       case ConversationScreen.routeName: //chatroom

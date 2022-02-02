@@ -1,15 +1,17 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/models/database.dart';
+import 'package:loginsystem/screens/review/review_screen.dart';
 
 class ConversationScreen extends StatefulWidget {
   static const String routeName = '/realchat';
-
+  //final arg = ModalRoute.of(context)!.settings.arguments as Arg;
   static Route route({required String chatroomId, required String userEmail}) {
     return MaterialPageRoute(
-      builder: (context) =>
-          ConversationScreen(chatroomId, userEmail), // not sure
+      builder: (_) => ConversationScreen(chatroomId, userEmail), // not sure
       settings: RouteSettings(name: routeName),
     );
   }
@@ -26,13 +28,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageController = new TextEditingController();
   Stream? chatMessageStream;
   ScrollController _scrollController = ScrollController();
-
   Widget ChatMessageList() {
     return StreamBuilder<dynamic>(
       stream: chatMessageStream,
       builder: (context, snapshot) {
-        /*_scrollController.animateTo(_scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 300), curve: Curves.easeOut);*/
         print(snapshot);
         if (!snapshot.hasData) {
           return Center(
@@ -78,8 +77,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
       setState(() {
         chatMessageStream = value;
       });
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+      /*_scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOut); */
     });
     super.initState();
   }
@@ -88,11 +87,53 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         title: Column(
           children: [
-            Text(widget.userEmail,
-                style: Theme.of(context).textTheme.headline4),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(widget.userEmail.toUpperCase(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black54)),
+                InkWell(
+                  onTap: () {
+                    //Navigator.pushNamed(context, "/review");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReviewScreen(widget.userEmail)),
+                    );
+                    print("Match user Profile Review !");
+                  },
+                  // here wher is the profile of user is
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35),
+                      color: Colors.redAccent,
+                    ),
+                    child: Text(
+                      widget.userEmail.substring(0, 1).toUpperCase(),
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Color(0xFFF2D8E1), Color(0xFF92B2FD)])),
         ),
       ),
       body: Container(
@@ -102,43 +143,62 @@ class _ConversationScreenState extends State<ConversationScreen> {
               child: ChatMessageList(),
             ),
             Container(
-              height: 70,
+              height: 80,
               child: Container(
                 // user
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   color: Color(0x54FFFFFF),
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: messageController,
-                          decoration: InputDecoration(
-                              hintText: "Message...", border: InputBorder.none),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35),
+                      border: Border.all(color: Color(0xFFF594B7)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: TextField(
+                              controller: messageController,
+                              decoration: InputDecoration(
+                                hintText: "Message...",
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _scrollController.animateTo(
-                              _scrollController.position.maxScrollExtent,
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeOut);
-                          sendMessage();
-                        },
-                        child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(colors: [
-                                  const Color(0x36FFFFFF),
-                                  const Color(0x0FFFFFFF)
-                                ]),
-                                borderRadius: BorderRadius.circular(48)),
-                            padding: EdgeInsets.all(10),
-                            child: Icon(Icons.send)),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              _scrollController.animateTo(
+                                  _scrollController.position.maxScrollExtent,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeOut);
+                              sendMessage();
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      const Color(0x36FFFFFF),
+                                      const Color(0x0FFFFFFF)
+                                    ]),
+                                    borderRadius: BorderRadius.circular(48)),
+                                padding: EdgeInsets.all(10),
+                                child: Icon(
+                                  Icons.send_rounded,
+                                  color: Color(0xFFF594B7),
+                                )),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -173,18 +233,21 @@ class MessageTile extends StatelessWidget {
                   : [const Color(0xFFBEF389), const Color(0xFFA0F24E)],
             ),
             borderRadius: isSendByMe
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomLeft: Radius.circular(23),
-                  )
-                : BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomRight: Radius.circular(23))),
+                ? BorderRadius.circular(23)
+                //BorderRadius.only(
+                //topLeft: Radius.circular(23),
+                //topRight: Radius.circular(23),
+                //bottomLeft: Radius.circular(23),
+                //)
+                : BorderRadius.circular(23
+                    //topLeft: Radius.circular(23),
+                    //topRight: Radius.circular(23),
+                    //bottomRight: Radius.circular(23)
+                    ),
+            border: Border.all(color: Colors.black.withAlpha(150))),
         child: Text(
           message,
-          style: TextStyle(fontSize: 17),
+          style: TextStyle(fontSize: 16),
         ),
       ),
     );

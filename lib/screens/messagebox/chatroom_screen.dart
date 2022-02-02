@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/config/theme.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
@@ -89,7 +91,6 @@ class _ChatRoomState extends State<ChatRoom> {
   void initState() {
     // TODO: implement initState
     getUserInfo();
-
     super.initState();
   }
 
@@ -128,10 +129,6 @@ class _ChatRoomState extends State<ChatRoom> {
               icon: Icon(Icons.logout_rounded, color: Color(0xFFF101010)),
               onPressed: () {
                 auth.signOut().then((value) {
-                  // Navigator.pushReplacement(context,
-                  // MaterialPageRoute(builder: (context){
-                  //     return HomeScreen();
-                  // }));
                   Navigator.pushNamed(context, "/first");
                   print("first auth!");
                 });
@@ -160,13 +157,13 @@ class ChatRoomTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        /*_scrollController.animateTo(_scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 300), curve: Curves.easeOut); */
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ConversationScreen(chatRoomId, userEmail)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => ConversationScreen(chatRoomId, userEmail)),
+        );
+        /*Navigator.pushNamed(context, "/realchat",
+            arguments: {chatRoomId, userEmail});*/
       },
       child: Container(
         color: Colors.black26,

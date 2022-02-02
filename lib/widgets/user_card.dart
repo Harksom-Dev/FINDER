@@ -66,7 +66,7 @@ class UserCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                           ),
                     ),
-                    Row(
+                    /*Row(
                       children: [
                         UserImageSmall(imageUrl: user.imageUrls[1]),
                         UserImageSmall(imageUrl: user.imageUrls[2]),
@@ -91,7 +91,7 @@ class UserCard extends StatelessWidget {
                           ),
                         )*/
                       ],
-                    )
+                    )*/
                   ],
                 ),
               )
