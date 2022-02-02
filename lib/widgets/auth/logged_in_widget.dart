@@ -23,7 +23,7 @@ class LoggedInWidget extends StatelessWidget {
             const Text('profile', style: TextStyle(fontSize: 30)),
             const SizedBox(height: 32),
             CircleAvatar(
-              backgroundImage: NetworkImage(user.photoURL!),
+              backgroundImage: NetworkImage(user.photoURL ?? ''),
               radius: 40,
             ),
             const SizedBox(height: 8),
