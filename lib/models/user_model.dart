@@ -40,11 +40,6 @@ class User extends Equatable {
     return user;
   }
   static set(List<User> user){
-    print(user[0]);
-    // users.clear();
-    // users.addAll(users);
-    print(user.length);
-    print(users.length);
     users.clear();
     for(int i = 0; i < user.length;i++){    //now this work but need to tweak to real use
       // users[i] = user[i];
@@ -55,7 +50,7 @@ class User extends Equatable {
   static List<User> userfromSnapshot(QuerySnapshot snap) {
     //this func need to get snap from firebase lib and turn in to list<User>
     // users = 
-    print("heloooooo");
+
     return snap.docs
         .map((doc) => User(
             id: doc['id'],
@@ -69,9 +64,9 @@ class User extends Equatable {
   } 
   
   
-
+  //dummy data to prevent error at first when buiding an app
   static List<User> users = [
-    User(
+    const User(
         id: 1,
         name: 'Pack',
         age: 21,
@@ -82,7 +77,7 @@ class User extends Equatable {
         ],
         bio: 'i love coding',
         interested: ['C++', 'python']),
-    User(
+    const User(
         id: 2,
         name: 'Yoyo',
         age: 21,
@@ -93,7 +88,7 @@ class User extends Equatable {
         ],
         bio: 'i love coding',
         interested: ['C++', 'python']),
-    User(
+    const User(
         id: 3,
         name: 'Phird',
         age: 21,
@@ -104,7 +99,7 @@ class User extends Equatable {
         ],
         bio: 'i love coding mak mak',
         interested: ['C++', 'python']),
-    User(
+    const User(
         id: 4,
         name: 'Phirachat',
         age: 21,
