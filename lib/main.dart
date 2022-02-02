@@ -35,10 +35,11 @@ class _MyAppState extends State<MyApp> {
   bool userIsLoggedIn = false;
   final DatabaseRepository _databaseRepository = DatabaseRepository();
   @override
-  void initState()  {
+  void initState() {
     // Firebase.initializeApp();
     getLoggedInState();
-    _databaseRepository.getAllUsers();  //assume that we gonna get all users in firebase to list in User class in initstate
+    getUser();
+    //_databaseRepository.getAllUsers();  //assume that we gonna get all users in firebase to list in User class in initstate
     
     super.initState();
   }
@@ -49,6 +50,10 @@ class _MyAppState extends State<MyApp> {
         userIsLoggedIn = value;
       });
     });
+    
+  }
+
+  getUser() async {
     userlist  = await _databaseRepository.usertoList();
     User.set(userlist);
   }

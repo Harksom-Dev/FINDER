@@ -40,8 +40,16 @@ class User extends Equatable {
     return user;
   }
   static set(List<User> user){
+    print(user[0]);
+    // users.clear();
+    // users.addAll(users);
+    print(user.length);
+    print(users.length);
     users.clear();
-    users.addAll(users);
+    for(int i = 0; i < user.length;i++){    //now this work but need to tweak to real use
+      // users[i] = user[i];
+      users.add(user[i]);
+    }
   }
 // static List<User> users = [];
   static List<User> userfromSnapshot(QuerySnapshot snap) {
@@ -97,7 +105,7 @@ class User extends Equatable {
         bio: 'i love coding mak mak',
         interested: ['C++', 'python']),
     User(
-        id: 3,
+        id: 4,
         name: 'Phirachat',
         age: 21,
         imageUrls: [
