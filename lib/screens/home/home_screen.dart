@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
 import 'package:loginsystem/config/theme.dart';
+import 'package:loginsystem/helper/constants.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/custom_appbar.dart';
@@ -14,13 +16,22 @@ import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:loginsystem/widgets/Menu_button.dart';
 
 class HomeScreen extends StatelessWidget {
+  DatabaseRepository _databaseRepository = DatabaseRepository();
   static const String routeName = '/';
-
+  
   static Route route() {
     return MaterialPageRoute(
       builder: (_) => HomeScreen(),
       settings: RouteSettings(name: routeName),
     );
+  }
+
+  // trying to fetch all user except user that cur login (maybe need to move this func to somewhere better than this )
+  suggest() async {
+    String userEmail = await HelperFunction.getUserEmailSharedPreference();
+    //print(userEmail);
+    List<User> userlist = await _databaseRepository.usertoList();
+    User.set(userlist,userEmail);
   }
 
   @override
@@ -37,6 +48,7 @@ class HomeScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is SwipeLoaded) {
+            suggest();
             // swipe loaded state
             return SingleChildScrollView(
               child: Column(

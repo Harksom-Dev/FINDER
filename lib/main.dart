@@ -12,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
 
@@ -38,8 +37,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // Firebase.initializeApp();
     getLoggedInState();
-    getUser();
-    //_databaseRepository.getAllUsers();  //assume that we gonna get all users in firebase to list in User class in initstate
+    getUser();// get all user and convert to list
+
     
     super.initState();
   }
@@ -54,8 +53,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   getUser() async {
+    String email = await HelperFunction.getUserEmailSharedPreference();
     userlist  = await _databaseRepository.usertoList();
-    User.set(userlist);
+    User.set(userlist,'');
   }
 
 

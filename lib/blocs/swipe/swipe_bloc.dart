@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:loginsystem/models/database_repository.dart';
@@ -32,7 +33,12 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     if (event is SwipeRightEvent) {
       yield* _mapSwipeRightToState(event, state);
     }
+    // if(event is )
   }
+
+
+
+
 
   Stream<SwipeState> _mapLoadUsersToState(  
     LoadUsersEvent event,
@@ -42,6 +48,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     // _databaseRepository.getAllUsers().listen((event) {
     //   print("hello");
     // });
+    //print('hellooooo');
     //_databaseRepository.getAllUsers();
     yield SwipeLoaded(users: event.users);
   }
@@ -52,8 +59,6 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   ) async* {
     if (state is SwipeLoaded) {
       try {
-        // ignore: avoid_print
-        print('is this line work?');
         yield SwipeLoaded(users: List.from(state.users)..remove(event.user));
       } catch (_) {}
     }

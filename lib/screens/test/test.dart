@@ -37,7 +37,8 @@ class _StreamBuilderTestState extends State<StreamBuilderTest> {
             age: doc['age'],
             imageUrls: doc['imageUrls'],
             bio: doc['bio'],
-            interested: doc['interested']
+            interested: doc['interested'],
+            email: doc['email'],
             )
       ).toList();
 
