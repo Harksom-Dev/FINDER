@@ -103,7 +103,7 @@ class FirstAuth extends StatelessWidget {
                   SizedBox(
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, "/login");
+                        Navigator.pushNamed(context, "/register");
                         print("sign In !");
                       },
                       child: Container(
@@ -121,7 +121,7 @@ class FirstAuth extends StatelessWidget {
                               width: 15,
                             ),
                             Text(
-                              "Sign in with Email",
+                              "Sign up with Email",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
