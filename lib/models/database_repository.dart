@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loginsystem/helper/constants.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/base_database_repository.dart';
 import 'package:loginsystem/models/storage/storage_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 
+
+
 class DatabaseRepository extends BaseDatabaseRepository{
 final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-
+  final COLLECTION = 'tempusers';
   @override
   Stream<User> getUser() { // get 1 user from firebase
 
@@ -36,7 +40,7 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   @override
   Future<List<User>> usertoList() async {
   QuerySnapshot qshot = 
-      await FirebaseFirestore.instance.collection('users').get();
+      await FirebaseFirestore.instance.collection(COLLECTION).get();
 
     return qshot.docs.map(
         (doc) => User(
@@ -50,6 +54,18 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
             )
       ).toList();
 
+  }
+
+  @override
+  Future<List<String>> userInterested() async {
+
+    // String userEmail = await HelperFunction.getUserEmailSharedPreference();
+    // QuerySnapshot qshot = 
+    //   await _firebaseFirestore.collection('users').doc(Constants.myEmail).get();
+
+
+    throw UnimplementedError();
+    
   }
   
 }

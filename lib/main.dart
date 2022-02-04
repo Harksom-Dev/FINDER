@@ -52,10 +52,11 @@ class _MyAppState extends State<MyApp> {
     
   }
 
+  //get all user and minus current login user
   getUser() async {
     String email = await HelperFunction.getUserEmailSharedPreference();
     userlist  = await _databaseRepository.usertoList();
-    User.set(userlist,'');
+    User.set(userlist,email);
   }
 
 
