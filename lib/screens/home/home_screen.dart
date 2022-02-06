@@ -32,6 +32,9 @@ class HomeScreen extends StatelessWidget {
     //print(userEmail);
     List<User> userlist = await _databaseRepository.usertoList();
     User.set(userlist,userEmail);
+
+    //suggest algo testing
+    _databaseRepository.userInterested();
   }
 
   @override

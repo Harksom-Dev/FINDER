@@ -6,5 +6,5 @@ abstract class BaseDatabaseRepository{
   Stream<List<User>>getAllUsers();
   testdb();
   Future<List<User>> usertoList();
-  Future<List<String>> userInterested();
+  userInterested();
 }

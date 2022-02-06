@@ -57,14 +57,19 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   }
 
   @override
-  Future<List<String>> userInterested() async {
+  userInterested() async {
+    List<dynamic> test = [];
+    String userEmail = await HelperFunction.getUserEmailSharedPreference();
+    await _firebaseFirestore.collection(COLLECTION).doc('user1').get().then((snapshot){
+      print('helloooooo');
+      test = snapshot.data()!['interested'];
+      return snapshot.data()!['interested'];
+    });
+    print(test);
 
-    // String userEmail = await HelperFunction.getUserEmailSharedPreference();
-    // QuerySnapshot qshot = 
-    //   await _firebaseFirestore.collection('users').doc(Constants.myEmail).get();
 
 
-    throw UnimplementedError();
+
     
   }
   
