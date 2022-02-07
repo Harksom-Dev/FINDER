@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Profile{
+class Profile {
+  String name;
   String email;
   String password;
+  var dob;
 
-  Profile({required this.email,required this.password});
+  Profile(
+      {required this.name,
+      required this.email,
+      required this.password,
+      required this.dob});
 }

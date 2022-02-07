@@ -1,4 +1,4 @@
-import 'package:loginsystem/screens/home/home_screen.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +7,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/profile.dart';
+import 'package:date_field/date_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
 
-  Profile profile = Profile(email: '', password: '');
+  Profile profile = Profile(name: '', email: '', password: '', dob: '');
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
@@ -121,13 +122,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   ),
                                   Text("Date of Birth: ",
                                       style: TextStyle(fontSize: 15)),
-                                  TextFormField(
-                                    validator: RequiredValidator(
-                                        errorText:
-                                            "Please enter your password."),
-                                    obscureText: true,
-                                    onSaved: (String? password) {
-                                      profile.password = password!;
+                                  DateTimeFormField(
+                                    decoration: const InputDecoration(
+                                      hintStyle:
+                                          TextStyle(color: Colors.black45),
+                                      errorStyle:
+                                          TextStyle(color: Colors.redAccent),
+                                      // border: OutlineInputBorder(),
+                                      // suffixIcon: Icon(Icons.event_note),
+                                      // labelText: 'Only date',
+                                    ),
+                                    mode: DateTimeFieldPickerMode.date,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    // initialDate: new DateTime.now(),
+                                    firstDate: new DateTime(1922),
+                                    lastDate: new DateTime(2023),
+                                    validator: (e) {
+                                      if (profile.dob == null ||
+                                          e != profile.dob) {
+                                        return "Please enter date";
+                                      } else
+                                        return null;
+                                    },
+                                    // validator: (e) => (e?.year ?? 0) >= 2004
+                                    //     ? 'Your must be more than 18 year old to signup'
+                                    //     : null,
+                                    onDateSelected: (DateTime? value) {
+                                      profile.dob = value;
+                                      print(value.toString());
+                                    },
+                                    onSaved: (DateTime? value) {
+                                      profile.dob = value;
+                                      print("dob saved!");
                                     },
                                   ),
                                   SizedBox(

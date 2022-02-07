@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_datetime_picker: ^1.5.1
   flutter:
     sdk: flutter
 
@@ -50,6 +51,7 @@ dependencies:
   google_sign_in: ^5.2.3
   google_sign_in_web: ^0.10.0+4
   provider: ^6.0.2
+  date_field: ^2.1.2
 
 dev_dependencies:
   flutter_test:
