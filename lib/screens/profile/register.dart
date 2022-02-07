@@ -30,6 +30,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
+  final passwordValidator = MultiValidator([
+    RequiredValidator(errorText: 'Please enter your the password.'),
+    MinLengthValidator(6, errorText: 'Password must be at least 6 characters.'),
+    // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+    //     errorText: 'Passwords must have at least one special character')
+  ]);
+  String password = '';
+  final DateTime now = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -87,21 +96,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   SizedBox(
                                     height: 20,
                                   ),
+                                  // * Name form
                                   Text("Name: ",
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
-                                    validator: MultiValidator([
-                                      RequiredValidator(
-                                          errorText: "Please enter your Name."),
-                                    ]),
-                                    keyboardType: TextInputType.emailAddress,
-                                    onSaved: (String? email) {
-                                      profile.email = email!;
+                                    validator: RequiredValidator(
+                                        errorText: "Please enter your name."),
+                                    onSaved: (String? value) {
+                                      profile.name = value!;
                                     },
                                   ),
                                   SizedBox(
                                     height: 20,
                                   ),
+                                  // * Email form
                                   Text("Email: ",
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
@@ -120,6 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   SizedBox(
                                     height: 20,
                                   ),
+                                  // * Date form
                                   Text("Date of Birth: ",
                                       style: TextStyle(fontSize: 15)),
                                   DateTimeFormField(
@@ -160,30 +169,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   SizedBox(
                                     height: 20,
                                   ),
+                                  // * Password form
                                   Text("Password",
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
-                                    validator: RequiredValidator(
-                                        errorText:
-                                            "Please enter your password."),
                                     obscureText: true,
-                                    onSaved: (String? password) {
-                                      profile.password = password!;
+                                    onChanged: (val) => password = val,
+                                    onSaved: (String? value) {
+                                      profile.password = value!;
                                     },
+                                    validator: passwordValidator,
                                   ),
                                   SizedBox(
                                     height: 20,
                                   ),
+                                  // * Confirm Password form
                                   Text("Confirm Password",
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
-                                    validator: RequiredValidator(
-                                        errorText:
-                                            "Please enter your password."),
+                                    validator: (val) => MatchValidator(
+                                            errorText:
+                                                'Passwords do not match.')
+                                        .validateMatch(val!, password),
                                     obscureText: true,
-                                    onSaved: (String? password) {
-                                      profile.password = password!;
-                                    },
                                   ),
                                   SizedBox(
                                     height: 52,
@@ -208,15 +216,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               .validate()) {
                                             formKey.currentState!.save();
                                             try {
-                                              //try to get email and passfrom profie() and store to map
-                                              Map<String, String> userInfoMap =
-                                                  {
-                                                "email": profile.email
-                                                //can add more attribute for further update
-                                              };
-                                              //call uploaduserinfo from database.dart to update user to firestore
-                                              DatabaseMethods()
-                                                  .uploadUserInfo(userInfoMap);
                                               //save register user using helperfunction
                                               HelperFunction
                                                   .saveUserLoggedInSharedPreference(
@@ -240,6 +239,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     context, "/");
                                                 print("swipescreen !");
                                               });
+                                              //try to get email and passfrom profie() and store to map
+                                              Map<String, dynamic> userInfoMap =
+                                                  {
+                                                "uid": FirebaseAuth
+                                                    .instance.currentUser?.uid,
+                                                "name": profile.name,
+                                                "email": profile.email,
+                                                "dob": profile.dob,
+                                                //can add more attribute for further update
+                                              };
+                                              //call uploaduserinfo from database.dart to update user to firestore
+                                              DatabaseMethods()
+                                                  .uploadUserInfo(userInfoMap);
                                             } on FirebaseAuthException catch (e) {
                                               print(e.code);
                                               String message;
@@ -247,10 +259,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                   'email-already-in-use') {
                                                 message =
                                                     "This email is already taken";
-                                              } else if (e.code ==
-                                                  'weak-password') {
-                                                message =
-                                                    "Password must be at least 6 characters.";
                                               } else {
                                                 message = e.message!;
                                               }
