@@ -1,15 +1,16 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:loginsystem/screens/profile/login.dart';
-import 'package:loginsystem/screens/profile/register.dart';
-import 'package:loginsystem/widgets/Menu_button.dart';
+import 'package:loginsystem/provider/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
-class first_auth extends StatelessWidget {
-  @override
+class FirstAuth extends StatelessWidget {
   static const String routeName = '/first';
+
+  const FirstAuth({Key? key}) : super(key: key);
 
   static Route route() {
     return MaterialPageRoute(
-      builder: (_) => first_auth(),
+      builder: (_) => FirstAuth(),
       settings: RouteSettings(name: routeName),
     );
   }
@@ -58,17 +59,49 @@ class first_auth extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       color: Color(0xFFF95B5B),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/icon/googleiconwhite.png",
-                          width: 24,
-                          height: 24,
+                      ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    child: InkWell(
+                      onTap: () {
+                        //todo: implement google login here!
+                        final provider = Provider.of<GoogleSignInProvider>(
+                            context,
+                            listen: false);
+                        provider.googleLogin();
+                        Navigator.pushNamed(context, "/google login");
+                        print("google auth !");
+                      },
+                      child: Container(
+                        width: 335,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Color(0xFFF95B5B),
                         ),
-                        SizedBox(
-                          width: 10,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/icon/googleiconwhite.png",
+                              width: 24,
+                              height: 24,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Sign in with Google",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
                         ),
                         Text(
                           "Sign up with Google",
@@ -81,70 +114,51 @@ class first_auth extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/login");
-                    print("sign In !");
-                  },
-                  child: Container(
-                    width: 335,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.white,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.email_rounded),
-                        SizedBox(
-                          width: 15,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/register");
+                        print("sign In !");
+                      },
+                      child: Container(
+                        width: 335,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.email_rounded),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              "Sign up with Email",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
                         ),
                         Text(
                           "Sign up with Email",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
+                          )),
                     ),
                   ),
-                ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text("already a Member ?",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    )),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, "/login");
-                  print("LogIn !");
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Text("Login",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
