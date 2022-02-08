@@ -387,7 +387,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.2"
-<<<<<<< HEAD
   rating_dialog:
     dependency: "direct main"
     description:
@@ -395,7 +394,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-=======
   quiver:
     dependency: transitive
     description:
@@ -403,7 +401,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1+1"
->>>>>>> origin/Date_picker_widget
   shared_preferences:
     dependency: "direct main"
     description:
