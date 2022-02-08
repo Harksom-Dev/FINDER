@@ -71,7 +71,7 @@ class first_auth extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          "Sign in with Google",
+                          "Sign up with Google",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class first_auth extends StatelessWidget {
                           width: 15,
                         ),
                         Text(
-                          "Sign in with Email",
+                          "Sign up with Email",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

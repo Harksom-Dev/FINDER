@@ -1,7 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:loginsystem/widgets/appBar_userreview.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 
 class ReviewScreen extends StatelessWidget {
   static const String routeName = '/review';
@@ -56,7 +56,8 @@ class ReviewScreen extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              print("Review user click here");
+              print("Review user click here" + "UserEmail is" + userEmail);
+              _showRatingDialog(context);
             },
             child: Container(
               alignment: Alignment.center,
@@ -103,6 +104,51 @@ class ReviewScreen extends StatelessWidget {
               )),
         ],
       )),
+    );
+  }
+
+  void _showRatingDialog(BuildContext context) {
+    // actual store listing review & rating
+    final _dialog = RatingDialog(
+      initialRating: 1.0,
+      // your app's name?
+      title: Text(
+        'Is your friend information completed ?',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      // encourage your user to leave a high rating?
+      message: Text(
+        'Tap a star to set your rating.',
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 15),
+      ),
+      // your app's logo?
+      image: Image.asset("assets/finderlogowall.png"),
+      submitButtonText: 'Send',
+      commentHint: '1:ไม่ชอบเธอเลย, 2-4:ชอบเธอนะ, 5:ครบถ้วน ',
+      onCancelled: () => print('cancelled'),
+      onSubmitted: (response) {
+        print('rating: ${response.rating}, comment: ${response.comment}');
+
+        // TODO: add your own logic
+        if (response.rating < 3.0) {
+          // send their comments to your email or anywhere you wish
+          // ask the user to contact you instead of leaving a bad review
+        } else {
+          //_rateAndReviewApp();
+        }
+      },
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: true, // set to false if you want to force a rating
+      builder: (context) => _dialog,
     );
   }
 }

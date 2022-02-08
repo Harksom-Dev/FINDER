@@ -12,7 +12,6 @@ class SwipeLoading extends SwipeState {}
 
 class SwipeLoaded extends SwipeState {
   final List<User> users;
-
   const SwipeLoaded({
     required this.users,
   });

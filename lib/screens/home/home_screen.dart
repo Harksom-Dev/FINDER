@@ -29,6 +29,7 @@ class HomeScreen extends StatelessWidget {
       appBar: CustomAppBar(),
       body: BlocBuilder<SwipeBloc, SwipeState>(
         builder: (context, state) {
+          final maxWid = MediaQuery.of(context).size.width as double;
           // which ui to render
           if (state is SwipeLoading) {
             // if we at the
@@ -50,14 +51,17 @@ class HomeScreen extends StatelessWidget {
                     feedback: UserCard(user: state.users[0]),
                     childWhenDragging: UserCard(user: state.users[1]),
                     onDragEnd: (drag) {
-                      if (drag.velocity.pixelsPerSecond.dx < 0) {
+                      if (drag.velocity.pixelsPerSecond.dx < -0.4 * maxWid) {
                         context.read<SwipeBloc>()
                           ..add(SwipeLeftEvent(user: state.users[0]));
                         print("swipe left");
-                      } else {
+                      } else if (drag.velocity.pixelsPerSecond.dx >
+                          0.4 * maxWid) {
                         context.read<SwipeBloc>()
                           ..add(SwipeRightEvent(user: state.users[0]));
                         print('Swipe Right');
+                      } else {
+                        print('Do nothing');
                       }
                     },
                   ),

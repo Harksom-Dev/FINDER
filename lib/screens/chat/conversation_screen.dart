@@ -28,7 +28,23 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageController = new TextEditingController();
   Stream? chatMessageStream;
   ScrollController _scrollController = ScrollController();
+
+  void scrollToBottom() {
+    final bottomOffset = _scrollController.position.maxScrollExtent;
+    _scrollController.animateTo(
+      bottomOffset,
+      duration: Duration(milliseconds: 1000),
+      curve: Curves.easeInOut,
+    );
+  }
+
   Widget ChatMessageList() {
+    final subscription = chatMessageStream!.listen(
+      (data) => {
+        _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+      },
+    );
     return StreamBuilder<dynamic>(
       stream: chatMessageStream,
       builder: (context, snapshot) {
@@ -39,21 +55,45 @@ class _ConversationScreenState extends State<ConversationScreen> {
           );
         }
         return ListView.builder(
-            itemCount: snapshot.data!.docs.length + 1,
-            shrinkWrap: true,
-            controller: _scrollController,
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              if (index == snapshot.data!.docs.length) {
-                return Container(
-                  height: 30,
-                );
-              }
-              return MessageTile(
-                snapshot.data!.docs[index]["message"],
-                snapshot.data!.docs[index]["sendBy"] == Constants.myEmail,
-              ); // difference from tutorial
-            });
+          itemCount: snapshot.data!.docs.length + 1,
+          //reverse: true,
+          shrinkWrap: true,
+          controller: _scrollController,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            if (index == snapshot.data!.docs.length) {
+              return Container(
+                height: 80,
+              );
+            }
+            return MessageTile(
+              snapshot.data!.docs[index]["message"],
+              snapshot.data!.docs[index]["sendBy"] == Constants.myEmail,
+            );
+            // difference from tutorial
+          },
+        );
+
+        //scrollToBottom();
+        /* return ListView.builder(
+          itemCount: snapshot.data!.docs.length + 1,
+          //reverse: true,
+          shrinkWrap: true,
+          controller: _scrollController,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            if (index == snapshot.data!.docs.length) {
+              return Container(
+                height: 30,
+              );
+            }
+            return MessageTile(
+              snapshot.data!.docs[index]["message"],
+              snapshot.data!.docs[index]["sendBy"] == Constants.myEmail,
+            );
+            // difference from tutorial
+          },
+        ); */
       },
     );
   }
@@ -72,13 +112,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   @override
   void initState() {
+    _scrollController = ScrollController();
     // TODO: implement initState
     databaseMethods.getConversationMessages(widget.chatRoomId).then((value) {
       setState(() {
         chatMessageStream = value;
       });
-      /*_scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300), curve: Curves.easeOut); */
     });
     super.initState();
   }
@@ -148,8 +187,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 // user
                 alignment: Alignment.bottomCenter,
                 child: Container(
+                  height: 80,
                   color: Color(0x54FFFFFF),
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
@@ -234,16 +274,7 @@ class MessageTile extends StatelessWidget {
             ),
             borderRadius: isSendByMe
                 ? BorderRadius.circular(23)
-                //BorderRadius.only(
-                //topLeft: Radius.circular(23),
-                //topRight: Radius.circular(23),
-                //bottomLeft: Radius.circular(23),
-                //)
-                : BorderRadius.circular(23
-                    //topLeft: Radius.circular(23),
-                    //topRight: Radius.circular(23),
-                    //bottomRight: Radius.circular(23)
-                    ),
+                : BorderRadius.circular(23),
             border: Border.all(color: Colors.black.withAlpha(150))),
         child: Text(
           message,

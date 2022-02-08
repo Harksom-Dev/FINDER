@@ -47,6 +47,7 @@ dependencies:
   shared_preferences: ^2.0.9
   cloud_firestore_web: ^2.6.6
   firebase_auth_web: ^3.3.6
+  rating_dialog: ^2.0.3
 
 dev_dependencies:
   flutter_test:

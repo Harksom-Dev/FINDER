@@ -5,7 +5,6 @@ import 'package:loginsystem/screens/home/first_auth.dart';
 import 'package:loginsystem/screens/profile/login.dart';
 import 'package:loginsystem/screens/profile/register.dart';
 import 'package:loginsystem/screens/messagebox/search.dart';
-import 'package:loginsystem/screens/chat/chat_screen.dart';
 import 'package:loginsystem/screens/edit_profile/editprofile_screen.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
 import 'package:loginsystem/screens/messagebox/messagebox_screen.dart';
@@ -30,8 +29,6 @@ class AppRouter {
         return EditProfileScreen.route();
       case MessageBoxScreen.routeName:
         return MessageBoxScreen.route();
-      case ChatScreen.routeName: //chatroom_screen(real message box)
-        return ChatScreen.route();
       case ReviewScreen.routeName:
         return ReviewScreen.route(userEmail: setting.arguments as String);
       case UsersScreen.routeName:
