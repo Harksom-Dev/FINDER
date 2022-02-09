@@ -3,7 +3,6 @@ part of 'swipe_bloc.dart';
 @immutable
 abstract class SwipeState extends Equatable {
   const SwipeState();
-
   @override
   List<Object> get props => [];
 }

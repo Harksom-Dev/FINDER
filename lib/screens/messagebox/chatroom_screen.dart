@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/config/theme.dart';
+import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
   final auth = FirebaseAuth.instance;
   DatabaseMethods databaseMethods = new DatabaseMethods();
+  DatabaseRepository _databaseRepository = new DatabaseRepository();
   Stream? chatRoomStream;
   ScrollController _scrollController = ScrollController();
 

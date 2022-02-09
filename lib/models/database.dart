@@ -51,4 +51,11 @@ class DatabaseMethods {
         .where("users", arrayContains: userEmail)
         .snapshots();
   }
+
+
+  testdb() async{
+    return await FirebaseFirestore.instance.collection("users")
+      .doc('user1')
+      .snapshots();
+  }
 }

@@ -8,6 +8,7 @@ abstract class SwipeEvent extends Equatable {
   List<Object> get props => [];
 }
 
+
 class LoadUsersEvent extends SwipeEvent {
   final List<User> users;
 

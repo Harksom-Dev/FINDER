@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/screens/review/review_screen.dart';
+import 'package:loginsystem/models/database_repository.dart';
 
 class ConversationScreen extends StatefulWidget {
   static const String routeName = '/realchat';
@@ -28,6 +29,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageController = new TextEditingController();
   Stream? chatMessageStream;
   ScrollController _scrollController = ScrollController();
+  //testing a db func to get all user
+  DatabaseRepository _databaseRepository = new DatabaseRepository();
 
   void scrollToBottom() {
     final bottomOffset = _scrollController.position.maxScrollExtent;
