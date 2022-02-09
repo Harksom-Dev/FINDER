@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
 import 'package:loginsystem/config/theme.dart';
+import 'package:loginsystem/helper/constants.dart';
+import 'package:loginsystem/helper/helperfunction.dart';
+import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/custom_appbar.dart';
 import 'package:loginsystem/widgets/user_card.dart';
@@ -12,8 +16,9 @@ import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:loginsystem/widgets/Menu_button.dart';
 
 class HomeScreen extends StatelessWidget {
+  DatabaseRepository _databaseRepository = DatabaseRepository();
   static const String routeName = '/';
-
+  
   static Route route() {
     return MaterialPageRoute(
       builder: (_) => HomeScreen(),
@@ -21,13 +26,26 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // trying to fetch all user except user that cur login (maybe need to move this func to somewhere better than this )
+  suggest() async {
+    String userEmail = await HelperFunction.getUserEmailSharedPreference();
+    //print(userEmail);
+    List<User> userlist = await _databaseRepository.usertoList();
+    User.set(userlist,userEmail);
+
+    //suggest algo testing
+    _databaseRepository.userInterested();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 249, 250, 254),
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(),
       body: BlocBuilder<SwipeBloc, SwipeState>(
         builder: (context, state) {
+          final maxWid = MediaQuery.of(context).size.width as double;
           // which ui to render
           if (state is SwipeLoading) {
             // if we at the
@@ -35,131 +53,127 @@ class HomeScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is SwipeLoaded) {
+            suggest();
             // swipe loaded state
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  InkWell(
-                    onDoubleTap: () {
-                      Navigator.pushNamed(context, '/users',
-                          arguments: state.users[0]);
+            return Column(
+              children: [
+                InkWell(
+                  onDoubleTap: () {
+                    Navigator.pushNamed(context, '/users',
+                        arguments: state.users[0]);
+                  },
+                  child: Draggable<User>(
+                    data: state.users[0],
+                    child: UserCard(user: state.users[0]),
+                    feedback: UserCard(user: state.users[0]),
+                    childWhenDragging: UserCard(user: state.users[1]),
+                    onDragEnd: (drag) {
+                      if (drag.velocity.pixelsPerSecond.dx < -0.4 * maxWid) {
+                        context.read<SwipeBloc>()
+                          ..add(SwipeLeftEvent(user: state.users[0]));
+                        print("swipe left");
+                      } else if (drag.velocity.pixelsPerSecond.dx >
+                          0.4 * maxWid) {
+                        context.read<SwipeBloc>()
+                          ..add(SwipeRightEvent(user: state.users[0]));
+                        print('Swipe Right');
+                      } else {
+                        print('Do nothing');
+                      }
                     },
-                    child: Draggable<User>(
-                      data: state.users[0],
-                      child: UserCard(user: state.users[0]),
-                      feedback: UserCard(user: state.users[0]),
-                      childWhenDragging: UserCard(user: state.users[1]),
-                      onDragEnd: (drag) {
-                        if (drag.velocity.pixelsPerSecond.dx < 0) {
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 60,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                        // button
+                        onTap: () {
+                          // cross button (X)
                           context.read<SwipeBloc>()
                             ..add(SwipeLeftEvent(user: state.users[0]));
                           print("swipe left");
-                        } else {
+                        },
+                        child: ChoiceButton(
+                            width: 60,
+                            height: 60,
+                            hasGradient: false,
+                            color: Colors.white,
+                            icon: Icons.clear_rounded,
+                            size: 25),
+                      ),
+                      InkWell(
+                        // like button
+                        onTap: () {
                           context.read<SwipeBloc>()
                             ..add(SwipeRightEvent(user: state.users[0]));
-                          print('Swipe Right');
-                        }
-                      },
-                    ),
+                          print("swipe Right");
+                        },
+                        child: ChoiceButton(
+                            width: 74,
+                            height: 74,
+                            hasGradient: true,
+                            color: Colors.white,
+                            icon: Icons.favorite,
+                            size: 30),
+                      ),
+                    ],
                   ),
-                  Padding(
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Color(0xFFF101010),
+                  ),
+                  height: 65,
+                  width: MediaQuery.of(context).size.width / 1.15,
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 6,
                       horizontal: 60,
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          // button
+                          // home
                           onTap: () {
                             // cross button (X)
-                            context.read<SwipeBloc>()
-                              ..add(SwipeLeftEvent(user: state.users[0]));
-                            print("swipe left");
+                            Navigator.pushNamed(context, "/");
+                            print("homepage !");
                           },
-                          child: ChoiceButton(
-                              width: 60,
-                              height: 60,
+                          child: Menubutton(
+                              width: 50,
+                              height: 50,
                               hasGradient: false,
                               color: Colors.white,
-                              icon: Icons.clear_rounded,
+                              icon: Icons.home,
                               size: 25),
                         ),
                         InkWell(
-                          // like button
+                          // home
                           onTap: () {
-                            context.read<SwipeBloc>()
-                              ..add(SwipeRightEvent(user: state.users[0]));
-                            print("swipe Right");
+                            Navigator.pushNamed(context, "/realmessageBox");
+                            print("Message box !");
                           },
-                          child: ChoiceButton(
-                              width: 74,
-                              height: 74,
-                              hasGradient: true,
+                          child: Menubutton(
+                              width: 50,
+                              height: 50,
+                              hasGradient: false,
                               color: Colors.white,
-                              icon: Icons.favorite,
-                              size: 30),
+                              icon: Icons.message_rounded,
+                              size: 25),
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withAlpha(90),
-                          spreadRadius: 3,
-                        ),
-                      ],
-                    ),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 60,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          InkWell(
-                            // home
-                            onTap: () {
-                              // cross button (X)
-                              Navigator.pushNamed(context, "/");
-                              print("homepage !");
-                            },
-                            child: Menubutton(
-                                width: 50,
-                                height: 50,
-                                hasGradient: false,
-                                color: Colors.black,
-                                icon: Icons.home,
-                                size: 25),
-                          ),
-                          InkWell(
-                            // home
-                            onTap: () {
-                              Navigator.pushNamed(context, "/realmessageBox");
-                              print("Message box !");
-                            },
-                            child: Menubutton(
-                                width: 50,
-                                height: 50,
-                                hasGradient: false,
-                                color: Colors.black,
-                                icon: Icons.messenger_sharp,
-                                size: 30),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             );
           } else {
             return Text("Something Went Wrong");

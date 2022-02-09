@@ -10,23 +10,23 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
+      automaticallyImplyLeading: false,
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: Image.asset(
-              "assets/icon/logo.png",
-              height: 120,
-            ),
-          ),
-          Expanded(
-              flex: 2,
-              child: Text("DISCOVER",
-                  style: Theme.of(context).textTheme.headline2))
+              //flex: 2,
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("DISCOVER", style: Theme.of(context).textTheme.headline1),
+            ],
+          ))
         ],
       ),
       actions: [
         IconButton(
-            icon: Icon(Icons.person, color: Theme.of(context).primaryColor),
+            icon: Icon(Icons.person, color: Color(0xFFF101010)),
             onPressed: () {
               Navigator.pushNamed(context, "/profile");
             })
@@ -36,5 +36,5 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(56.0);
+  Size get preferredSize => Size.fromHeight(60.0);
 }

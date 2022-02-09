@@ -1,14 +1,24 @@
 import 'dart:async';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
+
 part 'swipe_event.dart';
 part 'swipe_state.dart';
 
 class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
-  SwipeBloc() : super(SwipeLoading());
+  final DatabaseRepository _databaseRepository;
+  StreamSubscription? _databaseSubscription;
+  SwipeBloc({
+    required DatabaseRepository databaseRepository}) 
+    : _databaseRepository = databaseRepository,
+    super(SwipeLoading());
+  // SwipeBloc():super(SwipeLoading());
+
 
   @override
   Stream<SwipeState> mapEventToState(
@@ -23,11 +33,23 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     if (event is SwipeRightEvent) {
       yield* _mapSwipeRightToState(event, state);
     }
+    // if(event is )
   }
 
-  Stream<SwipeState> _mapLoadUsersToState(
+
+
+
+
+  Stream<SwipeState> _mapLoadUsersToState(  
     LoadUsersEvent event,
   ) async* {
+    // _databaseSubscription?.cancel();
+
+    // _databaseRepository.getAllUsers().listen((event) {
+    //   print("hello");
+    // });
+    //print('hellooooo');
+    //_databaseRepository.getAllUsers();
     yield SwipeLoaded(users: event.users);
   }
 

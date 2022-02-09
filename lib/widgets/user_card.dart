@@ -11,10 +11,10 @@ class UserCard extends StatelessWidget {
     return Hero(
       tag: 'user_image',
       child: Padding(
-        padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+        padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height / 1.38,
-          width: MediaQuery.of(context).size.width / 1.07,
+          height: MediaQuery.of(context).size.height / 1.6,
+          width: MediaQuery.of(context).size.width / 1.15,
           child: Stack(
             children: [
               Container(
@@ -23,10 +23,10 @@ class UserCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       image: NetworkImage(user.imageUrls[0]),
                     ),
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(35.0),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: Colors.grey.withOpacity(0.1),
                         spreadRadius: 4,
                         blurRadius: 4,
                         offset: Offset(3, 3),
@@ -35,7 +35,7 @@ class UserCard extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(35.0),
                   gradient: LinearGradient(
                     colors: [
                       Color.fromARGB(200, 0, 0, 0),
@@ -66,12 +66,12 @@ class UserCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                           ),
                     ),
-                    Row(
+                    /*Row(
                       children: [
                         UserImageSmall(imageUrl: user.imageUrls[1]),
                         UserImageSmall(imageUrl: user.imageUrls[2]),
                         SizedBox(width: 150),
-                        Padding(
+                        /*Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 100, 0),
                           child: Container(
                             width: 25,
@@ -87,11 +87,11 @@ class UserCard extends StatelessWidget {
                                 size: 25,
                                 color: Theme.of(context).primaryColor,
                               ),
-                            ),
+                            ), 
                           ),
-                        )
+                        )*/
                       ],
-                    )
+                    )*/
                   ],
                 ),
               )

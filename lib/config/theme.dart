@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 ThemeData theme() {
   return ThemeData(
-      primaryColor: Color(0xFFFCD88AF),
-      primaryColorDark: Color(0xFFF530E53),
-      primaryColorLight: Color(0xFFFA66FA6),
+      primaryColor: Color(0xFFFAD7FFB),
+      primaryColorDark: Color(0xFFF694F95),
+      primaryColorLight: Color(0xFFFD1B7FE),
       scaffoldBackgroundColor: Colors.white,
-      backgroundColor: Color(0xFFFC9C9C9),
+      backgroundColor: Color(0xFFFF9FAFE),
       textTheme: TextTheme(
         headline1: TextStyle(
-            color: Color(0xFF2E0025),
+            color: Color(0xFF000000),
             fontWeight: FontWeight.bold,
-            fontSize: 36),
+            fontSize: 32),
         headline2: TextStyle(
             color: Color(0xFF2E0025),
             fontWeight: FontWeight.bold,

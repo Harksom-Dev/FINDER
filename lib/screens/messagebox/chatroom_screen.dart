@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loginsystem/config/theme.dart';
+import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +11,10 @@ import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/screens/chat/conversation_screen.dart';
 import 'package:loginsystem/screens/messagebox/search.dart';
-
+import 'package:loginsystem/widgets/widget.dart';
 
 // ignore: use_key_in_widget_constructors
 class ChatRoom extends StatefulWidget {
-
   static const String routeName = '/realmessageBox';
 
   static Route route() {
@@ -26,80 +29,122 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
-
   final auth = FirebaseAuth.instance;
   DatabaseMethods databaseMethods = new DatabaseMethods();
+  DatabaseRepository _databaseRepository = new DatabaseRepository();
   Stream? chatRoomStream;
+  ScrollController _scrollController = ScrollController();
 
-  Widget chatRoomList(){
+  Widget chatRoomList() {
     return StreamBuilder<dynamic>(
-      stream: chatRoomStream,           
-      builder: (context,snapshot){
-        
-        return snapshot.hasData ? ListView.builder(
-          itemCount: snapshot.data!.docs.length,
-          itemBuilder: (context,index){
-            return ChatRoomTile(
-              snapshot.data!.docs[index]["chatroomid"]
-                .toString().replaceAll("_", "")
-                .replaceAll(Constants.myEmail, ""),
-                snapshot.data!.docs[index]["chatroomid"]
-            );
-          }) : Container();
-      });
+        stream: chatRoomStream,
+        builder: (context, snapshot) {
+          return Column(
+            children: [
+              Text("Match!", style: Theme.of(context).textTheme.headline2),
+              SizedBox(
+                // here is where match person is
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Container(
+                  // match person replace here
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFFFFFFF), // white background
+                  ),
+                ),
+              ), // end of match person section
+              Text("Messages", style: Theme.of(context).textTheme.headline2),
+              SizedBox(
+                // message list
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 1.7,
+                child: Stack(children: [
+                  snapshot.hasData
+                      ? ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          controller: _scrollController,
+                          itemBuilder: (context, index) {
+                            return SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ChatRoomTile(
+                                      snapshot.data!.docs[index]["chatroomid"]
+                                          .toString()
+                                          .replaceAll("_", "")
+                                          .replaceAll(Constants.myEmail, ""),
+                                      snapshot.data!.docs[index]["chatroomid"]),
+                                ],
+                              ),
+                            );
+                          })
+                      : Container(),
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: menutab(),
+              ), //  button
+            ],
+          );
+        });
   }
 
   @override
   void initState() {
     // TODO: implement initState
     getUserInfo();
-    
     super.initState();
   }
 
   getUserInfo() async {
     Constants.myEmail = (await HelperFunction.getUserEmailSharedPreference());
-    databaseMethods.getChatRoom(Constants.myEmail).then((value){
-
+    databaseMethods.getChatRoom(Constants.myEmail).then((value) {
       setState(() {
         chatRoomStream = value;
       });
     });
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-      var user = auth.currentUser!.email;
+    var user = auth.currentUser!.email;
     return Scaffold(
       // ignore: prefer_const_constructors
-      
-      appBar:AppBar(title: Text(user!,style: TextStyle(fontSize: 25)),
-      actions: [
-          ElevatedButton(
-                  child: Text("Sign Out"),
-                  onPressed: (){
-                      auth.signOut().then((value){
-                        // Navigator.pushReplacement(context,
-                        // MaterialPageRoute(builder: (context){
-                        //     return HomeScreen();
-                        // }));
-                        Navigator.pushNamed(context, "/first");
-                          print("first auth!");
-                      });
-                  }, 
-                )
-        ],),
-        body:chatRoomList() ,
-        floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
-        onPressed: (){
-          Navigator.pushNamed(context, "/search");
-            print("searching");
-        },
+      appBar: AppBar(
+        title: Row(
+          //mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Column(
+              //mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("Chats", style: Theme.of(context).textTheme.headline2),
+              ],
+            )
+          ],
         ),
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout_rounded, color: Color(0xFFF101010)),
+              onPressed: () {
+                auth.signOut().then((value) {
+                  Navigator.pushNamed(context, "/first");
+                  print("first auth!");
+                });
+              })
+        ],
+      ),
+      body: chatRoomList(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.search),
+        onPressed: () {
+          Navigator.pushNamed(context, "/search");
+          print("searching");
+        },
+      ),
     );
   }
 }
@@ -107,33 +152,42 @@ class _ChatRoomState extends State<ChatRoom> {
 class ChatRoomTile extends StatelessWidget {
   final String userEmail;
   final String chatRoomId;
-  ChatRoomTile(this.userEmail,this.chatRoomId);
+  ChatRoomTile(this.userEmail, this.chatRoomId);
+  ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(chatRoomId)
-          ));
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ConversationScreen(chatRoomId, userEmail)),
+        );
+        /*Navigator.pushNamed(context, "/realchat",
+            arguments: {chatRoomId, userEmail});*/
       },
       child: Container(
         color: Colors.black26,
-        padding: EdgeInsets.symmetric(horizontal: 24,vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
           children: [
             Container(
-              height: 40,
-              width: 40,
+              height: 61,
+              width: 61,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color:Colors.blue,
-                borderRadius: BorderRadius.circular(40)
-              ),
-              child: Text("${userEmail.substring(0,1).toUpperCase()}"),
+                  color: Color(0xFFF69090),
+                  borderRadius: BorderRadius.circular(40)),
+              child: Text("${userEmail.substring(0, 1).toUpperCase()}"),
             ),
-            SizedBox(width: 8,),
-            Text(userEmail)
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              userEmail,
+              style: Theme.of(context).textTheme.headline4,
+            ),
           ],
         ),
       ),

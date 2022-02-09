@@ -41,6 +41,30 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
+!/android/.gradle
 /android/app/debug
 /android/app/profile
 /android/app/release
+android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+android/.gradle/buildOutputCleanup/outputFiles.bin
+android/.gradle/checksums/checksums.lock
+android/.gradle/checksums/md5-checksums.bin
+android/.gradle/checksums/sha1-checksums.bin
+android/local.properties
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Generated.xcconfig
+android/.gradle/checksums/sha1-checksums.bin
+android/local.properties
+android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+android/.gradle/buildOutputCleanup/outputFiles.bin
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+ios/Runner/GeneratedPluginRegistrant.m
+android/local.properties
+android/local.properties
+android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+android/.gradle/buildOutputCleanup/outputFiles.bin
+android/.gradle/checksums/checksums.lock
+android/.gradle/checksums/md5-checksums.bin
+android/.gradle/checksums/sha1-checksums.bin
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+ios/Runner/GeneratedPluginRegistrant.m
