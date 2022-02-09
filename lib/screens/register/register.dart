@@ -8,6 +8,8 @@ import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/profile.dart';
 import 'package:date_field/date_field.dart';
+import 'package:loginsystem/screens/register/register_2.dart';
+import 'package:loginsystem/widgets/widget.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -56,6 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
+              appBar: RegisterAppbar(),
               body: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -72,11 +75,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     key: formKey,
                     child: SingleChildScrollView(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 80,
-                          ),
+                          /* SizedBox(
+                            height: 20,
+                          ), */
                           Text(
                             'SIGN UP',
                             style: TextStyle(
@@ -216,42 +219,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               .validate()) {
                                             formKey.currentState!.save();
                                             try {
-                                              //save register user using helperfunction
-                                              HelperFunction
-                                                  .saveUserLoggedInSharedPreference(
-                                                      true);
-                                              HelperFunction
-                                                  .saveUserEmailSharedPreference(
-                                                      profile.email);
-
-                                              await FirebaseAuth.instance
-                                                  .createUserWithEmailAndPassword(
-                                                      email: profile.email,
-                                                      password:
-                                                          profile.password)
-                                                  .then((value) {
-                                                formKey.currentState!.reset();
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        "Account has been created.",
-                                                    gravity: ToastGravity.TOP);
-                                                Navigator.pushNamed(
-                                                    context, "/");
-                                                print("swipescreen !");
-                                              });
-                                              //try to get email and passfrom profie() and store to map
-                                              Map<String, dynamic> userInfoMap =
-                                                  {
-                                                "uid": FirebaseAuth
-                                                    .instance.currentUser?.uid,
-                                                "name": profile.name,
-                                                "email": profile.email,
-                                                "dob": profile.dob,
-                                                //can add more attribute for further update
-                                              };
-                                              //call uploaduserinfo from database.dart to update user to firestore
-                                              DatabaseMethods()
-                                                  .uploadUserInfo(userInfoMap);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RegisterInterestScreen(
+                                                          profile.name,
+                                                          profile.email,
+                                                          profile.dob,
+                                                          profile.password),
+                                                ),
+                                              );
                                             } on FirebaseAuthException catch (e) {
                                               print(e.code);
                                               String message;

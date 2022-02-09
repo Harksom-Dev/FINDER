@@ -6,6 +6,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/profile.dart';
 import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
+import 'package:loginsystem/widgets/widget.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -43,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
+              appBar: LoginAppbar(),
               body: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(

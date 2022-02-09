@@ -5,3 +5,5 @@ export 'choice_button.dart';
 export 'Menu_button.dart';
 export 'menuTab.dart';
 export 'appBar_userreview.dart';
+export 'registerAppbar.dart';
+export 'loginAppbar.dart';

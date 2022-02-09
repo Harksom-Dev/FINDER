@@ -15,51 +15,41 @@ class FirstAuth extends StatelessWidget {
     );
   }
 
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFFF594B7),
-                Color(0xFFBD84EC),
-                Color(0xFF906CCC),
-              ]),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 150.0),
-          child: Column(
-            children: [
-              Image.asset("assets/finderlogo.png"),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Connect with other people",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/register");
-                    print("sign up !");
-                  },
-                  child: Container(
-                    width: 335,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Color(0xFFF95B5B),
-                      ),
+  @override
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: (context) => GoogleSignInProvider(),
+        child: Scaffold(
+          /*appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          ),*/
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: const [
+                    Color(0xFFF594B7),
+                    Color(0xFFBD84EC),
+                    Color(0xFF906CCC),
+                  ]),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 150.0),
+              child: Column(
+                children: [
+                  Image.asset("assets/finderlogo.png"),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Connect with other people",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
                   SizedBox(
                     height: 20,
@@ -103,15 +93,7 @@ class FirstAuth extends StatelessWidget {
                             )
                           ],
                         ),
-                        Text(
-                          "Sign up with Google",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -146,8 +128,25 @@ class FirstAuth extends StatelessWidget {
                             )
                           ],
                         ),
-                        Text(
-                          "Sign up with Email",
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Text("already a Member ?",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        )),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/login");
+                      print("LogIn !");
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Text("Login",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.white,

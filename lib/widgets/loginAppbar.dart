@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UserReviewAppbar extends StatelessWidget with PreferredSizeWidget {
-  final String userEmail;
-  const UserReviewAppbar({Key? key, required this.userEmail}) : super(key: key);
+class LoginAppbar extends StatelessWidget with PreferredSizeWidget {
+  const LoginAppbar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +16,8 @@ class UserReviewAppbar extends StatelessWidget with PreferredSizeWidget {
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: <Color>[
-                  Color(0xFFF2D8E1),
-                  Color(0xFF92B2FD),
+                  Color(0xFFF594B7),
+                  Color(0xFFF594B7),
                 ]),
           ),
         ),
@@ -28,5 +27,5 @@ class UserReviewAppbar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(50.0);
+  Size get preferredSize => Size.fromHeight(30.0);
 }
