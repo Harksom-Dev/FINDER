@@ -279,7 +279,18 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
 
               SizedBox(
                 child: InkWell(
-                  onTap: () {},
+                  ///// ###################### fix here #######################
+                  onTap: () async {
+                    _Selected.addAll(_SelectedProLang);
+                    _Selected.addAll(_SelectedMusics);
+                    _Selected.addAll(_SelectedSports);
+                    print("After merge list $_Selected");
+                    print(widget.profileName);
+                    print(widget.profileEmail);
+                    print(widget.profilePassword);
+                    print(widget.dob);
+                  }, // edit here
+                  // ################## end ######################
                   child: Container(
                     width: 250,
                     height: 50,
