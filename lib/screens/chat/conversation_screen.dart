@@ -258,14 +258,15 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final maxWidth = MediaQuery.of(context).size.width / 4;
     return Container(
       padding: EdgeInsets.only(
-          left: isSendByMe ? 0 : 24, right: isSendByMe ? 24 : 0),
-      margin: EdgeInsets.symmetric(vertical: 8),
+          left: isSendByMe ? maxWidth : 10, right: isSendByMe ? 10 : maxWidth),
+      margin: EdgeInsets.fromLTRB(10, 15, 5, 0),
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isSendByMe
