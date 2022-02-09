@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/base_database_repository.dart';
@@ -9,7 +10,7 @@ import 'package:loginsystem/models/user_model.dart';
 
 class DatabaseRepository extends BaseDatabaseRepository{
 final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final COLLECTION = 'tempusers';
+  final COLLECTION = 'tempusers';   //current collection use
   @override
   Stream<User> getUser() { // get 1 user from firebase
 
@@ -58,14 +59,16 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   @override
   userInterested() async {
-    List<dynamic> test = [];
-    String userEmail = await HelperFunction.getUserEmailSharedPreference();
-    await _firebaseFirestore.collection(COLLECTION).doc('user1').get().then((snapshot){
-      print('helloooooo');
-      test = snapshot.data()!['interested'];
-      return snapshot.data()!['interested'];
+    List<dynamic>? test = [];
+    String? email;
+    email = auth.FirebaseAuth.instance.currentUser?.email;
+    await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
+      // print(snapshot.docs[0]['interested']);
+      User.setInterested(snapshot.docs[0]['interested']);
     });
-    print(test);
+
+    
+    
 
 
 

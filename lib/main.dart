@@ -37,9 +37,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // Firebase.initializeApp();
     getLoggedInState();
-    getUser();// get all user and convert to list
-
-    
     super.initState();
   }
 
@@ -52,12 +49,6 @@ class _MyAppState extends State<MyApp> {
     
   }
 
-  //get all user and minus current login user
-  getUser() async {
-    String email = await HelperFunction.getUserEmailSharedPreference();
-    userlist  = await _databaseRepository.usertoList();
-    User.set(userlist,email);
-  }
 
 
   @override

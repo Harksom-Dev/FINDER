@@ -47,17 +47,26 @@ class User extends Equatable {
   static set(List<User> user,userEmail){
     users.clear();
     for(int i = 0; i < user.length;i++){    //now this work but need to tweak to real use
-      // users[i] = user[i];
       if(userEmail != user[i].email){
         users.add(user[i]);
       }
       
     }
   }
+
+
+  static setInterested(List<dynamic> interested){
+    userInterested.clear();
+    for(int i = 0; i < interested.length;i++){    //now this work but need to tweak to real use
+        userInterested.add(interested[i]);
+      
+    }
+    print(userInterested);
+
+  }
 // static List<User> users = [];
   static List<User> userfromSnapshot(QuerySnapshot snap) {
     //this func need to get snap from firebase lib and turn in to list<User>
-    // users = 
 
     return snap.docs
         .map((doc) => User(
@@ -69,7 +78,6 @@ class User extends Equatable {
             interested: doc['interested'],
             email: doc['emial']))
         .toList();
-    // List<User> users =
   } 
   
   
@@ -123,5 +131,11 @@ class User extends Equatable {
         ],
         bio: 'i love coding mak mak',
         interested: ['C++', 'python']),
+  ];
+
+  //another dummy data
+  static List<String> userInterested = [
+    'c++',
+    'dart'
   ];
 }
