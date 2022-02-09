@@ -54,3 +54,8 @@ android/local.properties
 ios/Flutter/flutter_export_environment.sh
 ios/Flutter/Generated.xcconfig
 android/.gradle/checksums/sha1-checksums.bin
+android/local.properties
+android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+android/.gradle/buildOutputCleanup/outputFiles.bin
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+ios/Runner/GeneratedPluginRegistrant.m

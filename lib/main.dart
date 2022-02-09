@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart'
     show LoadUsersEvent, SwipeBloc;
 import 'package:loginsystem/config/app_router.dart';
@@ -40,7 +41,7 @@ class _MyAppState extends State<MyApp> {
   getLoggedInState() async {
     await HelperFunction.getUserLoggedInSharedPreference().then((value) {
       setState(() {
-        userIsLoggedIn = value;
+        userIsLoggedIn = auth.FirebaseAuth.instance.currentUser != null;
       });
     });
   }
