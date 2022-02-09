@@ -15,7 +15,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'firebase_options.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,7 +32,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    Firebase.initializeApp();
+    WidgetsFlutterBinding.ensureInitialized();
+    Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     getLoggedInState();
     super.initState();
   }
