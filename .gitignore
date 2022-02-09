@@ -68,3 +68,8 @@ android/.gradle/checksums/md5-checksums.bin
 android/.gradle/checksums/sha1-checksums.bin
 android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
 ios/Runner/GeneratedPluginRegistrant.m
+android/local.properties
+android/.gradle/buildOutputCleanup/outputFiles.bin
+android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+ios/Runner/GeneratedPluginRegistrant.m
