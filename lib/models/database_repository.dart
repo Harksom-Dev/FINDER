@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/base_database_repository.dart';
-import 'package:loginsystem/models/storage/storage_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 
 
@@ -22,8 +21,8 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   @override
   Future<void> updateUserPicture(String imageName) async {
 
-    String downloadUrl = await StorageRepository().getDownloadURL(imageName);
-    return _firebaseFirestore.collection('users').doc('user1').update({'imageUrls':FieldValue.arrayUnion([downloadUrl])});
+    // String downloadUrl = await StorageRepository().getDownloadURL(imageName);
+    // return _firebaseFirestore.collection('users').doc('user1').update({'imageUrls':FieldValue.arrayUnion([downloadUrl])});
   }
 
   @override

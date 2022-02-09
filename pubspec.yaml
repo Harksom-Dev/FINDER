@@ -56,7 +56,7 @@ dependencies:
   multi_select_flutter: ^4.0.0
   firebase_core_web: ^1.5.3
   firebase_storage: ^10.2.6
-  image_picker: ^0.8.4+5d
+  image_picker: ^0.8.4+5
 dev_dependencies:
   flutter_test:
     sdk: flutter
