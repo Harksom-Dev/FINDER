@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:loginsystem/helper/constants.dart';
@@ -44,14 +46,38 @@ class User extends Equatable {
 
     return user;
   }
-  static set(List<User> user,userEmail){
+  static set(List<User> user){
     users.clear();
-    for(int i = 0; i < user.length;i++){    //now this work but need to tweak to real use
-      if(userEmail != user[i].email){
-        users.add(user[i]);
-      }
-      
+    for(int i = 0;i<user.length;i++){
+      print(user[i].name);
     }
+    // print(user);
+    //random index in user that we get
+    Random rnd;
+    rnd = new Random();
+    
+
+    //get random list in maximum 10 user
+    //first check if the number of user we get is morethan our quota or not 
+    // if(user.length >= 10){
+    //   //in this case random number in our of user length 10 time and add to users list
+    //   for(int i = 0;i<10;i++){
+    //     var r = 0 + rnd.nextInt(user.length-1);   // r is random num from 0 to our user length
+    //     if(userEmail == user[r].email){   //if we random list to our current user do nothing
+    //       i--;
+    //     }else{
+
+    //     }
+
+    //   }
+    // }else{
+
+    // }
+    users.addAll(user);
+    // for(int i = 0; i < user.length;i++){    //now this work but need to tweak to real use
+    //   users.add(user[i]);
+    // }
+    // print(users);
   }
 
 
@@ -59,7 +85,6 @@ class User extends Equatable {
     userInterested.clear();
     for(int i = 0; i < interested.length;i++){    //now this work but need to tweak to real use
         userInterested.add(interested[i]);
-      
     }
     print(userInterested);
 
@@ -85,7 +110,7 @@ class User extends Equatable {
   static List<User> users = [
     const User(
         id: 1,
-        name: 'Pack',
+        name: 'dummyPack',
         email: 'pack@g.coom',
         age: 21,
         imageUrls: [

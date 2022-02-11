@@ -28,10 +28,9 @@ class HomeScreen extends StatelessWidget {
 
   // trying to fetch all user except user that cur login (maybe need to move this func to somewhere better than this )
   suggest() async {
-    String userEmail = await HelperFunction.getUserEmailSharedPreference();
-    //print(userEmail);
+    
     List<User> userlist = await _databaseRepository.usertoList();
-    User.set(userlist,userEmail);
+    User.set(userlist);
 
     //suggest algo testing
     _databaseRepository.userInterested();

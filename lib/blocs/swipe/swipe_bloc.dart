@@ -50,6 +50,11 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     // });
     //print('hellooooo');
     //_databaseRepository.getAllUsers();
+    // List<User> list = await _databaseRepository.usertoList();
+    // User.set(list);
+    print('this is swipe loaded $event');
+
+    List<User> list = await _databaseRepository.usertoList();
     yield SwipeLoaded(users: event.users);
   }
 

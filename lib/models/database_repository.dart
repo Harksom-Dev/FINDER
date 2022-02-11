@@ -39,9 +39,11 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   @override
   Future<List<User>> usertoList() async {
+    String? email;
+    email = auth.FirebaseAuth.instance.currentUser?.email;
+    print(email);
   QuerySnapshot qshot = 
-      await FirebaseFirestore.instance.collection(COLLECTION).get();
-
+      await FirebaseFirestore.instance.collection(COLLECTION).where("email",isNotEqualTo: email).get();
     return qshot.docs.map(
         (doc) => User(
             id: doc['id'],
@@ -65,14 +67,6 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
       // print(snapshot.docs[0]['interested']);
       User.setInterested(snapshot.docs[0]['interested']);
     });
-
-    
-    
-
-
-
-
-    
   }
   
 }

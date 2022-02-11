@@ -73,3 +73,9 @@ android/.gradle/buildOutputCleanup/outputFiles.bin
 android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
 android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
 ios/Runner/GeneratedPluginRegistrant.m
+lib/screens/home/home_screen.dart
+android/local.properties
+android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+android/.gradle/buildOutputCleanup/outputFiles.bin
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+ios/Runner/GeneratedPluginRegistrant.m
