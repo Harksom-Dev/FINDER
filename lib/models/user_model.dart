@@ -48,9 +48,9 @@ class User extends Equatable {
   }
   static set(List<User> user){
     users.clear();
-    for(int i = 0;i<user.length;i++){
-      print(user[i].name);
-    }
+    // for(int i = 0;i<user.length;i++){
+    //   print(user[i].name);
+    // }
     // print(user);
     //random index in user that we get
     Random rnd;
@@ -132,30 +132,7 @@ class User extends Equatable {
         ],
         bio: 'i love coding',
         interested: ['C++', 'python']),
-    const User(
-        id: 3,
-        name: 'Phird',
-        email: 'p@g.coom',
-        age: 21,
-        imageUrls: [
-          'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
-          'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
-          'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'
-        ],
-        bio: 'i love coding mak mak',
-        interested: ['C++', 'python']),
-    const User(
-        id: 4,
-        name: 'Phirachat',
-        email: 'p@g.coom',
-        age: 21,
-        imageUrls: [
-          'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80',
-          'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80',
-          'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80',
-        ],
-        bio: 'i love coding mak mak',
-        interested: ['C++', 'python']),
+    
   ];
 
   //another dummy data

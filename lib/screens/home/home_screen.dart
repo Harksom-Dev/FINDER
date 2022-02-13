@@ -15,8 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:loginsystem/widgets/Menu_button.dart';
 
-class HomeScreen extends StatelessWidget {
-  DatabaseRepository _databaseRepository = DatabaseRepository();
+class HomeScreen extends StatefulWidget {
   static const String routeName = '/';
   
   static Route route() {
@@ -26,14 +25,18 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // trying to fetch all user except user that cur login (maybe need to move this func to somewhere better than this )
-  suggest() async {
-    
-    List<User> userlist = await _databaseRepository.usertoList();
-    User.set(userlist);
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-    //suggest algo testing
-    _databaseRepository.userInterested();
+class _HomeScreenState extends State<HomeScreen> {
+  DatabaseRepository _databaseRepository = DatabaseRepository();
+
+  @override
+  void initState() {
+    BlocProvider.of<SwipeBloc>(context)
+        .add(LoadUsersEvent(users: User.users));
+    super.initState();
   }
 
   @override
@@ -52,7 +55,7 @@ class HomeScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is SwipeLoaded) {
-            suggest();
+            // suggest();
             // swipe loaded state
             return Column(
               children: [
@@ -181,4 +184,6 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }
