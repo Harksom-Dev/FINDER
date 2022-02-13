@@ -54,30 +54,45 @@ class User extends Equatable {
     // print(user);
     //random index in user that we get
     Random rnd;
-    rnd = new Random();
+    rnd = Random();
     
+    List<int> rand = [];
 
     //get random list in maximum 10 user
     //first check if the number of user we get is morethan our quota or not 
-    // if(user.length >= 10){
-    //   //in this case random number in our of user length 10 time and add to users list
-    //   for(int i = 0;i<10;i++){
-    //     var r = 0 + rnd.nextInt(user.length-1);   // r is random num from 0 to our user length
-    //     if(userEmail == user[r].email){   //if we random list to our current user do nothing
-    //       i--;
-    //     }else{
+    if(user.length >= 10){      
+      //in this case random number in our of user length 10 time and add to users list
+      //first we need to random 10 number and check not to duplicate that number
+      for(int i = 0;i<10;i++){
+        var r = 0 + rnd.nextInt(user.length);  // r is random num from 0 to our user length
+        if(rand.isNotEmpty && rand.contains(r)){
+          i--;
+        }else{
+          users.add(user[r]);
+          rand.add(r);
+        }  
+        
+      }
+    }else{
+      for(int i = 0;i<user.length;i++){
+        int r = 0 + rnd.nextInt(user.length); 
+        if(rand.isNotEmpty && rand.contains(r)){
+          i--;
+        }else{
+          users.add(user[r]);
+          rand.add(r);
+          print('hello?');
+        }  // r is random num from 0 to our user length
+        
 
-    //     }
+      }
+    }
 
-    //   }
-    // }else{
-
-    // }
-    users.addAll(user);
-    // for(int i = 0; i < user.length;i++){    //now this work but need to tweak to real use
-    //   users.add(user[i]);
-    // }
-    // print(users);
+    
+    for(int i = 0;i<users.length;i++){
+      print(users[i].name);
+    }
+    // print(user);
   }
 
 
@@ -89,6 +104,22 @@ class User extends Equatable {
     print(userInterested);
 
   }
+  // static setLiked(List<dynamic> likes){
+  //   userLiked.clear();
+  //   for(int i = 0; i < likes.length;i++){    //now this work but need to tweak to real use
+  //       userLiked.add(likes[i]);
+  //   }
+  //   // print(userInterested);
+
+  // }
+  // static setUnliked(List<dynamic> unlike){
+  //   userunliked.clear();
+  //   for(int i = 0; i < unlike.length;i++){    //now this work but need to tweak to real use
+  //       userunliked.add(unlike[i]);
+  //   }
+  //   print(userInterested);
+
+  // }
 // static List<User> users = [];
   static List<User> userfromSnapshot(QuerySnapshot snap) {
     //this func need to get snap from firebase lib and turn in to list<User>
@@ -140,4 +171,9 @@ class User extends Equatable {
     'c++',
     'dart'
   ];
+
+  static List<String> userLiked = ['dummyid1'];
+
+  static List<String> userunliked = ['dummyid'];
+
 }

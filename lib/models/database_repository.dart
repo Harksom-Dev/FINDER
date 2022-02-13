@@ -32,8 +32,10 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   @override
   testdb() async {
-    return  FirebaseFirestore.instance.collection("users")
-      .snapshots();
+    List<User> test = [];
+    _firebaseFirestore.collection(COLLECTION).where("email",isNotEqualTo: 'user1');
+    //_firebaseFirestore.collection(COLLECTION).doc('user1').collection('suggest').where("state",isNotEqualTo: 'hit').where("state",isNotEqualTo: 'pass').get();
+
 
   }
 
@@ -42,7 +44,10 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
     String? email;
     email = auth.FirebaseAuth.instance.currentUser?.email;
     print(email);
-  QuerySnapshot qshot = 
+
+    
+    
+    QuerySnapshot qshot = 
       await FirebaseFirestore.instance.collection(COLLECTION).where("email",isNotEqualTo: email).get();
     return qshot.docs.map(
         (doc) => User(
@@ -60,13 +65,27 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   @override
   userInterested() async {
-    List<dynamic>? test = [];
     String? email;
     email = auth.FirebaseAuth.instance.currentUser?.email;
     await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
       // print(snapshot.docs[0]['interested']);
       User.setInterested(snapshot.docs[0]['interested']);
     });
+  }
+
+  //getting an unlike and like of curent user and add to list in user model
+  @override
+  userLikedAndUnliked() async { 
+    // String? email;
+    // email = auth.FirebaseAuth.instance.currentUser?.email;
+    // await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
+    //   // print(snapshot.docs[0]['interested']);
+    //   User.setInterested(snapshot.docs[0]['like']);
+    // });
+    // await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
+    //   // print(snapshot.docs[0]['interested']);
+    //   User.setInterested(snapshot.docs[0]['dislike']);
+    // });
   }
   
 }

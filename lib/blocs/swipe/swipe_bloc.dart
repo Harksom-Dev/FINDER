@@ -39,24 +39,17 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
 
 
 
-
+  //now we dont care what parameter we get from loaduserevent we always gonna use usersList in class User
   Stream<SwipeState> _mapLoadUsersToState(  
     LoadUsersEvent event,
   ) async* {
-    // _databaseSubscription?.cancel();
-
-    // _databaseRepository.getAllUsers().listen((event) {
-    //   print("hello");
-    // });
-    //print('hellooooo');
-    //_databaseRepository.getAllUsers();
-
+    //get a user in firebase and convert to list of User in class User
     List<User> userlist = await _databaseRepository.usertoList();
     User.set(userlist);
-    //suggest algo testing
+    _databaseRepository.testdb();
+    //getting a user list to calculate suggest algo
     _databaseRepository.userInterested();
-    // print('this is swipe loaded $event');
-    print(User.users);
+    // print(User.users);
     // List<User> list = await _databaseRepository.usertoList();
     yield SwipeLoaded(users: User.users);
   }
