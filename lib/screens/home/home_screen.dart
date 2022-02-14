@@ -30,13 +30,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  DatabaseRepository _databaseRepository = DatabaseRepository();
+  final DatabaseRepository _databaseRepository = DatabaseRepository();
 
   @override
   void initState() {
-    if(User.isdislikeclear){
-      _databaseRepository.cleardislike();
-    }
+    // if(User.isdislikeclear){
+    //   _databaseRepository.cleardislike();
+    // }
     _databaseRepository.userLikedAndDisliked();
     BlocProvider.of<SwipeBloc>(context)
         .add(LoadUsersEvent(users: User.users));
