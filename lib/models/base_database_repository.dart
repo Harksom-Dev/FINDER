@@ -7,5 +7,6 @@ abstract class BaseDatabaseRepository{
   testdb();
   Future<List<User>> usertoList();
   userInterested();
-  userLikedAndUnliked();
+  userLikedAndDisliked();
+  cleardislike();
 }

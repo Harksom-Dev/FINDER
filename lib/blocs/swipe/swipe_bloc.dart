@@ -44,11 +44,14 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     LoadUsersEvent event,
   ) async* {
     //get a user in firebase and convert to list of User in class User
+    _databaseRepository.userInterested();
+    // _databaseRepository.userLikedAndDisliked();
+    _databaseRepository.cleardislike();
     List<User> userlist = await _databaseRepository.usertoList();
     User.set(userlist);
     _databaseRepository.testdb();
     //getting a user list to calculate suggest algo
-    _databaseRepository.userInterested();
+    
     // print(User.users);
     // List<User> list = await _databaseRepository.usertoList();
     yield SwipeLoaded(users: User.users);

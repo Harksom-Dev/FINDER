@@ -34,6 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    if(User.isdislikeclear){
+      _databaseRepository.cleardislike();
+    }
+    _databaseRepository.userLikedAndDisliked();
     BlocProvider.of<SwipeBloc>(context)
         .add(LoadUsersEvent(users: User.users));
     super.initState();

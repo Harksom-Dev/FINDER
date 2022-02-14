@@ -18,6 +18,7 @@ class LoadUsersEvent extends SwipeEvent {
   List<Object> get props => [users];
 }
 
+
 class SwipeLeftEvent extends SwipeEvent {
   final User user;
 

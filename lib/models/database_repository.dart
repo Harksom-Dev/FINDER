@@ -33,9 +33,9 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   @override
   testdb() async {
     List<User> test = [];
-    _firebaseFirestore.collection(COLLECTION).where("email",isNotEqualTo: 'user1');
+    // _firebaseFirestore.collection(COLLECTION).where("email",isNotEqualTo: 'user1');
     //_firebaseFirestore.collection(COLLECTION).doc('user1').collection('suggest').where("state",isNotEqualTo: 'hit').where("state",isNotEqualTo: 'pass').get();
-
+    
 
   }
 
@@ -75,17 +75,27 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   //getting an unlike and like of curent user and add to list in user model
   @override
-  userLikedAndUnliked() async { 
-    // String? email;
-    // email = auth.FirebaseAuth.instance.currentUser?.email;
-    // await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
-    //   // print(snapshot.docs[0]['interested']);
-    //   User.setInterested(snapshot.docs[0]['like']);
-    // });
-    // await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
-    //   // print(snapshot.docs[0]['interested']);
-    //   User.setInterested(snapshot.docs[0]['dislike']);
-    // });
+  userLikedAndDisliked() async { 
+    String? email;
+    email = auth.FirebaseAuth.instance.currentUser?.email;
+    await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
+      // print(snapshot.docs[0]['interested']);
+      User.setLiked(snapshot.docs[0]['like']);
+    });
+    await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
+      // print(snapshot.docs[0]['interested']);
+      User.setDisliked(snapshot.docs[0]['dislike']);
+    });
+  }
+
+  @override
+  cleardislike() async{
+    String? email;
+    email = auth.FirebaseAuth.instance.currentUser?.email;
+    DocumentReference doc_ref = _firebaseFirestore.collection(COLLECTION).doc();
+    DocumentSnapshot docSnap = await doc_ref.get();
+    var doc_id2 = docSnap.reference;
+    print('helloooooo $doc_id2');
   }
   
 }
