@@ -3,8 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/profile.dart';
 import 'package:date_field/date_field.dart';
 import 'package:loginsystem/screens/register/register_2.dart';
@@ -27,7 +25,8 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final formKey = GlobalKey<FormState>();
 
-  Profile profile = Profile(name: '', email: '', password: '', dob: '');
+  Profile profile =
+      Profile(name: '', email: '', password: '', dob: '', interest: []);
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
@@ -223,10 +222,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       RegisterInterestScreen(
-                                                          profile.name,
-                                                          profile.email,
-                                                          profile.dob,
-                                                          profile.password),
+                                                    profile.name,
+                                                    profile.email,
+                                                    profile.dob,
+                                                    profile.password,
+                                                    profile.interest,
+                                                  ),
                                                 ),
                                               );
                                             } on FirebaseAuthException catch (e) {

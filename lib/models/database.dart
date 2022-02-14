@@ -10,9 +10,10 @@ class DatabaseMethods {
 
   uploadUserInfo(userMap) {
     print(userMap);
-    FirebaseFirestore.instance.collection("test").add(userMap).catchError((e) {
+    FirebaseFirestore.instance.collection("users").add(userMap).catchError((e) {
       print("failed to add user: $e");
     });
+    print("database pushed");
   }
 
   createChatRoom(String chatRoomId, chatRoomMap) {

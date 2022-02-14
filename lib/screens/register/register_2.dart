@@ -2,14 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database.dart';
-import 'package:loginsystem/models/models.dart';
-import 'package:loginsystem/models/profile.dart';
-import 'package:date_field/date_field.dart';
 import 'package:loginsystem/widgets/widget.dart';
-import 'package:loginsystem/widgets/appBar_userreview.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class RegisterInterestScreen extends StatefulWidget {
@@ -20,10 +15,11 @@ class RegisterInterestScreen extends StatefulWidget {
     required String profileEmail,
     required dob,
     required String profilePassword,
+    required List<String> profileInterest,
   }) {
     return MaterialPageRoute(
       builder: (_) => RegisterInterestScreen(
-          profileName, profileEmail, dob, profilePassword),
+          profileName, profileEmail, dob, profilePassword, profileInterest),
       settings: RouteSettings(name: routeName),
     );
   }
@@ -32,8 +28,10 @@ class RegisterInterestScreen extends StatefulWidget {
   final String profileEmail;
   final dob;
   final String profilePassword;
-  RegisterInterestScreen(
-      this.profileName, this.profileEmail, this.dob, this.profilePassword);
+  List<String> profileInterest = [];
+
+  RegisterInterestScreen(this.profileName, this.profileEmail, this.dob,
+      this.profilePassword, this.profileInterest);
 
   _RegisterInterestScreenState createState() => _RegisterInterestScreenState();
 }
@@ -43,51 +41,49 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final String name = "Interest";
-    //final _items1 = _proLang.map((Interest) => MultiSelectItem(value, label));
-    final List<Interest> _progLang = [
-      Interest(cat: 1, id: 1, name: "Python"),
-      Interest(cat: 1, id: 2, name: "Java"),
-      Interest(cat: 1, id: 3, name: "JavaScript"),
-      Interest(cat: 1, id: 4, name: "Kotlin"),
-      Interest(cat: 1, id: 5, name: "R"),
-      Interest(cat: 1, id: 6, name: "PHP"),
-      Interest(cat: 1, id: 7, name: "GO"),
-      Interest(cat: 1, id: 8, name: "C"),
-      Interest(cat: 1, id: 9, name: "Swift"),
-      Interest(cat: 1, id: 10, name: "C#"),
-      Interest(cat: 1, id: 11, name: "C++"),
+    final List<String> _progLang = [
+      "Python",
+      "Java",
+      "JavaScript",
+      "Kotlin",
+      "R",
+      "PHP",
+      "GO",
+      "C",
+      "Swift",
+      "C#",
+      "C++",
     ];
-    final List<Interest> _sports = [
-      Interest(cat: 3, id: 1, name: "Soccer"),
-      Interest(cat: 3, id: 2, name: "Basketball"),
-      Interest(cat: 3, id: 3, name: "Tennis"),
-      Interest(cat: 3, id: 4, name: "Baseball"),
-      Interest(cat: 3, id: 5, name: "Running"),
-      Interest(cat: 3, id: 6, name: "Volleyball"),
-      Interest(cat: 3, id: 7, name: "Badminton"),
-      Interest(cat: 3, id: 8, name: "Swimming"),
-      Interest(cat: 3, id: 9, name: "Boxing"),
-      Interest(cat: 3, id: 10, name: "Table tenis"),
+    final List<String> _sports = [
+      "Soccer",
+      "Basketball",
+      "Tennis",
+      "Baseball",
+      "Running",
+      "Volleyball",
+      "Badminton",
+      "Swimming",
+      "Boxing",
+      "Table tenis",
     ];
-    final List<Interest> _musics = [
-      Interest(cat: 2, id: 1, name: "Pop"),
-      Interest(cat: 2, id: 2, name: "Hiphop"),
-      Interest(cat: 2, id: 3, name: "Jazz"),
-      Interest(cat: 2, id: 4, name: "Blue"),
-      Interest(cat: 2, id: 5, name: "Punk"),
-      Interest(cat: 2, id: 6, name: "Indie Rock"),
-      Interest(cat: 2, id: 7, name: "K-Pop"),
-      Interest(cat: 2, id: 8, name: "T-Pop"),
-      Interest(cat: 2, id: 9, name: "R&B"),
-      Interest(cat: 2, id: 10, name: "Alternative"),
+    final List<String> _musics = [
+      "Pop",
+      "Hiphop",
+      "Jazz",
+      "Blue",
+      "Punk",
+      "Indie Rock",
+      "K-Pop",
+      "T-Pop",
+      "R&B",
+      "Alternative",
     ];
 
-    final _itemsPL = _progLang.map((e) => MultiSelectItem(e, e.name)).toList();
-    final _itemsSP = _sports.map((e) => MultiSelectItem(e, e.name)).toList();
-    final _itemsMS = _musics.map((e) => MultiSelectItem(e, e.name)).toList();
+    final _itemsPL = _progLang.map((e) => MultiSelectItem(e, e)).toList();
+    final _itemsSP = _sports.map((e) => MultiSelectItem(e, e)).toList();
+    final _itemsMS = _musics.map((e) => MultiSelectItem(e, e)).toList();
 
-    /// DATA ///////////////////////////////////////////////////////
+    /// DATA
     List<Object?> _SelectedProLang = [];
     List<Object?> _SelectedMusics = [];
     List<Object?> _SelectedSports = [];
@@ -276,7 +272,6 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
 
               SizedBox(
                 child: InkWell(
-                  ///// ###################### fix here #######################
                   onTap: () async {
                     _Selected.addAll(_SelectedProLang);
                     _Selected.addAll(_SelectedMusics);
@@ -286,6 +281,45 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                     print(widget.profileEmail);
                     print(widget.profilePassword);
                     print(widget.dob);
+
+                    int n = _Selected.length;
+
+                    print(n);
+                    for (int i = 0; i < n; i++) {
+                      String current = _Selected.elementAt(i).toString();
+                      widget.profileInterest.add(current);
+                    }
+                    print(widget.profileInterest);
+
+                    HelperFunction.saveUserLoggedInSharedPreference(true);
+                    HelperFunction.saveUserEmailSharedPreference(
+                        widget.profileEmail);
+
+                    await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: widget.profileEmail,
+                            password: widget.profilePassword)
+                        .then((value) {
+                      Fluttertoast.showToast(
+                          msg: "Account has been created.",
+                          gravity: ToastGravity.TOP);
+                      Navigator.pushNamed(context, "/");
+                      print("swipescreen !");
+                    });
+                    //try to get email and passfrom profie() and store to map
+                    Map<String, dynamic> userInfoMap = {
+                      "uid": FirebaseAuth.instance.currentUser?.uid,
+                      "name": widget.profileName,
+                      "email": widget.profileEmail,
+                      "dob": widget.dob,
+                      "interested": widget.profileInterest,
+                      "imgUrl": [],
+                      "like": [],
+                      "dislike": [],
+                      //can add more attribute for further update
+                    };
+                    //call uploaduserinfo from database.dart to update user to firestore
+                    DatabaseMethods().uploadUserInfo(userInfoMap);
                   }, // edit here
                   // ################## end ######################
                   child: Container(
