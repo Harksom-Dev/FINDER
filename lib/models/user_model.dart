@@ -180,18 +180,24 @@ class User extends Equatable {
 
   }
   static setLiked(List<dynamic> likes){
-    userLiked.clear();
-    for(int i = 0; i < likes.length;i++){    //now this work but need to tweak to real use
+    
+      userLiked.clear();
+      for(int i = 0; i < likes.length;i++){    //now this work but need to tweak to real use
         userLiked.add(likes[i]);
     }
+    
+    
     // print(userLiked);
 
   }
   static setDisliked(List<dynamic> unlike){
-    userdisliked.clear();
-    for(int i = 0; i < unlike.length;i++){    //now this work but need to tweak to real use
-        userdisliked.add(unlike[i]);
+    
+      userdisliked.clear();
+      for(int i = 0; i < unlike.length;i++){    //now this work but need to tweak to real use
+      userdisliked.add(unlike[i]);
     }
+    
+    
     // print(userdisliked);
 
   }

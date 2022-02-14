@@ -46,7 +46,6 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     //get a user in firebase and convert to list of User in class User
     _databaseRepository.userInterested();
     // _databaseRepository.userLikedAndDisliked();
-    _databaseRepository.cleardislike();
     List<User> userlist = await _databaseRepository.usertoList();
     User.set(userlist);
     _databaseRepository.testdb();

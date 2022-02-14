@@ -92,10 +92,17 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   cleardislike() async{
     String? email;
     email = auth.FirebaseAuth.instance.currentUser?.email;
-    DocumentReference doc_ref = _firebaseFirestore.collection(COLLECTION).doc();
-    DocumentSnapshot docSnap = await doc_ref.get();
-    var doc_id2 = docSnap.reference;
-    print('helloooooo $doc_id2');
+    QuerySnapshot snap = await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get();
+    String curuser = snap.docs[0].id;
+    _firebaseFirestore.collection(COLLECTION).doc(curuser).update({
+      'dislike':[]
+    });
+
+    // _firebaseFirestore.collection('testupdate').doc('update').update({
+    //   'dislike': []
+    // });
+
+    
   }
   
 }
