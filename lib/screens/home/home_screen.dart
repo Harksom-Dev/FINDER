@@ -1,19 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
-import 'package:loginsystem/config/theme.dart';
-import 'package:loginsystem/helper/constants.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/custom_appbar.dart';
 import 'package:loginsystem/widgets/user_card.dart';
-import 'package:loginsystem/widgets/user_image_small.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:loginsystem/widgets/Menu_button.dart';
+
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/';
@@ -83,6 +78,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         context.read<SwipeBloc>()
                           ..add(SwipeRightEvent(user: state.users[0]));
                         print('Swipe Right');
+
+
+                        //TODO: perfrom add Liked user to curentUser's like list @ this point
+                        // addLikedUserToList(state.users[0]);
+
+
+                        //TODO: perfrom checkMatch @ this point
+                        var cerentUserEmail = auth.FirebaseAuth.instance.currentUser?.email;
+                        if(cerentUserEmail != null) {
+                          checkMatch(
+                          _databaseRepository
+                            .getUserByEmail(cerentUserEmail),
+                          state.users[0].email);
+                        }
                       } else {
                         print('Do nothing');
                       }
@@ -189,5 +198,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  checkMatch(cerentUser, user) {
+    if (cerentUser != null) {
+      var tempUserId = user.id;
+      var currentempUserId = cerentUser.id;
+      _databaseRepository
+        .getLikedAndUnlikedListByID(currentempUserId)
+        .then((value) {
+          if (value.contains(tempUserId)) {
+            print("match");
+          } else {
+            print("not match");
+          }
+        });
+    } 
+  }
+
+  void addLikedUserToList(User user) {
+    
+  }
 
 }
