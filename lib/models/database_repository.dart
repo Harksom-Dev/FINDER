@@ -9,12 +9,26 @@ import 'package:loginsystem/models/user_model.dart';
 
 class DatabaseRepository extends BaseDatabaseRepository{
 final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final COLLECTION = 'tempusers';   //current collection use
+final COLLECTION = 'tempusers';   //current collection use
   @override
-  Stream<User> getUser() { // get 1 user from firebase
+  Future<List<User>> getUser() async {
+    String? email;
+    email = auth.FirebaseAuth.instance.currentUser?.email;
+    print(email);
 
-    return _firebaseFirestore.collection('users')
-            .doc('user1').snapshots().map((snap) => User.fromSnapshot(snap));
+    QuerySnapshot qshot = 
+      await FirebaseFirestore.instance.collection(COLLECTION).where("email",isEqualTo: email).get();
+    return qshot.docs.map(
+        (doc) => User(
+            id: doc['id'],
+            name: doc['name'],
+            age: doc['age'],
+            imageUrls: doc['imageUrls'],
+            bio: doc['bio'],
+            interested: doc['interested'],
+            email: doc['email']
+            )
+      ).toList();
   }
 
 
@@ -33,9 +47,9 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   @override
   testdb() async {
     List<User> test = [];
-    // _firebaseFirestore.collection(COLLECTION).where("email",isNotEqualTo: 'user1');
+    _firebaseFirestore.collection(COLLECTION).where("email",isNotEqualTo: 'user1');
     //_firebaseFirestore.collection(COLLECTION).doc('user1').collection('suggest').where("state",isNotEqualTo: 'hit').where("state",isNotEqualTo: 'pass').get();
-    
+
 
   }
 
@@ -75,27 +89,29 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   //getting an unlike and like of curent user and add to list in user model
   @override
-  userLikedAndDisliked() async { 
-    String? email;
-    email = auth.FirebaseAuth.instance.currentUser?.email;
-    await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
-      // print(snapshot.docs[0]['interested']);
-      User.setLiked(snapshot.docs[0]['like']);
-    });
-    await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
-      // print(snapshot.docs[0]['interested']);
-      User.setDisliked(snapshot.docs[0]['dislike']);
-    });
+  userLikedAndUnliked() async { 
+    // String? email;
+    // email = auth.FirebaseAuth.instance.currentUser?.email;
+    // await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
+    //   // print(snapshot.docs[0]['interested']);
+    //   User.setInterested(snapshot.docs[0]['like']);
+    // });
+    // await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get().then((snapshot){
+    //   // print(snapshot.docs[0]['interested']);
+    //   User.setInterested(snapshot.docs[0]['dislike']);
+    // });
   }
 
   @override
-  cleardislike() async{
-    String? email;
-    email = auth.FirebaseAuth.instance.currentUser?.email;
-    DocumentReference doc_ref = _firebaseFirestore.collection(COLLECTION).doc();
-    DocumentSnapshot docSnap = await doc_ref.get();
-    var doc_id2 = docSnap.reference;
-    print('helloooooo $doc_id2');
+  cleardislike() {
+    // TODO: implement cleardislike
+    throw UnimplementedError();
+  }
+
+  @override
+  userLikedAndDisliked() {
+    // TODO: implement userLikedAndDisliked
+    throw UnimplementedError();
   }
   
 }
