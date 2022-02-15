@@ -59,7 +59,7 @@ class DatabaseRepository implements BaseDatabaseRepository {
   }
 
   @override
-  Future<User?> getUserByEmail(String email) async {
+  Future<User?> getUserByEmail(String? email) async {
     List<User> collectionData = await getAllDataFromCollection(COLLECTION);
 
     for (var doc in collectionData) {
