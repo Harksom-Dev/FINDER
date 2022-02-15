@@ -12,6 +12,8 @@ class User extends Equatable {
   final String bio;
   final List<dynamic> interested;
   final String email;
+  final List<dynamic> like;
+  final List<dynamic> dislike;
 
   const User({
     required this.id,
@@ -20,7 +22,9 @@ class User extends Equatable {
     required this.imageUrls,
     required this.bio,
     required this.interested,
-    required this.email
+    required this.email,
+    required this.like,
+    required this.dislike
   });
   @override
   // TODO: implement props
@@ -31,6 +35,8 @@ class User extends Equatable {
         imageUrls,
         bio,
         interested,
+        like,
+        dislike,
       ];
   static User fromSnapshot(DocumentSnapshot snap) {
     //this funct convert data from firebase to 1 of User
@@ -41,7 +47,10 @@ class User extends Equatable {
         imageUrls: snap['imageUrls'],
         interested: snap['interested'],
         bio: snap['bio'],
-        email:snap['email']);
+        email:snap['email'],
+        like:snap['like'],
+        dislike:snap['dislike'],
+        );
         
 
     return user;
@@ -207,7 +216,9 @@ class User extends Equatable {
             imageUrls: doc['imageUrls'],
             bio: doc['bio'],
             interested: doc['interested'],
-            email: doc['emial']))
+            email: doc['emial'],
+            like: doc['ilke'],
+            dislike: doc['dislike'],))
         .toList();
   } 
   
@@ -225,7 +236,9 @@ class User extends Equatable {
           'https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/image%2F1.jpg?alt=media&token=8235eca6-7195-4a16-bf9c-a95282e2a727',
         ],
         bio: 'i love coding',
-        interested: ['C++', 'python']),
+        interested: ['C++', 'python'],
+        like: [],
+        dislike: [],),
     const User(
         id: 2,
         name: 'Yoyo',
@@ -237,8 +250,9 @@ class User extends Equatable {
           'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80',
         ],
         bio: 'i love coding',
-        interested: ['C++', 'python']),
-    
+        interested: ['C++', 'python'],
+        like: [],
+        dislike: []),
   ];
 
   //another dummy data
