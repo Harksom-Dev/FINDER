@@ -26,28 +26,43 @@ class DatabaseRepository implements BaseDatabaseRepository {
             imageUrls: doc['imageUrls'],
             bio: doc['bio'],
             interested: doc['interested'],
-            email: doc['email']))
+            email: doc['email'],))
         .toList();
   }
 
   @override
-  Future<User> getUserByEmail(String email) async {
-    List <User> userList = [];
-    QuerySnapshot qshot = await FirebaseFirestore.instance
-        .collection(COLLECTION)
-        .where("email", isEqualTo: email)
-        .get();
-    userList = qshot.docs
-    .map((doc) => User(
-        id: doc['id'],
-        name: doc['name'],
-        age: doc['age'],
-        imageUrls: doc['imageUrls'],
-        bio: doc['bio'],
-        interested: doc['interested'],
-        email: doc['email']))
-    .toList();
-    return userList[0];
+  Future<List<User>> getAllDataFromCollection(String collectionName) async {
+    CollectionReference _collectionRef =
+        FirebaseFirestore.instance.collection(collectionName);
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs
+        .map((doc) => User(
+            id: doc['id'],
+            name: doc['name'],
+            age: doc['age'],
+            imageUrls: doc['imageUrls'],
+            bio: doc['bio'],
+            interested: doc['interested'],
+            email: doc['email'],))
+        .toList();
+
+    print(allData);
+    return allData;
+  }
+
+  @override
+  Future<User?> getUserByEmail(String email) async {
+    List<User> collectionData = await getAllDataFromCollection(COLLECTION);
+    
+    for (var doc in collectionData) {
+        if (doc.email == email) {
+          return doc;
+        }
+    }
+    return null;
   }
 
   Future<void> updateUserPicture(String imageName) async {
@@ -89,7 +104,8 @@ class DatabaseRepository implements BaseDatabaseRepository {
             imageUrls: doc['imageUrls'],
             bio: doc['bio'],
             interested: doc['interested'],
-            email: doc['email']))
+            email: doc['email'],))
+            
         .toList();
   }
 
@@ -134,34 +150,26 @@ class DatabaseRepository implements BaseDatabaseRepository {
   Future<List<List<int>>> getLikedAndUnlikedListByID(int id) async {
     List<int> like = [];
     List<int> disLike = [];
-    _firebaseFirestore
-        .collection(COLLECTION)
-        .where("id", isEqualTo: id)
-        .get()
-        .then((snapshot) {
-      // print(snapshot.docs[0]['interested']);
-      like = snapshot.docs[0]['like'];
-    });
-    await _firebaseFirestore
-        .collection(COLLECTION)
-        .where("id", isEqualTo: id)
-        .get()
-        .then((snapshot) {
-      // print(snapshot.docs[0]['interested']);
-      disLike = snapshot.docs[0]['disLike'];
-    });
+
+    List<User> collectionData = await getAllDataFromCollection(COLLECTION);
+
+    for (var user in collectionData) {
+      if (user.id == id) {
+        
+      }
+    }
     return [like, disLike];
   }
 
   @override
   cleardislike() {
     // TODO: implement cleardislike
-    throw UnimplementedError();
+    // throw UnimplementedError();
   }
 
   @override
   userLikedAndDisliked() {
     // TODO: implement userLikedAndDisliked
-    throw UnimplementedError();
+    // throw UnimplementedError();
   }
 }
