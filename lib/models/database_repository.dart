@@ -20,13 +20,16 @@ class DatabaseRepository implements BaseDatabaseRepository {
         .get();
     return qshot.docs
         .map((doc) => User(
-            id: doc['id'],
-            name: doc['name'],
-            age: doc['age'],
-            imageUrls: doc['imageUrls'],
-            bio: doc['bio'],
-            interested: doc['interested'],
-            email: doc['email'],))
+              id: doc['id'],
+              name: doc['name'],
+              age: doc['age'],
+              imageUrls: doc['imageUrls'],
+              bio: doc['bio'],
+              interested: doc['interested'],
+              email: doc['email'],
+              like: doc['like'],
+              dislike: doc['dislike'],
+            ))
         .toList();
   }
 
@@ -40,27 +43,29 @@ class DatabaseRepository implements BaseDatabaseRepository {
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs
         .map((doc) => User(
-            id: doc['id'],
-            name: doc['name'],
-            age: doc['age'],
-            imageUrls: doc['imageUrls'],
-            bio: doc['bio'],
-            interested: doc['interested'],
-            email: doc['email'],))
+              id: doc['id'],
+              name: doc['name'],
+              age: doc['age'],
+              imageUrls: doc['imageUrls'],
+              bio: doc['bio'],
+              interested: doc['interested'],
+              email: doc['email'],
+              like: doc['like'],
+              dislike: doc['dislike'],
+            ))
         .toList();
 
-    print(allData);
     return allData;
   }
 
   @override
   Future<User?> getUserByEmail(String email) async {
     List<User> collectionData = await getAllDataFromCollection(COLLECTION);
-    
+
     for (var doc in collectionData) {
-        if (doc.email == email) {
-          return doc;
-        }
+      if (doc.email == email) {
+        return doc;
+      }
     }
     return null;
   }
@@ -98,14 +103,16 @@ class DatabaseRepository implements BaseDatabaseRepository {
         .get();
     return qshot.docs
         .map((doc) => User(
-            id: doc['id'],
-            name: doc['name'],
-            age: doc['age'],
-            imageUrls: doc['imageUrls'],
-            bio: doc['bio'],
-            interested: doc['interested'],
-            email: doc['email'],))
-            
+              id: doc['id'],
+              name: doc['name'],
+              age: doc['age'],
+              imageUrls: doc['imageUrls'],
+              bio: doc['bio'],
+              interested: doc['interested'],
+              email: doc['email'],
+              like: doc['like'],
+              dislike: doc['dislike'],
+            ))
         .toList();
   }
 
@@ -124,7 +131,6 @@ class DatabaseRepository implements BaseDatabaseRepository {
   }
 
   //getting an unlike and like of curent user and add to list in user model
-  @override
   userLikedAndUnliked() async {
     String? email;
     email = auth.FirebaseAuth.instance.currentUser?.email;
@@ -147,15 +153,17 @@ class DatabaseRepository implements BaseDatabaseRepository {
   }
 
   @override
-  Future<List<List<int>>> getLikedAndUnlikedListByID(int id) async {
-    List<int> like = [];
-    List<int> disLike = [];
+  Future<List<List<dynamic>>> getLikedAndUnlikedListByID(int id) async {
+    List<dynamic> like = [];
+    List<dynamic> disLike = [];
 
     List<User> collectionData = await getAllDataFromCollection(COLLECTION);
 
     for (var user in collectionData) {
       if (user.id == id) {
-        
+        like = user.like;
+        disLike = user.dislike;
+        break;
       }
     }
     return [like, disLike];
