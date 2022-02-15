@@ -11,10 +11,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:loginsystem/widgets/Menu_button.dart';
 
-
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/';
-  
+
   static Route route() {
     return MaterialPageRoute(
       builder: (_) => HomeScreen(),
@@ -35,8 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //   _databaseRepository.cleardislike();
     // }
     _databaseRepository.userLikedAndDisliked();
-    BlocProvider.of<SwipeBloc>(context)
-        .add(LoadUsersEvent(users: User.users));
+    BlocProvider.of<SwipeBloc>(context).add(LoadUsersEvent(users: User.users));
     super.initState();
   }
 
@@ -81,20 +79,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           ..add(SwipeRightEvent(user: state.users[0]));
                         print('Swipe Right');
 
-
                         // perfrom add Liked user to curentUser's like list @ this point
                         addLikedUserToList(state.users[0]);
 
                         // perfrom checkMatch @ this point
-                        var cerentUserEmail = auth.FirebaseAuth.instance.currentUser?.email;
-                        if(cerentUserEmail != null) {
+                        var cerentUserEmail =
+                            auth.FirebaseAuth.instance.currentUser?.email;
+                        if (cerentUserEmail != null) {
                           checkMatchByEmail(
-                          (cerentUserEmail), 
-                          state.users[0].email);
-                          
+                              (cerentUserEmail), state.users[0].email);
                         }
-
-
                       } else {
                         print('Do nothing');
                       }
@@ -201,22 +195,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> checkMatchByEmail(String cerentUserEmail, String userEmail) async {
-    var currentempUser = _databaseRepository.getUserByEmail(cerentUserEmail);
-    var tempUser = _databaseRepository.getUserByEmail(userEmail);
-    User? currentUser = await currentempUser;
-    User? user = await tempUser;
+  Future<void> checkMatchByEmail(
+      String cerentUserEmail, String userWhoGotLikedEmail) async {
+    var tempCurrenUser = _databaseRepository.getUserByEmail(cerentUserEmail);
+    var tempUserWhoGotLiked =
+        _databaseRepository.getUserByEmail(userWhoGotLikedEmail);
+    User? currentUser = await tempCurrenUser;
+    User? userWhoGotLiked = await tempUserWhoGotLiked;
 
-    //TODO: getLikedAndUnlikedListByID need to fix it cant get liked and disliked list 
-    _databaseRepository
-      .getLikedAndUnlikedListByID(currentUser!.id)
-      .then((value) {
-        if (value.contains(user!.id)) {
-          print("match");
-        } else {
-          print("not match");
-        }
-      });
+    //TODO: getLikedAndUnlikedListByID need to fix it cant get liked and disliked list
+    List<List> likeAndDisLikeList = await _databaseRepository
+        .getLikedAndUnlikedListByID(userWhoGotLiked!.id);
+        
+    // likeAndDisLikeList index 0 is likeList and index 1 is dislikeList
+    List likeList = likeAndDisLikeList[0];
+
+    if (likeList.contains(currentUser!.id)) {
+      print(currentUser.name + " match with " + userWhoGotLiked.name);
+    } else {
+      print(currentUser.name + " not match with " + userWhoGotLiked.name);
+    }
   }
 
   Future<void> addLikedUserToList(User user) async {
@@ -224,9 +222,8 @@ class _HomeScreenState extends State<HomeScreen> {
     var userId = curentUser!.id;
 
     FirebaseFirestore.instance
-      .collection('tempusers')
-      .doc('user'+userId.toString())
-      .update({'ilke': userId});
+        .collection('tempusers')
+        .doc('user' + userId.toString())
+        .update({'ilke': userId});
   }
-
 }
