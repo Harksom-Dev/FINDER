@@ -206,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //TODO: getLikedAndUnlikedListByID need to fix it cant get liked and disliked list
     List<List> likeAndDisLikeList = await _databaseRepository
         .getLikedAndUnlikedListByID(userWhoGotLiked!.id);
-        
+
     // likeAndDisLikeList index 0 is likeList and index 1 is dislikeList
     List likeList = likeAndDisLikeList[0];
 
@@ -217,13 +217,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  //TODO: not done yet
   Future<void> addLikedUserToList(User user) async {
-    var curentUser = await _databaseRepository.getUserByEmail(user.email);
-    var userId = curentUser!.id;
+    User? curentUser = 
+        await _databaseRepository.getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email);
+    User? userWhoGotLiked = 
+        await _databaseRepository.getUserByEmail(user.email);
+
+    List likeList = curentUser!.like;
+    if (!likeList.contains(userWhoGotLiked!.id)) {
+      likeList.add(userWhoGotLiked.id);
+    }
 
     FirebaseFirestore.instance
         .collection('tempusers')
-        .doc('user' + userId.toString())
-        .update({'ilke': userId});
+        .doc('user' + curentUser.id.toString())
+        .update({'like': likeList});
   }
 }
