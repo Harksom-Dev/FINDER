@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
+import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/custom_appbar.dart';
@@ -46,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: CustomAppBar(),
       body: BlocBuilder<SwipeBloc, SwipeState>(
         builder: (context, state) {
-          final maxWid = MediaQuery.of(context).size.width as double;
+          final maxWid = MediaQuery.of(context).size.width;
           // which ui to render
           if (state is SwipeLoading) {
             // if we at the
@@ -80,18 +82,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         print('Swipe Right');
 
 
-                        //TODO: perfrom add Liked user to curentUser's like list @ this point
-                        // addLikedUserToList(state.users[0]);
+                        // perfrom add Liked user to curentUser's like list @ this point
+                        addLikedUserToList(state.users[0]);
 
-
-                        //TODO: perfrom checkMatch @ this point
+                        // perfrom checkMatch @ this point
                         var cerentUserEmail = auth.FirebaseAuth.instance.currentUser?.email;
                         if(cerentUserEmail != null) {
-                          checkMatch(
-                          _databaseRepository
-                            .getUserByEmail(cerentUserEmail),
+                          checkMatchByEmail(
+                          (cerentUserEmail), 
                           state.users[0].email);
+                          
                         }
+
+
                       } else {
                         print('Do nothing');
                       }
@@ -198,24 +201,32 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  checkMatch(cerentUser, user) {
-    if (cerentUser != null) {
-      var tempUserId = user.id;
-      var currentempUserId = cerentUser.id;
-      _databaseRepository
-        .getLikedAndUnlikedListByID(currentempUserId)
-        .then((value) {
-          if (value.contains(tempUserId)) {
-            print("match");
-          } else {
-            print("not match");
-          }
-        });
-    } 
+  Future<void> checkMatchByEmail(String cerentUserEmail, String userEmail) async {
+    var currentempUser = _databaseRepository.getUserByEmail(cerentUserEmail);
+    var tempUser = _databaseRepository.getUserByEmail(userEmail);
+    User? currentUser = await currentempUser;
+    User? user = await tempUser;
+
+    //TODO: getLikedAndUnlikedListByID need to fix it cant get liked and disliked list 
+    _databaseRepository
+      .getLikedAndUnlikedListByID(currentUser!.id)
+      .then((value) {
+        if (value.contains(user!.id)) {
+          print("match");
+        } else {
+          print("not match");
+        }
+      });
   }
 
-  void addLikedUserToList(User user) {
-    
+  Future<void> addLikedUserToList(User user) async {
+    var curentUser = await _databaseRepository.getUserByEmail(user.email);
+    var userId = curentUser!.id;
+
+    FirebaseFirestore.instance
+      .collection('tempusers')
+      .doc('user'+userId.toString())
+      .update({'ilke': userId});
   }
 
 }
