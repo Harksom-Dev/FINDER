@@ -56,7 +56,8 @@ class _MyAppState extends State<MyApp> {
           create: (context) => GoogleSignInProvider(),
         ),
         BlocProvider(
-          create: (_) => SwipeBloc(databaseRepository: DatabaseRepository())..add(LoadUsersEvent(users: User.users)),
+          create: (_) => SwipeBloc(databaseRepository: DatabaseRepository())
+          // ..add(LoadUsersEvent(users: User.users)),
         ),
       ],
       child: MaterialApp(

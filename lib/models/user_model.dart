@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:loginsystem/helper/constants.dart';
 
 class User extends Equatable {
   final int id;
@@ -56,6 +55,7 @@ class User extends Equatable {
     return user;
   }
   static set(List<User> user){
+    isdislikeclear = false;
     users.clear();
     // for(int i = 0;i<user.length;i++){
     //   print(user[i].name);
@@ -72,48 +72,49 @@ class User extends Equatable {
     if(user.length >= 15){      
       //in this case random number in our of user length 10 time and add to users list
       //first we need to random 10 number and check not to duplicate that number
-      for(int i = 0;i<15;i++){
-        var r = 0 + rnd.nextInt(user.length);  // r is random num from 0 to our user length
-        int targetuser = user[i].id;  //in the future we gonna change to String and become uid
-        int likeanddislike = userLiked.length + userdisliked.length;
-        if(rand.isNotEmpty && !rand.contains(r) && !userLiked.contains(targetuser) && userdisliked.contains(targetuser)){
-          unrank.add(user[r]);
-          rand.add(r);
-        }else if(likeanddislike == user.length-1){
+        int likeanddislike = userLiked.length + userdisliked.length; 
+        print('likeanddis is  $likeanddislike');
+        print(user.length-1);
+        if(likeanddislike == user.length){
+          print('clear');
           userdisliked.clear();
           isdislikeclear = true;
+        }
+      for(int i = 0;i<15;i++){
+        int r = 0 + rnd.nextInt(user.length);
+        int targetuser = user[r].id;  //in the future we gonna change to String and become uid
+        if(!rand.contains(r) && !userLiked.contains(targetuser) && !userdisliked.contains(targetuser)){
+          // print(targetuser);
+          unrank.add(user[r]);
+          rand.add(r);
         }else{
           i--;
         }
         
-        // if(rand.isNotEmpty && rand.contains(r) && (likeanddislike != user.length-1)){
-        //   i--;
-        // }else if(userLiked.contains(targetuser)){
-        //   i--;
-        // }else if(userdisliked.contains(targetuser)){
-        //   i--;
-        // }else if(likeanddislike == user.length-1){
-        //   //remove all dislike 
-        //   userdisliked.clear();
-        //   i--;
-        // }else{
-        //   // users.add(user[r]);
-        //   unrank.add(user[r]);
-        //   rand.add(r);
-        // }  
-        
+
       }
     }else{
-      for(int i = 0;i<user.length;i++){
-        int r = 0 + rnd.nextInt(user.length); 
-        if(rand.isNotEmpty && rand.contains(r)){
-          i--;
+        int size = user.length-userLiked.length;
+        int likeanddislike = userLiked.length + userdisliked.length; 
+        print('likeanddis is  $likeanddislike');
+        print(user.length-1);
+        if(likeanddislike == user.length){
+          print('clear');
+          userdisliked.clear();
+          isdislikeclear = true;
         }else{
-          // users.add(user[r]);
+          size = user.length - userdisliked.length - userLiked.length;
+        }
+      for(int i = 0;i<size;i++){
+        int r = 0 + rnd.nextInt(user.length);
+        int targetuser = user[r].id;  //in the future we gonna change to String and become uid
+        if(!rand.contains(r) && !userLiked.contains(targetuser) && !userdisliked.contains(targetuser)){
+          // print(targetuser);
           unrank.add(user[r]);
           rand.add(r);
-          print('hello?');
-        }  // r is random num from 0 to our user length
+        }else{
+          i--;
+        }
         
 
       }
@@ -176,7 +177,7 @@ class User extends Equatable {
     for(int i = 0;i<users.length;i++){
       print(users[i].name);
     }
-    // print(user);
+    
   }
 
 
@@ -185,22 +186,28 @@ class User extends Equatable {
     for(int i = 0; i < interested.length;i++){    //now this work but need to tweak to real use
         userInterested.add(interested[i]);
     }
-    print(userInterested);
+    // print(userInterested);
 
   }
   static setLiked(List<dynamic> likes){
-    userLiked.clear();
-    for(int i = 0; i < likes.length;i++){    //now this work but need to tweak to real use
+    
+      userLiked.clear();
+      for(int i = 0; i < likes.length;i++){    //now this work but need to tweak to real use
         userLiked.add(likes[i]);
     }
+    
+    
     // print(userLiked);
 
   }
   static setDisliked(List<dynamic> unlike){
-    userdisliked.clear();
-    for(int i = 0; i < unlike.length;i++){    //now this work but need to tweak to real use
-        userdisliked.add(unlike[i]);
+    
+      userdisliked.clear();
+      for(int i = 0; i < unlike.length;i++){    //now this work but need to tweak to real use
+      userdisliked.add(unlike[i]);
     }
+    
+    
     // print(userdisliked);
 
   }
@@ -217,7 +224,7 @@ class User extends Equatable {
             bio: doc['bio'],
             interested: doc['interested'],
             email: doc['emial'],
-            like: doc['ilke'],
+            like: doc['like'],
             dislike: doc['dislike'],))
         .toList();
   } 

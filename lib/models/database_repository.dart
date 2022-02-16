@@ -130,8 +130,8 @@ class DatabaseRepository implements BaseDatabaseRepository {
     });
   }
 
-  //getting an unlike and like of curent user and add to list in user model
-  userLikedAndUnliked() async {
+  @override
+  userLikedAndDisliked() async {
     String? email;
     email = auth.FirebaseAuth.instance.currentUser?.email;
     await _firebaseFirestore
@@ -169,15 +169,22 @@ class DatabaseRepository implements BaseDatabaseRepository {
     return [like, disLike];
   }
 
-  @override
-  cleardislike() {
-    // TODO: implement cleardislike
-    // throw UnimplementedError();
+
+  cleardislike() async{
+    String? email;
+    email = auth.FirebaseAuth.instance.currentUser?.email;
+    QuerySnapshot snap = await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get();
+    String curuser = snap.docs[0].id;
+    _firebaseFirestore.collection(COLLECTION).doc(curuser).update({
+      'dislike':[]
+    });
+
+    // _firebaseFirestore.collection('testupdate').doc('update').update({
+    //   'dislike': []
+    // });
+
+    
   }
 
-  @override
-  userLikedAndDisliked() {
-    // TODO: implement userLikedAndDisliked
-    // throw UnimplementedError();
-  }
+
 }
