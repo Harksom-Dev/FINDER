@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/database_repository.dart';
@@ -78,17 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         context.read<SwipeBloc>()
                           ..add(SwipeRightEvent(user: state.users[0]));
                         print('Swipe Right');
-
-                        // perfrom add Liked user to curentUser's like list @ this point
-                        addLikedUserToList(state.users[0]);
-
-                        // perfrom checkMatch @ this point
-                        var cerentUserEmail =
-                            auth.FirebaseAuth.instance.currentUser?.email;
-                        if (cerentUserEmail != null) {
-                          checkMatchByEmail(
-                              (cerentUserEmail), state.users[0].email);
-                        }
                       } else {
                         print('Do nothing');
                       }
@@ -195,43 +182,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> checkMatchByEmail(
-      String cerentUserEmail, String userWhoGotLikedEmail) async {
-    var tempCurrenUser = _databaseRepository.getUserByEmail(cerentUserEmail);
-    var tempUserWhoGotLiked =
-        _databaseRepository.getUserByEmail(userWhoGotLikedEmail);
-    User? currentUser = await tempCurrenUser;
-    User? userWhoGotLiked = await tempUserWhoGotLiked;
-
-    //TODO: getLikedAndUnlikedListByID need to fix it cant get liked and disliked list
-    List<List> likeAndDisLikeList = await _databaseRepository
-        .getLikedAndUnlikedListByID(userWhoGotLiked!.id);
-
-    // likeAndDisLikeList index 0 is likeList and index 1 is dislikeList
-    List likeList = likeAndDisLikeList[0];
-
-    if (likeList.contains(currentUser!.id)) {
-      print(currentUser.name + " match with " + userWhoGotLiked.name);
-    } else {
-      print(currentUser.name + " not match with " + userWhoGotLiked.name);
-    }
-  }
-
-  //TODO: not done yet
-  Future<void> addLikedUserToList(User user) async {
-    User? curentUser = 
-        await _databaseRepository.getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email);
-    User? userWhoGotLiked = 
-        await _databaseRepository.getUserByEmail(user.email);
-
-    List likeList = curentUser!.like;
-    if (!likeList.contains(userWhoGotLiked!.id)) {
-      likeList.add(userWhoGotLiked.id);
-    }
-
-    FirebaseFirestore.instance
-        .collection('tempusers')
-        .doc('user' + curentUser.id.toString())
-        .update({'like': likeList});
-  }
 }
