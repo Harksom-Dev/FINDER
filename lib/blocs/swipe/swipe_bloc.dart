@@ -48,9 +48,11 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     // _databaseRepository.userLikedAndDisliked();
     List<User> userlist = await _databaseRepository.usertoList();
     User.set(userlist);
-    _databaseRepository.testdb();
+    // _databaseRepository.testdb();
     //getting a user list to calculate suggest algo
-    
+    if(User.isdislikeclear){
+      _databaseRepository.cleardislike();
+    }
     // print(User.users);
     // List<User> list = await _databaseRepository.usertoList();
     yield SwipeLoaded(users: User.users);
