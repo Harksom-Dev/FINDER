@@ -32,22 +32,9 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
       yield* _mapLoadUsersToState(event);
     }
     if (event is SwipeLeftEvent) {
-      //TODO : perfrom dislike here
-
-      addDisLikedUserToList(event.user);
       yield* _mapSwipeLeftToState(event, state);
     }
     if (event is SwipeRightEvent) {
-      // perfrom add Liked user to curentUser's like list @ this point
-      addLikedUserToList(event.user);
-      var cerentUserEmail =
-          auth.FirebaseAuth.instance.currentUser?.email;
-
-      // perfrom checkMatch @ this point
-      if (cerentUserEmail != null) {
-        checkMatchByEmail(
-            (cerentUserEmail), event.user.email);
-      }
       yield* _mapSwipeRightToState(event, state);
     }
   }
@@ -79,6 +66,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   ) async* {
     if (state is SwipeLoaded) {
       try {
+        addDisLikedUserToList(event.user);
         yield SwipeLoaded(users: List.from(state.users)..remove(event.user));
       } catch (_) {}
     }
@@ -90,6 +78,16 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   ) async* {
     if (state is SwipeLoaded) {
       try {
+        // perfrom add Liked user to curentUser's like list @ this point
+        addLikedUserToList(event.user);
+        var cerentUserEmail =
+            auth.FirebaseAuth.instance.currentUser?.email;
+
+        // perfrom checkMatch @ this point
+        if (cerentUserEmail != null) {
+        checkMatchByEmail(
+            (cerentUserEmail), event.user.email);
+      }
         yield SwipeLoaded(users: List.from(state.users)..remove(event.user));
       } catch (_) {}
     }
