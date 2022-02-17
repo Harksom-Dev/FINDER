@@ -10,7 +10,6 @@ class CustomValidator extends FieldValidator<String> {
       final list =
           await FirebaseAuth.instance.fetchSignInMethodsForEmail(value);
       // In case list is not empty
-      Future.delayed(const Duration(seconds: 1));
       if (list.isEmpty) {
         result = true;
       } else {

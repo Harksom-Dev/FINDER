@@ -219,8 +219,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         onPressed: () async {
                                           if (formKey.currentState!
                                               .validate()) {
-                                            Future.delayed(
-                                                const Duration(seconds: 1));
                                             formKey.currentState!.save();
                                             try {
                                               Navigator.push(
