@@ -71,12 +71,19 @@ class DatabaseRepository implements BaseDatabaseRepository {
     return null;
   }
 
+  @override
   Future<void> updateUserPicture(String imageName) async {
-     String downloadUrl = await StoragePicture().getDownloadURL(imageName);
-     return _firebaseFirestore.collection('users')
-     .doc('user1')
-     .update({'imageUrls':FieldValue
-     .arrayUnion([downloadUrl])});
+
+    String downloadUrl = await StoragePicture().getDownloadURL(imageName);
+    
+    QuerySnapshot snap = await FirebaseFirestore.instance.collection('tempusers').where("email",isEqualTo: auth.FirebaseAuth.instance.currentUser?.email).get();
+    String curuser = snap.docs[0].id;
+    
+    FirebaseFirestore.instance
+        .collection('tempusers')
+        .doc(curuser)
+        .update({'imageUrls': downloadUrl});
+  
   }
 
   Stream<List<User>> getAllUsers() {
@@ -173,22 +180,21 @@ class DatabaseRepository implements BaseDatabaseRepository {
     return [like, disLike];
   }
 
-
-  cleardislike() async{
+  cleardislike() async {
     String? email;
     email = auth.FirebaseAuth.instance.currentUser?.email;
-    QuerySnapshot snap = await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get();
+    QuerySnapshot snap = await _firebaseFirestore
+        .collection(COLLECTION)
+        .where("email", isEqualTo: email)
+        .get();
     String curuser = snap.docs[0].id;
-    _firebaseFirestore.collection(COLLECTION).doc(curuser).update({
-      'dislike':[]
-    });
+    _firebaseFirestore
+        .collection(COLLECTION)
+        .doc(curuser)
+        .update({'dislike': []});
 
     // _firebaseFirestore.collection('testupdate').doc('update').update({
     //   'dislike': []
     // });
-
-    
   }
-
-
 }
