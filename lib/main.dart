@@ -34,8 +34,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     WidgetsFlutterBinding.ensureInitialized();
     Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+        // options: DefaultFirebaseOptions.currentPlatform,
+        );
     getLoggedInState();
     super.initState();
   }
