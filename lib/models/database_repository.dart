@@ -175,6 +175,7 @@ class DatabaseRepository implements BaseDatabaseRepository {
     email = auth.FirebaseAuth.instance.currentUser?.email;
     QuerySnapshot snap = await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get();
     String curuser = snap.docs[0].id;
+    
     _firebaseFirestore.collection(COLLECTION).doc(curuser).update({
       'dislike':[]
     });
@@ -182,9 +183,14 @@ class DatabaseRepository implements BaseDatabaseRepository {
     // _firebaseFirestore.collection('testupdate').doc('update').update({
     //   'dislike': []
     // });
-
-    
   }
 
+  @override
+  setRating(double rating,String ratedUser) {
+    //first check if rating db already have current rating or not
+    _firebaseFirestore.collection('UserRating');
+  }
+
+  
 
 }
