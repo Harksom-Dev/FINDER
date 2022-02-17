@@ -10,12 +10,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:loginsystem/models/user_model.dart';
 
+import '../../provider/matching_provider.dart';
+
 part 'swipe_event.dart';
 part 'swipe_state.dart';
 
 class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   final DatabaseRepository _databaseRepository;
-  StreamSubscription? _databaseSubscription;
+  final _matchingProvider = MatchingProvider();
+
   SwipeBloc({
     required DatabaseRepository databaseRepository}) 
     : _databaseRepository = databaseRepository,
@@ -84,7 +87,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
 
         // perfrom checkMatch @ this point
         if (cerentUserEmail != null) {
-        checkMatchByEmail(
+        _matchingProvider.checkMatchByEmail(
             (cerentUserEmail), event.user.email);
       }
         yield SwipeLoaded(users: List.from(state.users)..remove(event.user));
@@ -92,28 +95,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     }
   }
 
-    Future<void> checkMatchByEmail(
-      String cerentUserEmail, String userWhoGotLikedEmail) async {
-    var tempCurrenUser = _databaseRepository.getUserByEmail(cerentUserEmail);
-    var tempUserWhoGotLiked =
-        _databaseRepository.getUserByEmail(userWhoGotLikedEmail);
-    User? currentUser = await tempCurrenUser;
-    User? userWhoGotLiked = await tempUserWhoGotLiked;
-
-    List<List> likeAndDisLikeList = await _databaseRepository
-        .getLikedAndUnlikedListByID(userWhoGotLiked!.id);
-
-    // likeAndDisLikeList index 0 is likeList and index 1 is dislikeList
-    List likeList = likeAndDisLikeList[0];
-
-    if (likeList.contains(currentUser!.id)) {
-      print(currentUser.name + " match with " + userWhoGotLiked.name);
-    } else {
-      print(currentUser.name + " not match with " + userWhoGotLiked.name);
-    }
-  }
-
-    Future<void> addLikedUserToList(User user) async {
+  Future<void> addLikedUserToList(User user) async {
     User? curentUser = 
         await _databaseRepository.getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email);
     User? userWhoGotLiked = 
