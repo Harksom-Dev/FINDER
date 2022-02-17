@@ -1,24 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
-import 'package:loginsystem/config/theme.dart';
-import 'package:loginsystem/helper/constants.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
+import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/custom_appbar.dart';
 import 'package:loginsystem/widgets/user_card.dart';
-import 'package:loginsystem/widgets/user_image_small.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:loginsystem/widgets/Menu_button.dart';
 
-class HomeScreen extends StatelessWidget {
-  DatabaseRepository _databaseRepository = DatabaseRepository();
+class HomeScreen extends StatefulWidget {
   static const String routeName = '/';
-  
+
   static Route route() {
     return MaterialPageRoute(
       builder: (_) => HomeScreen(),
@@ -26,15 +19,23 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // trying to fetch all user except user that cur login (maybe need to move this func to somewhere better than this )
-  suggest() async {
-    String userEmail = await HelperFunction.getUserEmailSharedPreference();
-    //print(userEmail);
-    List<User> userlist = await _databaseRepository.usertoList();
-    User.set(userlist,userEmail);
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-    //suggest algo testing
-    _databaseRepository.userInterested();
+class _HomeScreenState extends State<HomeScreen> {
+  final DatabaseRepository _databaseRepository = DatabaseRepository();
+
+  @override
+  void initState() {
+    
+    _databaseRepository.userLikedAndDisliked();
+    BlocProvider.of<SwipeBloc>(context)
+        .add(LoadUsersEvent(users: User.users));
+    // if(User.isdislikeclear){
+    //   _databaseRepository.cleardislike();
+    // }
+    super.initState();
   }
 
   @override
@@ -45,7 +46,7 @@ class HomeScreen extends StatelessWidget {
       appBar: CustomAppBar(),
       body: BlocBuilder<SwipeBloc, SwipeState>(
         builder: (context, state) {
-          final maxWid = MediaQuery.of(context).size.width as double;
+          final maxWid = MediaQuery.of(context).size.width;
           // which ui to render
           if (state is SwipeLoading) {
             // if we at the
@@ -53,7 +54,7 @@ class HomeScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is SwipeLoaded) {
-            suggest();
+            // suggest();
             // swipe loaded state
             return Column(
               children: [
@@ -182,4 +183,5 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
 }

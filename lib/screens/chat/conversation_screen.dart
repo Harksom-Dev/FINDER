@@ -42,7 +42,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   Widget ChatMessageList() {
-    final subscription = chatMessageStream!.listen(
+    final subscription = chatMessageStream?.listen(
       (data) => {
         _scrollController.animateTo(_scrollController.position.maxScrollExtent,
             duration: Duration(milliseconds: 300), curve: Curves.easeOut),

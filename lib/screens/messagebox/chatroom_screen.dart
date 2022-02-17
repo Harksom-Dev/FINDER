@@ -131,6 +131,7 @@ class _ChatRoomState extends State<ChatRoom> {
               icon: Icon(Icons.logout_rounded, color: Color(0xFFF101010)),
               onPressed: () {
                 auth.signOut().then((value) {
+                  
                   Navigator.pushNamed(context, "/first");
                   print("first auth!");
                 });
