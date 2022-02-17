@@ -9,15 +9,30 @@ class LoginAppbar extends StatelessWidget with PreferredSizeWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Row(mainAxisAlignment: MainAxisAlignment.center, children: []),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: InkWell(
+                onTap: () => Navigator.of(context).pop(),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: <Color>[
-                  Color(0xFFF594B7),
-                  Color(0xFFF594B7),
+                  Color(0xFF92B2FD),
+                  Color(0xFF92B2FD),
                 ]),
           ),
         ),
@@ -27,5 +42,5 @@ class LoginAppbar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(30.0);
+  Size get preferredSize => Size.fromHeight(40.0);
 }
