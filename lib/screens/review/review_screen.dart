@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/widgets/appBar_userreview.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
 class ReviewScreen extends StatelessWidget {
+  DatabaseRepository _databaseRepository = DatabaseRepository();
   static const String routeName = '/review';
   static Route route({required String userEmail}) {
     return MaterialPageRoute(
@@ -134,6 +136,7 @@ class ReviewScreen extends StatelessWidget {
       onSubmitted: (response) {
         print('rating: ${response.rating}, comment: ${response.comment}');
         // TODO: add your own logic
+        _databaseRepository.setRating(response.rating, userEmail);
         // if (response.rating < 3.0) {
         //   // send their comments to your email or anywhere you wish
         //   // ask the user to contact you instead of leaving a bad review

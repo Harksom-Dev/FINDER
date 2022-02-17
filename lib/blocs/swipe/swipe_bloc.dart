@@ -131,7 +131,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
         .collection('tempusers')
         .doc(curuser)
         .update({'like': likeList});
-    //แก้ด้วย
+    //แก้แล้ว
     // FirebaseFirestore.instance
     //     .collection('tempusers')
     //     .doc('user' + curentUser.id.toString())
