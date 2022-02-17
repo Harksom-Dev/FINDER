@@ -40,8 +40,6 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   }
 
 
-
-
   //now we dont care what parameter we get from loaduserevent we always gonna use usersList in class User
   Stream<SwipeState> _mapLoadUsersToState(  
     LoadUsersEvent event,

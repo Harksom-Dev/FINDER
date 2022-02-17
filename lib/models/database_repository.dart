@@ -9,29 +9,6 @@ class DatabaseRepository implements BaseDatabaseRepository {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final COLLECTION = 'tempusers'; //current collection use
 
-  Future<List<User>> getUser() async {
-    String? email;
-    email = auth.FirebaseAuth.instance.currentUser?.email;
-    print(email);
-
-    QuerySnapshot qshot = await FirebaseFirestore.instance
-        .collection(COLLECTION)
-        .where("email", isEqualTo: email)
-        .get();
-    return qshot.docs
-        .map((doc) => User(
-              id: doc['id'],
-              name: doc['name'],
-              age: doc['age'],
-              imageUrls: doc['imageUrls'],
-              bio: doc['bio'],
-              interested: doc['interested'],
-              email: doc['email'],
-              like: doc['like'],
-              dislike: doc['dislike'],
-            ))
-        .toList();
-  }
 
   @override
   Future<List<User>> getAllDataFromCollection(String collectionName) async {
@@ -70,25 +47,10 @@ class DatabaseRepository implements BaseDatabaseRepository {
     return null;
   }
 
+  @override
   Future<void> updateUserPicture(String imageName) async {
     // String downloadUrl = await StorageRepository().getDownloadURL(imageName);
     // return _firebaseFirestore.collection('users').doc('user1').update({'imageUrls':FieldValue.arrayUnion([downloadUrl])});
-  }
-
-  Stream<List<User>> getAllUsers() {
-    //trting to get all of users data collectiong from firebase and pass it to userfromSnapshot in user_model
-    return _firebaseFirestore.collection('users').snapshots().map((snap) =>
-        User.userfromSnapshot(
-            snap)); //maybe use forloop for add a user in this snapshot
-  }
-
-  @override
-  testdb() async {
-    List<User> test = [];
-    _firebaseFirestore
-        .collection(COLLECTION)
-        .where("email", isNotEqualTo: 'user1');
-    //_firebaseFirestore.collection(COLLECTION).doc('user1').collection('suggest').where("state",isNotEqualTo: 'hit').where("state",isNotEqualTo: 'pass').get();
   }
 
   @override
