@@ -14,6 +14,7 @@ import 'package:loginsystem/screens/register/register_2.dart';
 import 'package:loginsystem/screens/review/review_screen.dart';
 import 'package:loginsystem/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:loginsystem/screens/edit_profile/uploadpicture.dart';
 
 class AppRouter {
   static Route onGenerateRoute(RouteSettings setting) {
@@ -33,6 +34,8 @@ class AppRouter {
         return ReviewScreen.route(userEmail: setting.arguments as String);
       case UsersScreen.routeName:
         return UsersScreen.route(user: setting.arguments as User);
+      case UploadPicture.routeName:
+        return UploadPicture.route();
       case ConversationScreen.routeName: //chatroom
         return ConversationScreen.route(
             chatroomId: setting.arguments as String,

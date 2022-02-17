@@ -7,3 +7,7 @@ export 'menuTab.dart';
 export 'appBar_userreview.dart';
 export 'registerAppbar.dart';
 export 'loginAppbar.dart';
+export 'appbar_editprofile.dart';
+export 'button_editprofile.dart';
+export 'profile_editprofile.dart';
+export 'textfield_editprofile.dart';

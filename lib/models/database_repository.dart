@@ -4,6 +4,7 @@ import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/base_database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
+import 'package:loginsystem/screens/edit_profile/uploadpicture.dart';
 
 
 
@@ -14,15 +15,20 @@ final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   Stream<User> getUser() { // get 1 user from firebase
 
     return _firebaseFirestore.collection('users')
-            .doc('user1').snapshots().map((snap) => User.fromSnapshot(snap));
+            .doc('user1')
+            .snapshots()
+            .map((snap) => User.fromSnapshot(snap));
   }
 
 
   @override
   Future<void> updateUserPicture(String imageName) async {
 
-    // String downloadUrl = await StorageRepository().getDownloadURL(imageName);
-    // return _firebaseFirestore.collection('users').doc('user1').update({'imageUrls':FieldValue.arrayUnion([downloadUrl])});
+     String downloadUrl = await StoragePicture().getDownloadURL(imageName);
+     return _firebaseFirestore.collection('users')
+     .doc('user1')
+     .update({'imageUrls':FieldValue
+     .arrayUnion([downloadUrl])});
   }
 
   @override

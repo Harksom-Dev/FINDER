@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:loginsystem/models/user_model.dart';
+import 'package:loginsystem/widgets/widget.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
@@ -12,27 +15,63 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User user = User.users[0];
+ 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile"),
-      ),
-      body: Center(
-          child: Column(
+      appBar: buildAppBar(context),
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
         children: [
-          ElevatedButton(
-            child: Text(" < "),
-            onPressed: () {
-              Navigator.pushNamed(context, "/");
-            },
+          ProfileWidget(
+            imagePath: user.imageUrls[0],
+            onClicked: () async {},
           ),
-          ElevatedButton(
-            child: Text(" Edit Profile "),
-            onPressed: () {
-              Navigator.pushNamed(context, "/editprofile");
-            },
-          )
+          const SizedBox(height: 24),
+          buildName(user),
+          const SizedBox(height: 0),
+          buildAbout(user),
+          
+          const SizedBox(height: 48),
+          Center(child: buildEditButton(context)),
         ],
-      )),
+      ),
     );
   }
+
+  Widget buildName(User user) => Column(
+        children: [
+          Text(
+            user.name,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          const SizedBox(height: 4),
+          
+        ],
+      );
+
+   
+
+  Widget buildAbout(User user) => Container(
+        padding: EdgeInsets.symmetric(horizontal: 48),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Bio',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              user.bio,
+              style: TextStyle(fontSize: 16, height: 1.4),
+            ),
+          ],
+        ),
+      );
+      Widget buildEditButton(BuildContext context) => ButtonWidget(
+        text: 'Edit Profile',
+        onClicked: () {
+          Navigator.pushNamed(context, "/editprofile");
+        },
+      );
 }
