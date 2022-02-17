@@ -7,6 +7,7 @@ import 'package:loginsystem/models/profile.dart';
 import 'package:date_field/date_field.dart';
 import 'package:loginsystem/screens/register/register_2.dart';
 import 'package:loginsystem/widgets/widget.dart';
+import 'package:loginsystem/screens/register/customvalidator.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -29,15 +30,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Profile(name: '', email: '', password: '', dob: '', interest: []);
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-
+  String password = '';
+  final DateTime now = DateTime.now();
+  //* Validator
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'Please enter your the password.'),
     MinLengthValidator(6, errorText: 'Password must be at least 6 characters.'),
-    // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-    //     errorText: 'Passwords must have at least one special character')
   ]);
-  String password = '';
-  final DateTime now = DateTime.now();
+  final nameValidator = MultiValidator([
+    RequiredValidator(errorText: 'Please enter your the name.'),
+    PatternValidator(r'^([A-z\\.-ᶜ]*(\s))*[A-z\\.-ᶜ]*\D$',
+        errorText: "Name is invalid."),
+  ]);
+  final mailValidator = MultiValidator([
+    RequiredValidator(errorText: "Please enter your email address."),
+    EmailValidator(errorText: "Email is invalid"),
+    CustomValidator("Email is already in use"),
+  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Text("Name: ",
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
-                                    validator: RequiredValidator(
-                                        errorText: "Please enter your name."),
+                                    validator: nameValidator,
                                     onSaved: (String? value) {
                                       profile.name = value!;
                                     },
@@ -114,13 +122,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Text("Email: ",
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
-                                    validator: MultiValidator([
-                                      RequiredValidator(
-                                          errorText:
-                                              "Please enter your email address."),
-                                      EmailValidator(
-                                          errorText: "Email is invalid")
-                                    ]),
+                                    validator: mailValidator,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     keyboardType: TextInputType.emailAddress,
                                     onSaved: (String? email) {
                                       profile.email = email!;
@@ -146,8 +150,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     // initialDate: new DateTime.now(),
-                                    firstDate: new DateTime(1922),
-                                    lastDate: new DateTime(2023),
+                                    firstDate: DateTime(1922),
+                                    lastDate: DateTime(2023),
                                     validator: (e) {
                                       if (profile.dob == null ||
                                           e != profile.dob) {
@@ -215,6 +219,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         onPressed: () async {
                                           if (formKey.currentState!
                                               .validate()) {
+                                            Future.delayed(
+                                                const Duration(seconds: 1));
                                             formKey.currentState!.save();
                                             try {
                                               Navigator.push(
