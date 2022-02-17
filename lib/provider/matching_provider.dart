@@ -87,7 +87,6 @@ class MatchingProvider {
               "matchWith": FieldValue.arrayUnion([userID])
             });
           }
-        });
-
+    });
   }
 }
