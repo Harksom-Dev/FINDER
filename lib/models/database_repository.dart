@@ -73,17 +73,31 @@ class DatabaseRepository implements BaseDatabaseRepository {
 
   @override
   Future<void> updateUserPicture(String imageName) async {
-
     String downloadUrl = await StoragePicture().getDownloadURL(imageName);
-    
-    QuerySnapshot snap = await FirebaseFirestore.instance.collection('tempusers').where("email",isEqualTo: auth.FirebaseAuth.instance.currentUser?.email).get();
+
+    QuerySnapshot snap = await FirebaseFirestore.instance
+        .collection('tempusers')
+        .where("email",
+            isEqualTo: auth.FirebaseAuth.instance.currentUser?.email)
+        .get();
     String curuser = snap.docs[0].id;
-    
+    print('updating image . . .');
+
     FirebaseFirestore.instance
         .collection('tempusers')
         .doc(curuser)
         .update({'imageUrls': downloadUrl});
-  
+  }
+
+  @override
+  Future<void> updateUserName(String FullName) {
+    String dowloadFullName = 'a';
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateUserAbout(String About) {
+    throw UnimplementedError();
   }
 
   Stream<List<User>> getAllUsers() {

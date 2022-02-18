@@ -1,9 +1,8 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loginsystem/models/base_database_repository.dart';
+
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:loginsystem/models/database_repository.dart';
 
@@ -60,17 +59,19 @@ class StoragePicture {
   @override
   Future<void> uploadImage(XFile image) async {
     try {
-      await storage.ref('image/${'user_1.png'}')
-      .putFile(File(image.path))
-      .then((p0) => DatabaseRepository().updateUserPicture(image.name));
+      await storage
+          .ref('image/${'user_1.jpg'}')
+          .putFile(File(image.path))
+          .then((p0) => DatabaseRepository().updateUserPicture(image.name));
     } catch (_) {}
   }
 
   @override
   Future<String> getDownloadURL(String imageName) async {
     print('uploading to clound . . .');
-    String downloadURL = await storage.ref('user1/$imageName')
-    .getDownloadURL();
+
+    String downloadURL = await storage.ref('tempusers/$imageName').getDownloadURL();
+    print('getDownloadURL');
 
     return downloadURL;
   }

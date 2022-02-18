@@ -11,3 +11,4 @@ export 'appbar_editprofile.dart';
 export 'button_editprofile.dart';
 export 'profile_editprofile.dart';
 export 'textfield_editprofile.dart';
+export 'custom_text_container.dart';

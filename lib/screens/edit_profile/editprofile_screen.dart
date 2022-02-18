@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:loginsystem/models/user_model.dart';
+import 'package:loginsystem/models/database_repository.dart';
+import 'package:loginsystem/models/models.dart';
 import 'package:loginsystem/widgets/widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
