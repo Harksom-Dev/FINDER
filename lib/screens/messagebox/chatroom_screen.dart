@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/config/theme.dart';
 import 'package:loginsystem/models/database_repository.dart';
+import 'package:loginsystem/models/match_data_model.dart';
+import 'package:loginsystem/models/user_model.dart';
+import 'package:loginsystem/provider/matching_provider.dart';
 import 'package:loginsystem/screens/home/home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as Auth;
 import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
@@ -29,11 +32,15 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
-  final auth = FirebaseAuth.instance;
+  final auth = Auth.FirebaseAuth.instance;
   DatabaseMethods databaseMethods = new DatabaseMethods();
+  final MatchingProvider _matchingProvider = new MatchingProvider();
   DatabaseRepository _databaseRepository = new DatabaseRepository();
   Stream? chatRoomStream;
-  ScrollController _scrollController = ScrollController();
+  Stream? matchedStream;
+  final ScrollController _scrollController = ScrollController();
+  late MatchData matchList;
+
   Widget chatRoomList() {
     return StreamBuilder<dynamic>(
         stream: chatRoomStream,
@@ -44,19 +51,57 @@ class _ChatRoomState extends State<ChatRoom> {
               SizedBox(
                 // here is where match person is
                 width: MediaQuery.of(context).size.width,
-                height: 60,
-                child: Container(
-                  // match person replace here
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFFFFFF), // white background
-                  ),
-                ),
+                height: 80,
+                child: StreamBuilder<dynamic>(
+                    stream: matchedStream,
+                    builder: (context, snapshot) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            child: Stack(
+                              children: [
+                                snapshot.hasData
+                                    ? ListView.builder(
+                                        itemCount: snapshot.data!.docs.length,
+                                        itemBuilder: (context, index) {
+                                          return SingleChildScrollView(
+                                            child: Row(
+                                              children: [
+                                                UserMatchTile(
+                                                    snapshot
+                                                        .data!
+                                                        .docs[index]
+                                                            ["chatroomid"]
+                                                        .toString()
+                                                        .replaceAll("_", "")
+                                                        .replaceAll(
+                                                            Constants.myEmail,
+                                                            ""),
+                                                    snapshot.data!.docs[index]
+                                                        ["chatroomid"],
+                                                    snapshot.data!.docs[index]
+                                                        ["chatroomid"]),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Container(),
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    }
+                    // match person replace here
+
+                    ),
               ), // end of match person section
               Text("Messages", style: Theme.of(context).textTheme.headline2),
               SizedBox(
                 // message list
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 1.7,
+                height: MediaQuery.of(context).size.height / 1.78,
                 child: Stack(children: [
                   snapshot.hasData
                       ? ListView.builder(
@@ -92,6 +137,8 @@ class _ChatRoomState extends State<ChatRoom> {
   void initState() {
     // TODO: implement initState
     getUserInfo();
+    getMatchedData();
+    //initMatch(_databaseRepository.getUserByEmail(Constants.myEmail));
     super.initState();
   }
 
@@ -103,6 +150,14 @@ class _ChatRoomState extends State<ChatRoom> {
       });
     });
     setState(() {});
+  }
+
+  getMatchedData() async {
+    databaseMethods.getMatchdata(Constants.myEmail).then((value) {
+      setState(() {
+        matchedStream = value;
+      });
+    });
   }
 
   @override
@@ -146,13 +201,21 @@ class _ChatRoomState extends State<ChatRoom> {
       ),
     );
   }
+
+  //TODO: implement MatchData List
+/*   Future<void> initMatch(Future<User?> user) async {
+    _matchingProvider
+        .getMatchedDataByUser(user)
+        .then((data) => matchList = data);
+  } */
+  //// please be easy
 }
 
 class ChatRoomTile extends StatelessWidget {
   final String userEmail;
   final String chatRoomId;
   ChatRoomTile(this.userEmail, this.chatRoomId);
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +230,7 @@ class ChatRoomTile extends StatelessWidget {
             arguments: {chatRoomId, userEmail});*/
       },
       child: Container(
-        color: Colors.black26,
+        color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
           children: [
@@ -186,6 +249,49 @@ class ChatRoomTile extends StatelessWidget {
             Text(
               userEmail,
               style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class UserMatchTile extends StatelessWidget {
+  final String userEmail;
+  final String chatRoomId;
+  final String userName;
+  String name = '';
+  UserMatchTile(this.userEmail, this.chatRoomId, this.userName);
+  final ScrollController _scrollController = ScrollController();
+
+  test() {}
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ConversationScreen(chatRoomId, userEmail)),
+        );
+        /*Navigator.pushNamed(context, "/realchat",
+            arguments: {chatRoomId, userEmail});*/
+      },
+      child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          children: [
+            Container(
+              height: 61,
+              width: 61,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Color(0xFFF69090),
+                  borderRadius: BorderRadius.circular(40)),
+              child: Text(
+                  "${userName.substring(0, 1).toUpperCase()}"), //this child will show the name or thumbnail
             ),
           ],
         ),
