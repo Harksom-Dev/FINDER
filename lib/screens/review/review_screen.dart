@@ -1,6 +1,8 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/models/database_repository.dart';
+import 'package:loginsystem/models/unmatch_provider.dart';
 import 'package:loginsystem/widgets/appBar_userreview.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
@@ -89,6 +91,10 @@ class ReviewScreen extends StatelessWidget {
           InkWell(
               onTap: () {
                 print("UnMatch was click");
+                UnmatchProvider().removeLike(userEmail);
+                UnmatchProvider().removeChatroom(FirebaseAuth.instance.currentUser?.email, userEmail);
+                Navigator.pushNamed(context, "/realmessageBox");
+                            print("Message box !");
               },
               child: Container(
                 alignment: Alignment.center,
