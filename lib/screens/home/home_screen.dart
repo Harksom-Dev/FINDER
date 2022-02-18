@@ -83,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         feedback: UserCard(user: state.users[0]),
                         //childWhenDragging: UserCard(user: state.users[1]),
                         onDragEnd: (drag) {
-                          while (User.users != null) {
                             if (drag.velocity.pixelsPerSecond.dx <
                                 -0.4 * maxWid) {
                               context.read<SwipeBloc>()
@@ -97,7 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             } else {
                               print('Do nothing');
                             }
-                          }
                         },
                       ),
                     ),

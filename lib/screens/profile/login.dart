@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: InkWell(
                                       onTap: () async {
                                         await new Future.delayed(
-                                            const Duration(seconds: 3));
+                                            const Duration(seconds: 1));
                                         if (formKey.currentState!.validate()) {
                                           formKey.currentState!.save();
                                           try {
