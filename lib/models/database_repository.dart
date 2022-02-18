@@ -211,4 +211,26 @@ class DatabaseRepository implements BaseDatabaseRepository {
     //   'dislike': []
     // });
   }
+  @override
+  getUserRating() async{
+    User? currentUser = await getUserByEmail(auth.FirebaseAuth.instance.currentUser!.email);
+    var userid = currentUser?.id;
+
+    List<dynamic> reviewbyList =[];
+    await _firebaseFirestore
+        .collection('UserRating')
+        .where("uid", isEqualTo: userid)
+        .get()
+        .then((snapshot) {
+      // print(snapshot.docs[0]['interested']);
+      reviewbyList = snapshot.docs[0]['reviewby'];
+    });
+    double sum = 0;
+    for(int i = 0;i<reviewbyList.length;i++){
+      // print(reviewbyList[i]['rating']);
+      sum += reviewbyList[i]['rating'];
+    }
+    print(sum/reviewbyList.length);
+  }
+
 }

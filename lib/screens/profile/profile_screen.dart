@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/widget.dart';
+import 'package:loginsystem/models/database_repository.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
@@ -34,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          buildreview(user),
+          buildreview(user),DatabaseRepository.getUserRating(),
           Stack(children: [
             Padding(padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -94,8 +95,8 @@ class ProfileScreen extends StatelessWidget {
               'Review',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
-            Text('Review'),
+          
+          
           ],
         ),
       );
