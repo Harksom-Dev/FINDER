@@ -22,19 +22,10 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final User user = User.users[0];
-  TextEditingController displayNameController = TextEditingController();
-  TextEditingController bioController = TextEditingController();
-  bool _displayNameValid = true;
-  bool _bioValid = true;
-  bool isLoading = false;
+  
 
   DatabaseRepository _databaseRepository = DatabaseRepository();
-   @override
-  void initState() {
-    super.initState();
-    displayNameController.text = user.name;
-    bioController.text = user.bio;
-  }
+ 
   
   @override
   Widget build(BuildContext context) {
@@ -66,15 +57,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             onChanged: (about) {
               print('name ');
             },
-          ),Column(crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
-              controller: displayNameController,
-              decoration: InputDecoration(hintText: "Update Display Name ",
-              errorText: _displayNameValid ? null : "Display Name too short"),
-            )
-          ],)
-          ,
+          ),
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
