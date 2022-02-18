@@ -54,10 +54,12 @@ class MatchingProvider {
           if (snapshot.docs.isEmpty) {
             // if dont have any object contains id = currentUser.id
             // it will create new doc and field to collection
-
+            Map<String, dynamic> mapForMatchWith = {"id": user.email,"name": user.name};
             Map<String, dynamic> dataForCurrentUser = {
               "id": currentUserID,
-              "matchWith": [userID],
+              "email": currentUser.email,
+              "name": currentUser.name,
+              "matchWith": [mapForMatchWith]
             };
 
             _firebaseFirestore
@@ -68,7 +70,7 @@ class MatchingProvider {
           } else {
             // if have any object contains id = currentUser.id
             // it will update field matchWith to collection
-
+            Map<String, dynamic> mapForMatchWith = {"id": user.email,"name": user.name};
             QuerySnapshot snap = 
             await _firebaseFirestore
                 .collection(COLLECTION)
@@ -79,7 +81,7 @@ class MatchingProvider {
                 .collection(COLLECTION)
                 .doc(currentDocID)
                 .update({
-              "matchWith": FieldValue.arrayUnion([userID])
+              "matchWith": FieldValue.arrayUnion([mapForMatchWith])
             });
           }
     });
