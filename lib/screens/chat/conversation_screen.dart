@@ -26,6 +26,7 @@ class ConversationScreen extends StatefulWidget {
 }
 
 class _ConversationScreenState extends State<ConversationScreen> {
+  double screenHeight = 0;
   int messageNum = 0;
   var messageSize = 0;
   bool isFetch = true;
@@ -51,40 +52,14 @@ class _ConversationScreenState extends State<ConversationScreen> {
   
 
   Widget ChatMessageList() {
-    _scrollController.addListener(() {
-      // print(_scrollController.offset);
-      print('hiiiiiiiiiiiiiiiiiiiiii');
-      if(_scrollController.offset == 0 && (messageNum < messageSize )){
-        print('heloooooooooo');
-        
-      //   isFetch = true;
-      //   messageNum += 10;
-      //   databaseMethods.allMessageSize(widget.chatRoomId);
-      //   messageSize = Message.getSize();
-      //   databaseMethods.getConversationMessages(widget.chatRoomId,messageNum).then((value) {
-      // setState(() {
-      //   chatMessageStream = value;
-      // });
-      //   });
-      }
-    });
     final subscription = chatMessageStream?.listen(
       (data) => {
-        // print('is First = $isFirst'),
-        // if(isFirst){
-        //   _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-        //     duration: Duration(milliseconds: 300), curve: Curves.easeOut),
-        //   isFirst = false
-        // },
         if(!isFetch){
           _scrollController.animateTo(_scrollController.position.maxScrollExtent,
             duration: Duration(milliseconds: 300), curve: Curves.easeOut),
         }else{
           isFetch = false
         },
-        print('is last fist =  $isFirst')
-        // print('loadddddd????????????????????????'),
-        
       },
     );
     return StreamBuilder<dynamic>(
@@ -155,9 +130,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   @override
   void initState() {
-    _scrollController = ScrollController();
+    //temporaly initial offset 
+    _scrollController = ScrollController(initialScrollOffset: 2000);
     // TODO: implement initState
-    print('hello');
     messageNum = 10;
     databaseMethods.allMessageSize(widget.chatRoomId);
     messageSize = Message.getSize();
@@ -167,7 +142,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       });
       isFirst = true;
     });
-    _scrollController.addListener(() {
+    _scrollController.addListener(() {;
       // print(_scrollController.offset);
       if(_scrollController.offset == 0 && (messageNum < messageSize )){
         // print('loadnew messgae');
@@ -188,6 +163,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
