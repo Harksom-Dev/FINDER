@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
@@ -27,7 +28,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final DatabaseRepository _databaseRepository = DatabaseRepository();
-
+  bool _isLoading = true;
   @override
   void initState() {
     _databaseRepository.userLikedAndDisliked();
@@ -37,6 +38,18 @@ class _HomeScreenState extends State<HomeScreen> {
       _databaseRepository.cleardislike();
     } */
     super.initState();
+    //Using Timer
+    Timer(Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+    //Future.delayed
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -95,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ..add(SwipeLeftEvent(user: state.users[0]));
                             print("swipe left");
                           } else if (drag.velocity.pixelsPerSecond.dx >
-                              0.4 * maxWid) {
+                              0.6 * maxWid) {
                             context.read<SwipeBloc>()
                               ..add(SwipeRightEvent(user: state.users[0]));
                             print('Swipe Right');
