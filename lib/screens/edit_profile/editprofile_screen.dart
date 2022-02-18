@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, use_function_type_syntax_for_parameters
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/models/database_repository.dart';
@@ -20,6 +22,20 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final User user = User.users[0];
+  TextEditingController displayNameController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
+  bool _displayNameValid = true;
+  bool _bioValid = true;
+  bool isLoading = false;
+
+  DatabaseRepository _databaseRepository = DatabaseRepository();
+   @override
+  void initState() {
+    super.initState();
+    displayNameController.text = user.name;
+    bioController.text = user.bio;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,51 +46,49 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         children: [
           ProfileWidget(
             imagePath: user.imageUrls[0],
-            onClicked: () async {Navigator.pushNamed(context, "/uploadPicture");},
+            onClicked: () async {
+              Navigator.pushNamed(context, "/uploadPicture");
+            },
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
             label: 'Full Name',
             text: user.name,
-            onChanged: (name) {},
+            onChanged: (name) {
+              print("Text $name");
+            },
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
             label: 'About',
             text: user.bio,
             maxLines: 3,
-            onChanged: (about) {},
-          ),
+            onChanged: (about) {
+              print('name ');
+            },
+          ),Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextField(
+              controller: displayNameController,
+              decoration: InputDecoration(hintText: "Update Display Name ",
+              errorText: _displayNameValid ? null : "Display Name too short"),
+            )
+          ],)
+          ,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              ButtonTheme(
+                  child: RaisedButton(
+                onPressed: () => {},
+                child: Text('Save'),
+              ))
+            ],
+          )
         ],
       ),
     );
   }
 }
-class thisusser extends Equatable{
-  final int id;
-  final String name;
-  final int age;
-  final List<dynamic> imageUrls;
-  final String bio;
-  final List<dynamic> interested;
-  final String email;
-  final List<dynamic> like;
-  final List<dynamic> dislike;
 
-  const thisusser({
-    required this.id,
-    required this.name,
-    required this.age,
-    required this.imageUrls,
-    required this.bio,
-    required this.interested,
-    required this.email,
-    required this.like,
-    required this.dislike
-  });
 
-  @override
-  
-  List<Object?> get props => throw UnimplementedError();
-
-}

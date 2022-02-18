@@ -16,6 +16,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = User.users[0];
+    DatabaseRepository _databaseRepository = DatabaseRepository();
+    
 
     return Scaffold(
       appBar: buildAppBar(context),
@@ -35,18 +37,43 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          buildreview(user),DatabaseRepository.getUserRating(),
-          Stack(children: [
-            Padding(padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomTextContainer(text: 'c++'),
-                CustomTextContainer(text: 'Java'),
-                CustomTextContainer(text: '...'),
-              ],
-            ),)
-          ],)
+          Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Review',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      _databaseRepository.getUserRating().toString(),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextContainer(text: 'c++'),
+                    CustomTextContainer(text: 'Java'),
+                    CustomTextContainer(text: '...'),
+                  ],
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
@@ -95,16 +122,13 @@ class ProfileScreen extends StatelessWidget {
               'Review',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-          
-          
           ],
         ),
       );
 
-  Widget buildinterest(User user) => Container(
-    
-  );
+  Widget buildinterest(User user) => Container();
 }
+
 class CustomTextContainer extends StatelessWidget {
   final String text;
 
@@ -144,4 +168,3 @@ class CustomTextContainer extends StatelessWidget {
     );
   }
 }
-

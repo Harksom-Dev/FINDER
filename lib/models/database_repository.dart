@@ -90,7 +90,8 @@ class DatabaseRepository implements BaseDatabaseRepository {
   }
 
   @override
-  Future<void> updateUserName(String FullName) {
+  Future<void> updateUserName(String FullName) async{
+    
     String dowloadFullName = 'a';
     throw UnimplementedError();
   }
@@ -211,12 +212,14 @@ class DatabaseRepository implements BaseDatabaseRepository {
     //   'dislike': []
     // });
   }
+
   @override
-  getUserRating() async{
-    User? currentUser = await getUserByEmail(auth.FirebaseAuth.instance.currentUser!.email);
+  getUserRating() async {
+    User? currentUser =
+        await getUserByEmail(auth.FirebaseAuth.instance.currentUser!.email);
     var userid = currentUser?.id;
 
-    List<dynamic> reviewbyList =[];
+    List<dynamic> reviewbyList = [];
     await _firebaseFirestore
         .collection('UserRating')
         .where("uid", isEqualTo: userid)
@@ -226,11 +229,16 @@ class DatabaseRepository implements BaseDatabaseRepository {
       reviewbyList = snapshot.docs[0]['reviewby'];
     });
     double sum = 0;
-    for(int i = 0;i<reviewbyList.length;i++){
+    for (int i = 0; i < reviewbyList.length; i++) {
       // print(reviewbyList[i]['rating']);
       sum += reviewbyList[i]['rating'];
     }
-    print(sum/reviewbyList.length);
+    double sumrate = sum / reviewbyList.length;
+    return sumrate;
+    // print(sum / reviewbyList.length);
   }
+@override
+  List<User> users = [
 
+  ];
 }
