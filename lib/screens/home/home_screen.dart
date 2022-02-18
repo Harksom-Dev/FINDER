@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     InkWell(
-                      onDoubleTap: () {
+                      onDoubleTap: () async {
                         Navigator.pushNamed(context, '/users',
                             arguments: state.users[0]);
                       },
@@ -82,20 +82,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: UserCard(user: state.users[0]),
                         feedback: UserCard(user: state.users[0]),
                         //childWhenDragging: UserCard(user: state.users[1]),
+                        childWhenDragging: UserCard(
+                            user: state.users.length == 1
+                                ? state.users[0]
+                                : state.users[1]),
                         onDragEnd: (drag) {
-                            if (drag.velocity.pixelsPerSecond.dx <
-                                -0.4 * maxWid) {
-                              context.read<SwipeBloc>()
-                                ..add(SwipeLeftEvent(user: state.users[0]));
-                              print("swipe left");
-                            } else if (drag.velocity.pixelsPerSecond.dx >
-                                0.4 * maxWid) {
-                              context.read<SwipeBloc>()
-                                ..add(SwipeRightEvent(user: state.users[0]));
-                              print('Swipe Right');
-                            } else {
-                              print('Do nothing');
-                            }
+                          if (drag.velocity.pixelsPerSecond.dx <
+                              -0.4 * maxWid) {
+                            context.read<SwipeBloc>()
+                              ..add(SwipeLeftEvent(user: state.users[0]));
+                            print("swipe left");
+                          } else if (drag.velocity.pixelsPerSecond.dx >
+                              0.4 * maxWid) {
+                            context.read<SwipeBloc>()
+                              ..add(SwipeRightEvent(user: state.users[0]));
+                            print('Swipe Right');
+                          } else {
+                            print('Do nothing');
+                          }
                         },
                       ),
                     ),
@@ -160,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // home
                               onTap: () {
                                 // cross button (X)
-                                Navigator.pushNamed(context, "/");
+                                /* Navigator.pushNamed(context, "/"); */
                                 print("homepage !");
                               },
                               child: Menubutton(

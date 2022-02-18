@@ -136,12 +136,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 .signInWithEmailAndPassword(
                                                     email: profile.email,
                                                     password: profile.password)
-                                                .then((value) {
+                                                .then((value) async {
                                               formKey.currentState!.reset();
                                               // Navigator.pushReplacement(context,
                                               // MaterialPageRoute(builder: (context){
                                               //     return ChatRoom();
                                               // }));
+                                              await new Future.delayed(
+                                                  const Duration(seconds: 3));
                                               Navigator.pushNamed(context, "/");
                                               print("swipe screen is home!");
                                             });
