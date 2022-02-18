@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/database_repository.dart';
@@ -252,9 +254,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 40,
                                 width: 140,
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFE29AC4),
+                                  //color: Color(0xFFE29AC4),
                                   borderRadius: BorderRadius.circular(40),
                                   border: Border.all(color: Colors.black26),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: const [
+                                        Color(0xFFF9851F),
+                                        Color(0xFFDF8F49),
+                                        Color(0xFFDF8F49),
+                                      ]),
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
