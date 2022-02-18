@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:loginsystem/helper/constants.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/base_database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 
