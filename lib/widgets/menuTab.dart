@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:loginsystem/widgets/Menu_button.dart';
 
@@ -25,9 +27,12 @@ class menutab extends StatelessWidget {
           children: [
             InkWell(
               // home
-              onTap: () {
+              onTap: () async {
                 // cross button (X)
-                Navigator.pushNamed(context, "/");
+                Timer(Duration(milliseconds: 300), () {
+                  Navigator.pushNamed(context, "/");
+                });
+
                 print("homepage !");
               },
               child: Menubutton(
@@ -40,7 +45,7 @@ class menutab extends StatelessWidget {
             ),
             InkWell(
               // home
-              onTap: () {
+              onTap: () async {
                 Navigator.pushNamed(context, "/realmessageBox");
                 print("Message box !");
               },

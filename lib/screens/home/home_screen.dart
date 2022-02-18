@@ -72,16 +72,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     InkWell(
-                      onDoubleTap: () {
+                      onDoubleTap: () async {
                         Navigator.pushNamed(context, '/users',
                             arguments: state.users[0]);
                       },
                       child: Draggable<User>(
-                        //axis: Axis.horizontal,
+                        axis: Axis.horizontal,
                         data: state.users[0],
                         child: UserCard(user: state.users[0]),
                         feedback: UserCard(user: state.users[0]),
                         //childWhenDragging: UserCard(user: state.users[1]),
+                        childWhenDragging: UserCard(
+                            user: state.users.length == 1
+                                ? state.users[0]
+                                : state.users[1]),
                         onDragEnd: (drag) {
                           if (drag.velocity.pixelsPerSecond.dx <
                               -0.4 * maxWid) {
