@@ -72,15 +72,18 @@ class User extends Equatable {
     if(user.length >= 15){      
       //in this case random number in our of user length 10 time and add to users list
       //first we need to random 10 number and check not to duplicate that number
-        int likeanddislike = userLiked.length + userdisliked.length; 
-        print('likeanddis is  $likeanddislike');
-        print(user.length-1);
-        if(likeanddislike == user.length){
-          print('clear');
-          userdisliked.clear();
-          isdislikeclear = true;
+      int size = user.length-userLiked.length;
+      int likeanddislike = userLiked.length + userdisliked.length; 
+      print('likeanddis is  $likeanddislike');
+      print(user.length-1);
+      if(likeanddislike == user.length){
+        print('clear');
+        userdisliked.clear();
+        isdislikeclear = true;
+      }else{
+          size = user.length - userdisliked.length - userLiked.length;
         }
-      for(int i = 0;i<15;i++){
+      for(int i = 0;i<size;i++){
         int r = 0 + rnd.nextInt(user.length);
         int targetuser = user[r].id;  //in the future we gonna change to String and become uid
         if(!rand.contains(r) && !userLiked.contains(targetuser) && !userdisliked.contains(targetuser)){

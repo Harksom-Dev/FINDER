@@ -175,6 +175,7 @@ class DatabaseRepository implements BaseDatabaseRepository {
     email = auth.FirebaseAuth.instance.currentUser?.email;
     QuerySnapshot snap = await _firebaseFirestore.collection(COLLECTION).where("email",isEqualTo: email).get();
     String curuser = snap.docs[0].id;
+
     _firebaseFirestore.collection(COLLECTION).doc(curuser).update({
       'dislike':[]
     });
@@ -182,9 +183,112 @@ class DatabaseRepository implements BaseDatabaseRepository {
     // _firebaseFirestore.collection('testupdate').doc('update').update({
     //   'dislike': []
     // });
-
-    
   }
 
+  @override
+  setRating(double rating,String ratedUser) async {
+
+    int ratedid = 0;
+    int currentid = 0;
+    String uid; //temp for use when we re allocate id to uid
+    await _firebaseFirestore
+        .collection(COLLECTION)
+        .where("email", isEqualTo: ratedUser)
+        .get()
+        .then((snapshot) {
+
+        ratedid = snapshot.docs[0]['id'];
+      
+    });
+    await _firebaseFirestore
+        .collection(COLLECTION)
+        .where("email", isEqualTo: auth.FirebaseAuth.instance.currentUser!.email)
+        .get()
+        .then((snapshot) {
+
+        currentid = snapshot.docs[0]['id'];
+      
+    });
+    QuerySnapshot snap = await _firebaseFirestore.collection('UserRating').where("uid",isEqualTo: ratedid).get();
+
+    //first check if rating db already have current rating or not
+    if(snap.docs.isEmpty){
+      Map<String,dynamic> rated = {
+        "rating": rating,
+        "uid": currentid
+      };
+      List<Map<String,dynamic>> ratingList = [rated];
+      Map<String, dynamic> ratingInfoMap = {
+        "uid": ratedid,
+        "reviewby": ratingList
+      };
+      //if this empty we need to create new doc in db
+      _firebaseFirestore
+      .collection('UserRating').add(ratingInfoMap);
+      
+    }else{//if curent id have already create
+    
+    //get a list of collection
+    List<dynamic> reviewbyList =[];
+    await _firebaseFirestore
+        .collection('UserRating')
+        .where("uid", isEqualTo: ratedid)
+        .get()
+        .then((snapshot) {
+      // print(snapshot.docs[0]['interested']);
+      reviewbyList = snapshot.docs[0]['reviewby'];
+    });
+    // print(reviewbyList);
+    //check if the current user is already rated it's or not ?
+    bool isadd = false;
+    for(int i = 0; i < reviewbyList.length;i++){
+      if(reviewbyList[i]['uid'] == currentid){//if it's already have we need to add
+        reviewbyList[i]['rating'] = rating; 
+        isadd = true;
+      }
+    }
+    //if it's already create doc but not have a data in reviewby list we need to addit
+    Map<String,dynamic> rated = {
+        "rating": rating,
+        "uid": currentid
+      };
+    if(!isadd){
+      reviewbyList.add(rated);
+    }
+    //update to firebase
+
+    QuerySnapshot snap = await _firebaseFirestore.collection('UserRating').where("uid",isEqualTo: ratedid).get();
+    String curuser = snap.docs[0].id;
+
+    _firebaseFirestore.collection('UserRating').doc(curuser).update({
+      'reviewby': reviewbyList
+      });
+
+
+    }
+
+  }
+  // backend for get current user rating
+  //return an double of all rating
+  getUserRating() async{
+    User? currentUser = await getUserByEmail(auth.FirebaseAuth.instance.currentUser!.email);
+    var userid = currentUser?.id;
+
+    List<dynamic> reviewbyList =[];
+    await _firebaseFirestore
+        .collection('UserRating')
+        .where("uid", isEqualTo: userid)
+        .get()
+        .then((snapshot) {
+      // print(snapshot.docs[0]['interested']);
+      reviewbyList = snapshot.docs[0]['reviewby'];
+    });
+    double sum = 0;
+    for(int i = 0;i<reviewbyList.length;i++){
+      // print(reviewbyList[i]['rating']);
+      sum += reviewbyList[i]['rating'];
+    }
+    print(sum/reviewbyList.length);
+  }
 
 }

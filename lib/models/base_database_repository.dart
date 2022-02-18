@@ -14,4 +14,5 @@ abstract class BaseDatabaseRepository{
   userInterested();
   userLikedAndDisliked();
   cleardislike();
+  setRating(double rating,String ratedUser);
 }
