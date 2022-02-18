@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loginsystem/models/message_model.dart';
 
 class DatabaseMethods {
   getUserByEmail(String username) async {
@@ -10,9 +11,10 @@ class DatabaseMethods {
 
   uploadUserInfo(userMap) {
     print(userMap);
-    FirebaseFirestore.instance.collection("test").add(userMap).catchError((e) {
+    FirebaseFirestore.instance.collection("users").add(userMap).catchError((e) {
       print("failed to add user: $e");
     });
+    print("database pushed");
   }
 
   createChatRoom(String chatRoomId, chatRoomMap) {
@@ -36,15 +38,31 @@ class DatabaseMethods {
     });
   }
 
-  getConversationMessages(String chatRoomId) async {
-    return await FirebaseFirestore.instance
+  getConversationMessages(String chatRoomId,int messageNum) async {
+    return  FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
         .collection("chats")
         .orderBy("time")
+        .limitToLast(messageNum)
         .snapshots();
   }
 
+  allMessageSize(String chatRoomId) async {
+
+    await FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .collection("chats")
+        .get().then((snap) {
+          // snap.docs.toList();
+          Message.setSize(snap.docs.length);
+        });
+
+  }
+
+
+  
   getChatRoom(String userEmail) async {
     return await FirebaseFirestore.instance
         .collection("ChatRoom")

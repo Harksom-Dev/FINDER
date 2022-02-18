@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/helper/constants.dart';
 import 'package:loginsystem/models/database.dart';
+import 'package:loginsystem/models/message_model.dart';
 import 'package:loginsystem/screens/review/review_screen.dart';
 import 'package:loginsystem/models/database_repository.dart';
 
@@ -25,6 +26,11 @@ class ConversationScreen extends StatefulWidget {
 }
 
 class _ConversationScreenState extends State<ConversationScreen> {
+  double screenHeight = 0;
+  int messageNum = 0;
+  var messageSize = 0;
+  bool isFetch = true;
+  bool isFirst = true;
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
   Stream? chatMessageStream;
@@ -39,15 +45,21 @@ class _ConversationScreenState extends State<ConversationScreen> {
     _scrollController.animateTo(
       bottomOffset,
       duration: Duration(milliseconds: 1000),
-      curve: Curves.easeInOut,
+      curve: Curves.easeOut,
     );
   }
+
+  
 
   Widget ChatMessageList() {
     final subscription = chatMessageStream?.listen(
       (data) => {
-        _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+        if(!isFetch){
+          _scrollController.animateTo(_scrollController.position.maxScrollExtent,
             duration: Duration(milliseconds: 300), curve: Curves.easeOut),
+        }else{
+          isFetch = false
+        },
       },
     );
     return StreamBuilder<dynamic>(
@@ -112,23 +124,46 @@ class _ConversationScreenState extends State<ConversationScreen> {
       };
       databaseMethods.addConversationMessages(widget.chatRoomId, messageMap);
       messageController.text = "";
+      
     }
   }
 
   @override
   void initState() {
-    _scrollController = ScrollController();
+    //temporaly initial offset 
+    _scrollController = ScrollController(initialScrollOffset: 2000);
     // TODO: implement initState
-    databaseMethods.getConversationMessages(widget.chatRoomId).then((value) {
+    messageNum = 10;
+    databaseMethods.allMessageSize(widget.chatRoomId);
+    messageSize = Message.getSize();
+    databaseMethods.getConversationMessages(widget.chatRoomId,messageNum).then((value) {
       setState(() {
         chatMessageStream = value;
       });
+      isFirst = true;
+    });
+    _scrollController.addListener(() {;
+      // print(_scrollController.offset);
+      if(_scrollController.offset == 0 && (messageNum < messageSize )){
+        // print('loadnew messgae');
+        // print(messageNum);
+        isFetch = true;
+        messageNum += 10;
+        databaseMethods.allMessageSize(widget.chatRoomId);
+        messageSize = Message.getSize();
+        databaseMethods.getConversationMessages(widget.chatRoomId,messageNum).then((value) {
+      setState(() {
+        chatMessageStream = value;
+      });
+        });
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -223,6 +258,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                                   _scrollController.position.maxScrollExtent,
                                   duration: Duration(milliseconds: 300),
                                   curve: Curves.easeOut);
+                              // _scrollController.
                               sendMessage();
                             },
                             child: Container(

@@ -34,7 +34,10 @@ class _MyAppState extends State<MyApp> {
   final DatabaseRepository _databaseRepository = DatabaseRepository();
   @override
   void initState() {
-    // Firebase.initializeApp();
+    WidgetsFlutterBinding.ensureInitialized();
+    Firebase.initializeApp(
+        // options: DefaultFirebaseOptions.currentPlatform,
+        );
     getLoggedInState();
     super.initState();
   }
