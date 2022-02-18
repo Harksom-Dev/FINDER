@@ -276,20 +276,18 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                     _Selected.addAll(_SelectedProLang);
                     _Selected.addAll(_SelectedMusics);
                     _Selected.addAll(_SelectedSports);
-                    print("After merge list $_Selected");
-                    print(widget.profileName);
-                    print(widget.profileEmail);
-                    print(widget.profilePassword);
-                    print(widget.dob);
+                    // print("After merge list $_Selected");
+                    // print(widget.profileName);
+                    // print(widget.profileEmail);
+                    // print(widget.profilePassword);
+                    // print(widget.dob);
 
                     int n = _Selected.length;
 
-                    print(n);
                     for (int i = 0; i < n; i++) {
                       String current = _Selected.elementAt(i).toString();
                       widget.profileInterest.add(current);
                     }
-                    print(widget.profileInterest);
 
                     HelperFunction.saveUserLoggedInSharedPreference(true);
                     HelperFunction.saveUserEmailSharedPreference(

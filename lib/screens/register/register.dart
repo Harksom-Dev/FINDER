@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  bool isLoading = false;
   final formKey = GlobalKey<FormState>();
 
   Profile profile =
@@ -123,8 +126,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
                                     validator: mailValidator,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    // autovalidateMode:
+                                    //     AutovalidateMode.onUserInteraction,
                                     keyboardType: TextInputType.emailAddress,
                                     onSaved: (String? email) {
                                       profile.email = email!;
@@ -159,9 +162,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       } else
                                         return null;
                                     },
-                                    // validator: (e) => (e?.year ?? 0) >= 2004
-                                    //     ? 'Your must be more than 18 year old to signup'
-                                    //     : null,
                                     onDateSelected: (DateTime? value) {
                                       profile.dob = value;
                                       print(value.toString());
@@ -214,13 +214,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                       BorderRadius.circular(
                                                           20))),
                                         ),
-                                        child: Text("Next",
-                                            style: TextStyle(fontSize: 15)),
+                                        // child: Text("Next",
+                                        //     style: TextStyle(fontSize: 15)),
+                                        child: isLoading
+                                            ? CircularProgressIndicator(
+                                                color: Colors.white,
+                                              )
+                                            : Text('Next'),
                                         onPressed: () async {
+                                          if (isLoading) return;
+                                          setState(() => isLoading = true);
+                                          formKey.currentState!.validate();
+                                          await Future.delayed(
+                                              const Duration(seconds: 2));
                                           if (formKey.currentState!
                                               .validate()) {
-                                            formKey.currentState!.save();
                                             try {
+                                              formKey.currentState!.save();
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -234,6 +244,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                   ),
                                                 ),
                                               );
+                                              setState(() => isLoading = false);
+                                              formKey.currentState!.reset();
                                             } on FirebaseAuthException catch (e) {
                                               print(e.code);
                                               String message;
@@ -248,6 +260,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                   msg: message,
                                                   gravity: ToastGravity.CENTER);
                                             }
+                                          } else {
+                                            setState(() => isLoading = false);
+                                            return;
                                           }
                                         },
                                       ),
