@@ -109,7 +109,7 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
               end: Alignment.bottomCenter,
               colors: [
                 Color(0xFF8FAEF8),
-                Color(0xFF4B5C83),
+                Color(0xFF654B92),
               ]),
         ),
         child: Container(

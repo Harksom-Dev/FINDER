@@ -29,6 +29,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageController = new TextEditingController();
   Stream? chatMessageStream;
   ScrollController _scrollController = ScrollController();
+  ScrollController listScrollController = ScrollController();
+
   //testing a db func to get all user
   DatabaseRepository _databaseRepository = new DatabaseRepository();
 

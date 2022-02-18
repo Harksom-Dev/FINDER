@@ -60,6 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             return Scaffold(
               appBar: RegisterAppbar(),
               body: Container(
+                height: double.infinity,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -197,24 +198,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     obscureText: true,
                                   ),
                                   SizedBox(
-                                    height: 52,
+                                    height: 22,
                                   ),
                                   Container(
                                     padding: EdgeInsets.fromLTRB(50, 10, 50, 0),
                                     child: SizedBox(
                                       width: double.infinity,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20))),
-                                        ),
-                                        child: Text("Next",
-                                            style: TextStyle(fontSize: 15)),
-                                        onPressed: () async {
+                                      child: InkWell(
+                                        onTap: () async {
                                           if (formKey.currentState!
                                               .validate()) {
                                             formKey.currentState!.save();
@@ -246,6 +237,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             }
                                           }
                                         },
+                                        child: Container(
+                                          width: 145,
+                                          height: 41,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                            gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                colors: const [
+                                                  Color(0xFF92B2FD),
+                                                  Color(0xFF49597F),
+                                                ]),
+                                            border: Border.all(
+                                              color: Colors.black45,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: const [
+                                              Text(
+                                                "Next",
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
