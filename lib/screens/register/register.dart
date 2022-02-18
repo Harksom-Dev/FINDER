@@ -70,6 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             return Scaffold(
               appBar: RegisterAppbar(),
               body: Container(
+                height: double.infinity,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -199,29 +200,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     obscureText: true,
                                   ),
                                   SizedBox(
-                                    height: 52,
+                                    height: 20,
                                   ),
                                   Container(
                                     padding: EdgeInsets.fromLTRB(50, 10, 50, 0),
                                     child: SizedBox(
                                       width: double.infinity,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20))),
-                                        ),
-                                        // child: Text("Next",
-                                        //     style: TextStyle(fontSize: 15)),
-                                        child: isLoading
-                                            ? CircularProgressIndicator(
-                                                color: Colors.white,
-                                              )
-                                            : Text('Next'),
-                                        onPressed: () async {
+                                      child: InkWell(
+                                        onTap: () async {
                                           if (isLoading) return;
                                           setState(() => isLoading = true);
                                           formKey.currentState!.validate();
@@ -245,7 +231,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 ),
                                               );
                                               setState(() => isLoading = false);
-                                              formKey.currentState!.reset();
+                                              //formKey.currentState!.reset();
                                             } on FirebaseAuthException catch (e) {
                                               print(e.code);
                                               String message;
@@ -265,6 +251,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             return;
                                           }
                                         },
+                                        child: Container(
+                                            width: 145,
+                                            height: 41,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  colors: const [
+                                                    Color(0xFF92B2FD),
+                                                    Color(0xFF49597F),
+                                                  ]),
+                                              border: Border.all(
+                                                  color: Colors.black),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                isLoading
+                                                    ? CircularProgressIndicator(
+                                                        color: Colors.white,
+                                                        strokeWidth: 2.0,
+                                                      )
+                                                    : Text(
+                                                        'Next',
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                              ],
+                                            )),
                                       ),
                                     ),
                                   ),
