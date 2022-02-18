@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart'
     show LoadUsersEvent, SwipeBloc;
@@ -31,20 +33,43 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<User> userlist = [];
   bool userIsLoggedIn = false;
+  late StreamSubscription<auth.User?> user;
   final DatabaseRepository _databaseRepository = DatabaseRepository();
   @override
   void initState() {
-    // Firebase.initializeApp();
-    getLoggedInState();
+
+    WidgetsFlutterBinding.ensureInitialized();
+    Firebase.initializeApp(
+        // options: DefaultFirebaseOptions.currentPlatform,
+        );
+    user = auth.FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user == null) {
+        print('User is currently signed out!');
+        userIsLoggedIn = false;
+      } else {
+        userIsLoggedIn = true;
+        print('User is signed in!');
+      }
+    });
+
+    // getLoggedInState();
+    print(auth.FirebaseAuth.instance.currentUser != null);
     super.initState();
   }
 
+  @override
+  void dispose() {
+    user.cancel();
+    super.dispose();
+  }
   getLoggedInState() async {
-    await HelperFunction.getUserLoggedInSharedPreference().then((value) {
-      setState(() {
-        userIsLoggedIn = auth.FirebaseAuth.instance.currentUser != null;
-      });
-    });
+    
+
+    // await HelperFunction.getUserLoggedInSharedPreference().then((value) {
+    //   setState(() {
+    //     userIsLoggedIn = auth.FirebaseAuth.instance.currentUser != null;
+    //   });
+    // });
     
   }
 
@@ -66,7 +91,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.onGenerateRoute,
         initialRoute:
-            userIsLoggedIn ? HomeScreen.routeName : FirstAuth.routeName,
+            auth.FirebaseAuth.instance.currentUser != null ? HomeScreen.routeName : FirstAuth.routeName,
         //initialRoute: userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
       ),
       // home: userIsLoggedIn ? ChatRoom() : HomeScreen()

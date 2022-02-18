@@ -1,15 +1,15 @@
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
-import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/profile.dart';
 import 'package:date_field/date_field.dart';
 import 'package:loginsystem/screens/register/register_2.dart';
 import 'package:loginsystem/widgets/widget.dart';
+import 'package:loginsystem/screens/register/customvalidator.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -26,20 +26,30 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  bool isLoading = false;
   final formKey = GlobalKey<FormState>();
 
-  Profile profile = Profile(name: '', email: '', password: '', dob: '');
+  Profile profile =
+      Profile(name: '', email: '', password: '', dob: '', interest: []);
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-
+  String password = '';
+  final DateTime now = DateTime.now();
+  //* Validator
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'Please enter your the password.'),
     MinLengthValidator(6, errorText: 'Password must be at least 6 characters.'),
-    // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-    //     errorText: 'Passwords must have at least one special character')
   ]);
-  String password = '';
-  final DateTime now = DateTime.now();
+  final nameValidator = MultiValidator([
+    RequiredValidator(errorText: 'Please enter your the name.'),
+    PatternValidator(r'^([A-z\\.-ᶜ]*(\s))*[A-z\\.-ᶜ]*\D$',
+        errorText: "Name is invalid."),
+  ]);
+  final mailValidator = MultiValidator([
+    RequiredValidator(errorText: "Please enter your email address."),
+    EmailValidator(errorText: "Email is invalid"),
+    CustomValidator("Email is already in use"),
+  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Text("Name: ",
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
-                                    validator: RequiredValidator(
-                                        errorText: "Please enter your name."),
+                                    validator: nameValidator,
                                     onSaved: (String? value) {
                                       profile.name = value!;
                                     },
@@ -116,13 +125,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   Text("Email: ",
                                       style: TextStyle(fontSize: 15)),
                                   TextFormField(
-                                    validator: MultiValidator([
-                                      RequiredValidator(
-                                          errorText:
-                                              "Please enter your email address."),
-                                      EmailValidator(
-                                          errorText: "Email is invalid")
-                                    ]),
+                                    validator: mailValidator,
+                                    // autovalidateMode:
+                                    //     AutovalidateMode.onUserInteraction,
                                     keyboardType: TextInputType.emailAddress,
                                     onSaved: (String? email) {
                                       profile.email = email!;
@@ -148,8 +153,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
                                     // initialDate: new DateTime.now(),
-                                    firstDate: new DateTime(1922),
-                                    lastDate: new DateTime(2023),
+                                    firstDate: DateTime(1922),
+                                    lastDate: DateTime(2023),
                                     validator: (e) {
                                       if (profile.dob == null ||
                                           e != profile.dob) {
@@ -157,9 +162,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       } else
                                         return null;
                                     },
-                                    // validator: (e) => (e?.year ?? 0) >= 2004
-                                    //     ? 'Your must be more than 18 year old to signup'
-                                    //     : null,
                                     onDateSelected: (DateTime? value) {
                                       profile.dob = value;
                                       print(value.toString());
@@ -212,24 +214,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                       BorderRadius.circular(
                                                           20))),
                                         ),
-                                        child: Text("Next",
-                                            style: TextStyle(fontSize: 15)),
+                                        // child: Text("Next",
+                                        //     style: TextStyle(fontSize: 15)),
+                                        child: isLoading
+                                            ? CircularProgressIndicator(
+                                                color: Colors.white,
+                                              )
+                                            : Text('Next'),
                                         onPressed: () async {
+                                          if (isLoading) return;
+                                          setState(() => isLoading = true);
+                                          formKey.currentState!.validate();
+                                          await Future.delayed(
+                                              const Duration(seconds: 2));
                                           if (formKey.currentState!
                                               .validate()) {
-                                            formKey.currentState!.save();
                                             try {
+                                              formKey.currentState!.save();
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       RegisterInterestScreen(
-                                                          profile.name,
-                                                          profile.email,
-                                                          profile.dob,
-                                                          profile.password),
+                                                    profile.name,
+                                                    profile.email,
+                                                    profile.dob,
+                                                    profile.password,
+                                                    profile.interest,
+                                                  ),
                                                 ),
                                               );
+                                              setState(() => isLoading = false);
+                                              formKey.currentState!.reset();
                                             } on FirebaseAuthException catch (e) {
                                               print(e.code);
                                               String message;
@@ -244,6 +260,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                   msg: message,
                                                   gravity: ToastGravity.CENTER);
                                             }
+                                          } else {
+                                            setState(() => isLoading = false);
+                                            return;
                                           }
                                         },
                                       ),

@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:loginsystem/helper/constants.dart';
-import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/base_database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/screens/edit_profile/uploadpicture.dart';
@@ -10,29 +8,6 @@ class DatabaseRepository implements BaseDatabaseRepository {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final COLLECTION = 'tempusers'; //current collection use
 
-  Future<List<User>> getUser() async {
-    String? email;
-    email = auth.FirebaseAuth.instance.currentUser?.email;
-    print(email);
-
-    QuerySnapshot qshot = await FirebaseFirestore.instance
-        .collection(COLLECTION)
-        .where("email", isEqualTo: email)
-        .get();
-    return qshot.docs
-        .map((doc) => User(
-              id: doc['id'],
-              name: doc['name'],
-              age: doc['age'],
-              imageUrls: doc['imageUrls'],
-              bio: doc['bio'],
-              interested: doc['interested'],
-              email: doc['email'],
-              like: doc['like'],
-              dislike: doc['dislike'],
-            ))
-        .toList();
-  }
 
   @override
   Future<List<User>> getAllDataFromCollection(String collectionName) async {
@@ -99,22 +74,6 @@ class DatabaseRepository implements BaseDatabaseRepository {
   @override
   Future<void> updateUserAbout(String About) {
     throw UnimplementedError();
-  }
-
-  Stream<List<User>> getAllUsers() {
-    //trting to get all of users data collectiong from firebase and pass it to userfromSnapshot in user_model
-    return _firebaseFirestore.collection('users').snapshots().map((snap) =>
-        User.userfromSnapshot(
-            snap)); //maybe use forloop for add a user in this snapshot
-  }
-
-  @override
-  testdb() async {
-    List<User> test = [];
-    _firebaseFirestore
-        .collection(COLLECTION)
-        .where("email", isNotEqualTo: 'user1');
-    //_firebaseFirestore.collection(COLLECTION).doc('user1').collection('suggest').where("state",isNotEqualTo: 'hit').where("state",isNotEqualTo: 'pass').get();
   }
 
   @override
