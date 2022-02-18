@@ -53,10 +53,9 @@ android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
 android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
 ios/Runner/GeneratedPluginRegistrant.m
 pubspec.lock
-android/local.properties
-android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
 android/.gradle/checksums/checksums.lock
 android/.gradle/checksums/md5-checksums.bin
 android/.gradle/checksums/sha1-checksums.bin
+android/.gradle/buildOutputCleanup/cache.properties
 ios/Runner/GeneratedPluginRegistrant.m
-android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+ios/Runner/GeneratedPluginRegistrant.h

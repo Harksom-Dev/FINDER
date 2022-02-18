@@ -125,11 +125,18 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     if (!likeList.contains(userWhoGotLiked!.id)) {
       likeList.add(userWhoGotLiked.id);
     }
-
+    QuerySnapshot snap = await FirebaseFirestore.instance.collection('tempusers').where("email",isEqualTo: auth.FirebaseAuth.instance.currentUser?.email).get();
+    String curuser = snap.docs[0].id;
     FirebaseFirestore.instance
         .collection('tempusers')
-        .doc('user' + curentUser.id.toString())
+        .doc(curuser)
         .update({'like': likeList});
+    //แก้แล้ว
+    // FirebaseFirestore.instance
+    //     .collection('tempusers')
+    //     .doc('user' + curentUser.id.toString())
+    //     .update({'like': likeList});
+
   }
 
   Future<void> addDisLikedUserToList(User user) async {
@@ -142,10 +149,11 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     if (!disLikeList.contains(userWhoGotDisLiked!.id)) {
       disLikeList.add(userWhoGotDisLiked.id);
     }
-
+    QuerySnapshot snap = await FirebaseFirestore.instance.collection('tempusers').where("email",isEqualTo: auth.FirebaseAuth.instance.currentUser?.email).get();
+    String curuser = snap.docs[0].id;
     FirebaseFirestore.instance
         .collection('tempusers')
-        .doc('user' + curentUser.id.toString())
+        .doc(curuser)
         .update({'dislike': disLikeList});
   }
 }
