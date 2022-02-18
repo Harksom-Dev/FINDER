@@ -48,6 +48,7 @@ class AppRouter {
           profileEmail: setting.arguments as String,
           dob: setting.arguments as String,
           profilePassword: setting.arguments as String,
+          profileInterest: setting.arguments as List<String>,
         );
       case SearchScreen.routeName:
         return SearchScreen.route();
