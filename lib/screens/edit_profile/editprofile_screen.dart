@@ -22,6 +22,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final User user = User.users[0];
+
   
 
   DatabaseRepository _databaseRepository = DatabaseRepository();
