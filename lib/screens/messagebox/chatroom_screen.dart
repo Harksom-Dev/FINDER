@@ -34,7 +34,6 @@ class _ChatRoomState extends State<ChatRoom> {
   DatabaseRepository _databaseRepository = new DatabaseRepository();
   Stream? chatRoomStream;
   ScrollController _scrollController = ScrollController();
-
   Widget chatRoomList() {
     return StreamBuilder<dynamic>(
         stream: chatRoomStream,
@@ -131,7 +130,6 @@ class _ChatRoomState extends State<ChatRoom> {
               icon: Icon(Icons.logout_rounded, color: Color(0xFFF101010)),
               onPressed: () {
                 auth.signOut().then((value) {
-                  
                   Navigator.pushNamed(context, "/first");
                   print("first auth!");
                 });
