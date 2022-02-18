@@ -77,26 +77,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             arguments: state.users[0]);
                       },
                       child: Draggable<User>(
-                        axis: Axis.horizontal,
+                        //axis: Axis.horizontal,
                         data: state.users[0],
                         child: UserCard(user: state.users[0]),
                         feedback: UserCard(user: state.users[0]),
                         //childWhenDragging: UserCard(user: state.users[1]),
                         onDragEnd: (drag) {
-                          while (User.users != null) {
-                            if (drag.velocity.pixelsPerSecond.dx <
-                                -0.4 * maxWid) {
-                              context.read<SwipeBloc>()
-                                ..add(SwipeLeftEvent(user: state.users[0]));
-                              print("swipe left");
-                            } else if (drag.velocity.pixelsPerSecond.dx >
-                                0.4 * maxWid) {
-                              context.read<SwipeBloc>()
-                                ..add(SwipeRightEvent(user: state.users[0]));
-                              print('Swipe Right');
-                            } else {
-                              print('Do nothing');
-                            }
+                          if (drag.velocity.pixelsPerSecond.dx <
+                              -0.4 * maxWid) {
+                            context.read<SwipeBloc>()
+                              ..add(SwipeLeftEvent(user: state.users[0]));
+                            print("swipe left");
+                          } else if (drag.velocity.pixelsPerSecond.dx >
+                              0.4 * maxWid) {
+                            context.read<SwipeBloc>()
+                              ..add(SwipeRightEvent(user: state.users[0]));
+                            print('Swipe Right');
+                          } else {
+                            print('Do nothing');
                           }
                         },
                       ),
@@ -162,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // home
                               onTap: () {
                                 // cross button (X)
-                                Navigator.pushNamed(context, "/");
+                                /* Navigator.pushNamed(context, "/"); */
                                 print("homepage !");
                               },
                               child: Menubutton(
