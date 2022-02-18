@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/models.dart';
@@ -48,4 +49,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
     );
   }
+}
+class thisusser extends Equatable{
+  final int id;
+  final String name;
+  final int age;
+  final List<dynamic> imageUrls;
+  final String bio;
+  final List<dynamic> interested;
+  final String email;
+  final List<dynamic> like;
+  final List<dynamic> dislike;
+
+  const thisusser({
+    required this.id,
+    required this.name,
+    required this.age,
+    required this.imageUrls,
+    required this.bio,
+    required this.interested,
+    required this.email,
+    required this.like,
+    required this.dislike
+  });
+
+  @override
+  
+  List<Object?> get props => throw UnimplementedError();
+
 }

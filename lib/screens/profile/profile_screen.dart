@@ -28,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 24),
           buildName(user),
           const SizedBox(height: 0),
-          Center(child: buildAbout(user)),
+          buildAbout(user),
           const SizedBox(height: 48),
           Center(child: buildEditButton(context)),
           const SizedBox(
@@ -40,8 +40,8 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomTextContainer(text: user.interested[0]),
-                CustomTextContainer(text: user.interested[1]),
+                CustomTextContainer(text: 'c++'),
+                CustomTextContainer(text: 'Java'),
                 CustomTextContainer(text: '...'),
               ],
             ),)
