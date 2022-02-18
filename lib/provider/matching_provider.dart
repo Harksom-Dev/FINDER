@@ -1,7 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:loginsystem/models/match_data_model.dart';
 import '../models/database_repository.dart';
 import '../models/user_model.dart';
 
@@ -30,6 +30,9 @@ class MatchingProvider {
       print(currentUser.name + " match with " + userWhoGotLiked.name);
       addMatchedUserToMatchedData(currentUser, userWhoGotLiked);
       addMatchedUserToMatchedData(userWhoGotLiked, currentUser);
+      getMatchedDataByUser(currentUser).then((response) {
+        print(response);
+      });
     } else {
       print(currentUser.name + " not match with " + userWhoGotLiked.name);
     }
@@ -60,15 +63,7 @@ class MatchingProvider {
             _firebaseFirestore
                 .collection(COLLECTION)
                 .add(dataForCurrentUser);
-
-            await _firebaseFirestore
-                .collection(COLLECTION)
-                .where("id", isEqualTo: currentUser.id)
-                .get()
-                .then((snapshot) async {
-
-                });
-        
+                
 
           } else {
             // if have any object contains id = currentUser.id
@@ -89,4 +84,15 @@ class MatchingProvider {
           }
     });
   }
+
+  Future<MatchData> getMatchedDataByUser(User user) async {
+    QuerySnapshot qsnap = await _firebaseFirestore
+        .collection(COLLECTION)
+        .where("id", isEqualTo: user.id)
+        .get();
+    return  MatchData(
+              id: qsnap.docs[0].get('id'),
+              matchWith: qsnap.docs[0].get('matchWith'));
+  }
+
 }
