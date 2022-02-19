@@ -305,14 +305,16 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                       print("swipescreen !");
                     });
                     //try to get email and passfrom profie() and store to map
+                    String defaultImagePath = "https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/blankProfile%2Fblank-profile-.png?alt=media&token=10f3a8be-b87d-4e35-8e0f-6cd3d904d42e";
                     Map<String, dynamic> userInfoMap = {
                       "uid": FirebaseAuth.instance.currentUser?.uid,
                       "name": widget.profileName,
                       "email": widget.profileEmail,
                       "dob": widget.dob,
                       "interested": widget.profileInterest,
-                      "imgUrl": [],
+                      "imageUrls": [defaultImagePath],
                       "like": [],
+                      "age": calculateAge(widget.dob),
                       "dislike": [],
                       //can add more attribute for further update
                     };
@@ -351,5 +353,21 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
         ),
       ),
     );
+  }
+  calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
   }
 }
