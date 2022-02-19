@@ -2,7 +2,7 @@ class UpdateUser {
   
   late final String name;
   final int age;
-  final List<dynamic> imageUrls;
+  final List<String> imageUrls;
   late final String bio;
   final List<String> interested;
   

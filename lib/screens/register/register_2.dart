@@ -311,7 +311,7 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                       "email": widget.profileEmail,
                       "dob": widget.dob,
                       "interested": widget.profileInterest,
-                      "imgUrl": [],
+                      "imgageUrl": [],
                       "like": [],
                       "dislike": [],
                       //can add more attribute for further update

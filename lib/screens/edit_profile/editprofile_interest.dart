@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/models/UpdateUser.dart';
 import 'package:loginsystem/models/database.dart';
+import 'package:loginsystem/models/database_editprofile.dart';
 import 'package:loginsystem/widgets/appbar_editprofile.dart';
 import 'package:multi_select_flutter/bottom_sheet/multi_select_bottom_sheet_field.dart';
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
@@ -17,9 +18,12 @@ class Editprofile_interest extends StatefulWidget {
     required String UpdateName,
     required String UpdateBio,
     required List<String> UpdateInterest,
+    required String updateEmail,
+    required String updateimageURL,
   }) {
     return MaterialPageRoute(
-      builder: (_) =>Editprofile_interest(UpdateName, UpdateBio, UpdateInterest),
+      builder: (_) => Editprofile_interest(
+          UpdateName, UpdateBio, UpdateInterest, updateEmail,updateimageURL),
       settings: RouteSettings(name: routeName),
     );
   }
@@ -27,8 +31,11 @@ class Editprofile_interest extends StatefulWidget {
   final String UpdateName;
   final String UpdateBio;
   List<String> UpdateInterest = [];
+  final String updateEmail;
+  final String updateimageURL;
 
-  Editprofile_interest(this.UpdateName, this.UpdateBio, this.UpdateInterest);
+  Editprofile_interest(
+      this.UpdateName, this.UpdateBio, this.UpdateInterest, this.updateEmail,this.updateimageURL);
   Editprofile_interest_State createState() => Editprofile_interest_State();
 }
 
@@ -282,11 +289,12 @@ class Editprofile_interest_State extends State<Editprofile_interest> {
                             "name": widget.UpdateName,
                             "bio": widget.UpdateBio,
                             "interested": widget.UpdateInterest,
-                            "imgUrl": [],
+                            "imgageUrl": [],
 
                             //can add more attribute for further update
                           };
-                          DatabaseMethods().uploadUserInfo(userInfoMap);
+                          DatabaseUpdateMethods()
+                              .updateUserInfo(userInfoMap, widget.updateEmail);
                         },
                         child: Text('finish'),
                       ))

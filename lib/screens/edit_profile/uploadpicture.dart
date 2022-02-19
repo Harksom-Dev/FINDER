@@ -44,6 +44,7 @@ class _UploadPictureState extends State<UploadPicture> {
             print('Uploading . . . .');
             StoragePicture().uploadImage(_image);
           }
+          
         },
         tooltip: 'Add Image',
         child: Icon(Icons.add),

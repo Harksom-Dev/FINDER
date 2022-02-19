@@ -14,6 +14,7 @@ import 'package:loginsystem/widgets/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 class EditProfileScreen extends StatefulWidget {
+  @override
   static const String routeName = '/editprofile';
   static User? userFromDB;
 
@@ -35,6 +36,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final editnamecontroller = TextEditingController();
   final editbiocontroller = TextEditingController();
   UpdateUser updateprofile = UpdateUser(
+    
     name: '',
     age: 0,
     bio: '',
@@ -75,7 +77,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Navigator.pushNamed(context, "/uploadPicture");
             },
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 30),
+          Row(
+                  children: [
+                    CustomImageContainer(),
+                    CustomImageContainer(),
+                    CustomImageContainer(),
+                    
+                    SizedBox(width: 15),]),
           Text(
             "Name  ",
             style: TextStyle(fontSize: 15),
@@ -116,9 +125,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Editprofile_interest(
-                          updateprofile.name,
-                          updateprofile.bio,
+                          editnamecontroller.text,
+                          editbiocontroller.text,
                           updateprofile.interested,
+                          userFromDB!.email,
+                          updateprofile.imageUrls[0],
+                          //ถ้าส่ง email ผ่านตรงนี้ได้
                         ),
                       ),
                     );

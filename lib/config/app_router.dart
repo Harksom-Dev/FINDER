@@ -39,9 +39,12 @@ class AppRouter {
         return UploadPicture.route();
       case Editprofile_interest.routeName:
         return Editprofile_interest.route(
-          UpdateName: setting.arguments as String,
-          UpdateBio: setting.arguments as String,
-          UpdateInterest: setting.arguments as List<String>);
+            UpdateName: setting.arguments as String,
+            UpdateBio: setting.arguments as String,
+            UpdateInterest: setting.arguments as List<String>,
+            updateEmail: setting.arguments as String,
+            updateimageURL: setting.arguments as String);
+
       case ConversationScreen.routeName: //chatroom
         return ConversationScreen.route(
             chatroomId: setting.arguments as String,
