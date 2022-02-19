@@ -269,8 +269,9 @@ class UserMatchTile extends StatelessWidget {
         // );
         var otherid =
             matchwith['id']; // get other id from map that we get from firebase
-        String otheremail = MatchingProvider().getMatchedEmail(
-            otherid); //get otheremail with func from match_provider
+        //get otheremail with func from match_provider
+        MatchingProvider().getMatchedEmail(otherid);
+        String otheremail = MatchData.email;
         //now we need to check if we already have a chatroom because right now if 2person that have first letter name similar gonna have a bug
         String chatRoomId =
             MatchingProvider().checkChatRoomID(otheremail, userEmail);
