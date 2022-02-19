@@ -13,10 +13,13 @@ class MatchingProvider {
 
   Future<void> checkMatchByEmail(
       String cerentUserEmail, String userWhoGotLikedEmail) async {
+
     var tempCurrenUser = 
         _databaseRepository.getUserByEmail(cerentUserEmail);
+
     var tempUserWhoGotLiked =
         _databaseRepository.getUserByEmail(userWhoGotLikedEmail);
+        
     User? currentUser = await tempCurrenUser;
     User? userWhoGotLiked = await tempUserWhoGotLiked;
 
@@ -28,11 +31,8 @@ class MatchingProvider {
 
     if (likeList.contains(currentUser!.id)) {
       print(currentUser.name + " match with " + userWhoGotLiked.name);
-      addMatchedUserToMatchedData(currentUser, userWhoGotLiked);
-      addMatchedUserToMatchedData(userWhoGotLiked, currentUser);
-      // getMatchedDataByUser(currentUser).then((response) {
-      //   print(response);
-      // });
+      await addMatchedUserToMatchedData(currentUser, userWhoGotLiked);
+      await addMatchedUserToMatchedData(userWhoGotLiked, currentUser);
     } else {
       print(currentUser.name + " not match with " + userWhoGotLiked.name);
     }
@@ -56,6 +56,8 @@ class MatchingProvider {
             // it will create new doc and field to collection
             Map<String, dynamic> mapForMatchWith = {"id": user.id,"name": user.name};
             Map<String, dynamic> dataForCurrentUser = {
+              "email": currentUser.email,
+              "name": currentUser.name,
               "id": currentUserID,
               "matchWith": [mapForMatchWith]
             };
