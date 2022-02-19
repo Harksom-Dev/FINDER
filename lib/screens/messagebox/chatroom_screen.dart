@@ -70,7 +70,6 @@ class _ChatRoomState extends State<ChatRoom> {
                                                         .docs[index]
                                                             ["email"]
                                                         .toString(),
-                                                        
                                                     snapshot.data!.docs[index]
                                                         ["name"],
                                                     snapshot.data!.docs[index]
