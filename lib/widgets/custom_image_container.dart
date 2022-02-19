@@ -87,7 +87,7 @@ class StoragePicture {
     print('uploading to clound . . .');
 
     String downloadURL =
-        await storage.ref('image/user_1.jpg').getDownloadURL();
+        await storage.ref('image/$imageName').getDownloadURL();
     print('getDownloadURL');
 
     return downloadURL;
