@@ -52,27 +52,32 @@ class _ChatRoomState extends State<ChatRoom> {
                 height: 80,
                 child: StreamBuilder<dynamic>(
                     stream: matchedStream,
-                    builder: (context, snapshot) {
-                      return Column(
+                    builder: (context, snapshot2) {
+                      return Row(
                         children: [
                           Expanded(
                             child: Stack(
                               children: <Widget>[
-                                snapshot.hasData
+                                snapshot2.hasData
                                     ? ListView.builder(
-                                        itemCount: snapshot
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: snapshot2
                                             .data!.docs[0]['matchWith'].length,
                                         itemBuilder: (context, index) {
+                                          print('helooooooooooooooooo');
+                                          // print(snapshot2
+                                          //   .data!.docs[0]['matchWith'].length);
+                                          print(index);
                                           return SingleChildScrollView(
                                             child: Row(
                                               children: [
                                                 UserMatchTile(
-                                                    snapshot.data!
-                                                        .docs[index]["email"]
-                                                        .toString(),
-                                                    snapshot.data!.docs[0]
-                                                        ["name"],
-                                                    snapshot.data!.docs[0]
+                                                    snapshot2.data!
+                                                        .docs[0]["email"]
+                                                        ,
+                                                    snapshot2.data!.docs[0]
+                                                        ["matchWith"][index]["name"],
+                                                    snapshot2.data!.docs[0]
                                                         ["matchWith"][index]),
                                               ],
                                             ),
@@ -146,6 +151,8 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   getMatchedData() async {
+    Constants.myEmail = (await HelperFunction.getUserEmailSharedPreference());
+    print(Constants.myEmail);
     databaseMethods.getMatchdata(Constants.myEmail).then((value) {
       setState(() {
         matchedStream = value;
@@ -251,17 +258,18 @@ class ChatRoomTile extends StatelessWidget {
 }
 
 class UserMatchTile extends StatelessWidget {
-  final String userEmail;
+  final String currentUserEmail;
   final String userName;
   final Map<String, dynamic> matchwith;
+  MatchingProvider _matchingProvider = new MatchingProvider();
   String name = '';
-  UserMatchTile(this.userEmail, this.userName, this.matchwith);
+  UserMatchTile(this.currentUserEmail, this.userName, this.matchwith);
   final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: ()async {
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(
@@ -269,18 +277,19 @@ class UserMatchTile extends StatelessWidget {
         // );
         var otherid =
             matchwith['id']; // get other id from map that we get from firebase
+        // print('id is $otherid');
         //get otheremail with func from match_provider
-        MatchingProvider().getMatchedEmail(otherid);
-        String otheremail = MatchData.email;
+        await _matchingProvider.getMatchedEmail(otherid);
+        String targetEmail =  MatchData.email;
         //now we need to check if we already have a chatroom because right now if 2person that have first letter name similar gonna have a bug
         String chatRoomId =
-            MatchingProvider().checkChatRoomID(otheremail, userEmail);
+            await _matchingProvider.checkChatRoomID(targetEmail, currentUserEmail);
         if (chatRoomId == '') {
           //if this the first time we create a new chatroom
-          chatRoomId = getChatRoomId(otheremail, userEmail);
+          chatRoomId = getChatRoomId(targetEmail, currentUserEmail);
         }
 
-        List<String> users = [otheremail, userEmail];
+        List<String> users = [targetEmail, currentUserEmail];
         Map<String, dynamic> chatRoomMap = {
           "users": users,
           "chatroomid": chatRoomId
@@ -290,7 +299,7 @@ class UserMatchTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ConversationScreen(chatRoomId, otheremail)),
+              builder: (context) => ConversationScreen(chatRoomId, targetEmail)),
         );
       },
       child: Container(
@@ -306,7 +315,7 @@ class UserMatchTile extends StatelessWidget {
                   color: Color(0xFFF69090),
                   borderRadius: BorderRadius.circular(40)),
               child: Text(
-                  "${userName.substring(0, 1).toUpperCase()}"), //this child will show the name or thumbnail
+                  "${userName.toUpperCase()}"), //this child will show the name or thumbnail
             ),
           ],
         ),

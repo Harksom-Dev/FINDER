@@ -98,15 +98,14 @@ class MatchingProvider {
   // }
 
   getMatchedEmail(var id) async {
-    _firebaseFirestore.collection('tempusers')
+    await _firebaseFirestore.collection('tempusers')
         .where('id',isEqualTo: id)
         .get().then((snap){
-          MatchData.email = snap.docs[0]['email'];
+          MatchData.setEmail(snap.docs[0]['email']);
         });
   }
 
   checkChatRoomID(String userEmail1,String userEmail2)async {
-
     String chatrommid = getChatRoomId(userEmail1, userEmail2);
     QuerySnapshot snap = 
           await _firebaseFirestore
@@ -133,6 +132,9 @@ class MatchingProvider {
   }
 
   getChatRoomId(String a, String b) {
+    print('check');
+    print(a);
+    print(b);
   if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
     return "$b\_$a";
   } else {
