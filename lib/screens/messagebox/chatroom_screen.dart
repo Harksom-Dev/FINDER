@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/match_data_model.dart';
 import 'package:loginsystem/provider/matching_provider.dart';
@@ -268,18 +269,22 @@ class UserMatchTile extends StatelessWidget {
         //   MaterialPageRoute(
         //       builder: (context) => ConversationScreen(chatRoomId, userEmail)),
         // );
-        // createChatroomAndStartConversation(userEmail: userEmail);
-        //so long function name ;-;
-        // print(Constants);
-        var otherid = matchwith['id'];
-        String otheremail = MatchingProvider().getMatchedEmail(otherid);
-        String chatRoomId = getChatRoomId(otheremail, userEmail);
+        var otherid = matchwith['id']; // get other id from map that we get from firebase
+        String otheremail = MatchingProvider().getMatchedEmail(otherid);  //get otheremail with func from match_provider
+        //now we need to check if we already have a chatroom because right now if 2person that have first letter name similar gonna have a bug
+        String chatRoomId = MatchingProvider().checkChatRoomID(otheremail,userEmail);
+        if(chatRoomId == ''){
+          //if this the first time we create a new chatroom
+          chatRoomId = getChatRoomId(otheremail, userEmail);
+        }
+
         List<String> users = [otheremail, userEmail];
         Map<String, dynamic> chatRoomMap = {
           "users": users,
           "chatroomid": chatRoomId
         };
         DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+        //hope this work!!
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -327,5 +332,15 @@ class UserMatchTile extends StatelessWidget {
     //         builder: (context) => ConversationScreen(chatRoomId, otheremail)),
     //   );
     
+  }
+
+  getChatRoomId(String a, String b) {
+  print(a);
+  print(b);
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
+  }
   }
 }

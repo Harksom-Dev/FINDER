@@ -105,4 +105,39 @@ class MatchingProvider {
         });
   }
 
+  checkChatRoomID(String userEmail1,String userEmail2)async {
+
+    String chatrommid = getChatRoomId(userEmail1, userEmail2);
+    QuerySnapshot snap = 
+          await _firebaseFirestore
+              .collection('ChatRoom')
+              .where("chatroomid",isEqualTo: chatrommid).get();
+
+    if(snap.docs.isEmpty){
+      chatrommid = getChatRoomId(userEmail2, userEmail1);
+
+      snap = 
+          await _firebaseFirestore
+              .collection('ChatRoom')
+              .where("chatroomid",isEqualTo: chatrommid).get();
+      if(snap.docs.isEmpty){
+        return '';
+      }else{
+        return snap.docs[0]['chatroomid'];
+      }
+    }else{
+      return snap.docs[0]['chatroomid'];
+    }
+
+    
+  }
+
+  getChatRoomId(String a, String b) {
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
+  }
+  }
+
 }
