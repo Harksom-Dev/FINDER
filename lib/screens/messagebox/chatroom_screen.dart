@@ -55,26 +55,25 @@ class _ChatRoomState extends State<ChatRoom> {
                     builder: (context, snapshot) {
                       return Column(
                         children: [
-                          SizedBox(
+                          Expanded(
                             child: Stack(
-                              children: [
+                              children: <Widget>[
                                 snapshot.hasData
                                     ? ListView.builder(
-                                        itemCount: snapshot.data!.docs[0]['matchWith'].length,
+                                        itemCount: snapshot
+                                            .data!.docs[0]['matchWith'].length,
                                         itemBuilder: (context, index) {
                                           return SingleChildScrollView(
                                             child: Row(
                                               children: [
                                                 UserMatchTile(
-                                                    snapshot
-                                                        .data!
-                                                        .docs[index]
-                                                            ["email"]
+                                                    snapshot.data!
+                                                        .docs[index]["email"]
                                                         .toString(),
                                                     snapshot.data!.docs[0]
                                                         ["name"],
                                                     snapshot.data!.docs[0]
-                                                        ["matchWith"][0]),
+                                                        ["matchWith"][index]),
                                               ],
                                             ),
                                           );
@@ -254,12 +253,11 @@ class ChatRoomTile extends StatelessWidget {
 class UserMatchTile extends StatelessWidget {
   final String userEmail;
   final String userName;
-  final Map<String,dynamic> matchwith;
+  final Map<String, dynamic> matchwith;
   String name = '';
-  UserMatchTile(this.userEmail, this.userName, this.matchwith );
+  UserMatchTile(this.userEmail, this.userName, this.matchwith);
   final ScrollController _scrollController = ScrollController();
 
-  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -269,11 +267,14 @@ class UserMatchTile extends StatelessWidget {
         //   MaterialPageRoute(
         //       builder: (context) => ConversationScreen(chatRoomId, userEmail)),
         // );
-        var otherid = matchwith['id']; // get other id from map that we get from firebase
-        String otheremail = MatchingProvider().getMatchedEmail(otherid);  //get otheremail with func from match_provider
+        var otherid =
+            matchwith['id']; // get other id from map that we get from firebase
+        String otheremail = MatchingProvider().getMatchedEmail(
+            otherid); //get otheremail with func from match_provider
         //now we need to check if we already have a chatroom because right now if 2person that have first letter name similar gonna have a bug
-        String chatRoomId = MatchingProvider().checkChatRoomID(otheremail,userEmail);
-        if(chatRoomId == ''){
+        String chatRoomId =
+            MatchingProvider().checkChatRoomID(otheremail, userEmail);
+        if (chatRoomId == '') {
           //if this the first time we create a new chatroom
           chatRoomId = getChatRoomId(otheremail, userEmail);
         }
@@ -286,11 +287,10 @@ class UserMatchTile extends StatelessWidget {
         DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
         //hope this work!!
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ConversationScreen(chatRoomId, otheremail)),
-          );
-
+          context,
+          MaterialPageRoute(
+              builder: (context) => ConversationScreen(chatRoomId, otheremail)),
+        );
       },
       child: Container(
         color: Colors.white,
@@ -331,16 +331,15 @@ class UserMatchTile extends StatelessWidget {
     //     MaterialPageRoute(
     //         builder: (context) => ConversationScreen(chatRoomId, otheremail)),
     //   );
-    
   }
 
   getChatRoomId(String a, String b) {
-  print(a);
-  print(b);
-  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
-    return "$b\_$a";
-  } else {
-    return "$a\_$b";
-  }
+    print(a);
+    print(b);
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
   }
 }
