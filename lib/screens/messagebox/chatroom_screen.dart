@@ -60,7 +60,7 @@ class _ChatRoomState extends State<ChatRoom> {
                               children: [
                                 snapshot.hasData
                                     ? ListView.builder(
-                                        itemCount: snapshot.data!.docs.length,
+                                        itemCount: snapshot.data!.docs[0]['matchWith'].length,
                                         itemBuilder: (context, index) {
                                           return SingleChildScrollView(
                                             child: Row(
@@ -71,10 +71,10 @@ class _ChatRoomState extends State<ChatRoom> {
                                                         .docs[index]
                                                             ["email"]
                                                         .toString(),
-                                                    snapshot.data!.docs[index]
+                                                    snapshot.data!.docs[0]
                                                         ["name"],
-                                                    snapshot.data!.docs[index]
-                                                        ["matchWith"]),
+                                                    snapshot.data!.docs[0]
+                                                        ["matchWith"][0]),
                                               ],
                                             ),
                                           );
