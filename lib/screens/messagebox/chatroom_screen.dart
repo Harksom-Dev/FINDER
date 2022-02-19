@@ -48,55 +48,55 @@ class _ChatRoomState extends State<ChatRoom> {
           return Column(
             children: [
               Text("Match!", style: Theme.of(context).textTheme.headline2),
-              SizedBox(
-                // here is where match person is
-                width: MediaQuery.of(context).size.width,
-                height: 80,
-                child: StreamBuilder<dynamic>(
-                    stream: matchedStream,
-                    builder: (context, snapshot) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            child: Stack(
-                              children: [
-                                snapshot.hasData
-                                    ? ListView.builder(
-                                        itemCount: snapshot.data!.docs.length,
-                                        itemBuilder: (context, index) {
-                                          return SingleChildScrollView(
-                                            child: Row(
-                                              children: [
-                                                UserMatchTile(
-                                                    snapshot
-                                                        .data!
-                                                        .docs[index]
-                                                            ["chatroomid"]
-                                                        .toString()
-                                                        .replaceAll("_", "")
-                                                        .replaceAll(
-                                                            Constants.myEmail,
-                                                            ""),
-                                                    snapshot.data!.docs[index]
-                                                        ["chatroomid"],
-                                                    snapshot.data!.docs[index]
-                                                        ["chatroomid"]),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    : Container(),
-                              ],
-                            ),
-                          )
-                        ],
-                      );
-                    }
-                    // match person replace here
+              // SizedBox(
+              //   // here is where match person is
+              //   width: MediaQuery.of(context).size.width,
+              //   height: 80,
+              //   child: StreamBuilder<dynamic>(
+              //       stream: matchedStream,
+              //       builder: (context, snapshot) {
+              //         return Column(
+              //           children: [
+              //             SizedBox(
+              //               child: Stack(
+              //                 children: [
+              //                   snapshot.hasData
+              //                       ? ListView.builder(
+              //                           itemCount: snapshot.data!.docs.length,
+              //                           itemBuilder: (context, index) {
+              //                             return SingleChildScrollView(
+              //                               child: Row(
+              //                                 children: [
+              //                                   UserMatchTile(
+              //                                       snapshot
+              //                                           .data!
+              //                                           .docs[index]
+              //                                               ["chatroomid"]
+              //                                           .toString()
+              //                                           .replaceAll("_", "")
+              //                                           .replaceAll(
+              //                                               Constants.myEmail,
+              //                                               ""),
+              //                                       snapshot.data!.docs[index]
+              //                                           ["chatroomid"],
+              //                                       snapshot.data!.docs[index]
+              //                                           ["chatroomid"]),
+              //                                 ],
+              //                               ),
+              //                             );
+              //                           },
+              //                         )
+              //                       : Container(),
+              //                 ],
+              //               ),
+              //             )
+              //           ],
+              //         );
+              //       }
+              //       // match person replace here
 
-                    ),
-              ), // end of match person section
+              //       ),
+              // ), // end of match person section
               Text("Messages", style: Theme.of(context).textTheme.headline2),
               SizedBox(
                 // message list

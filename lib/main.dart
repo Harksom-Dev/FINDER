@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // getLoggedInState();
-    print(auth.FirebaseAuth.instance.currentUser != null);
+    // print(auth.FirebaseAuth.instance.currentUser != null);
     super.initState();
   }
 
