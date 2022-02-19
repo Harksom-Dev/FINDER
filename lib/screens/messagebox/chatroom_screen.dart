@@ -64,19 +64,19 @@ class _ChatRoomState extends State<ChatRoom> {
                                         itemCount: snapshot2
                                             .data!.docs[0]['matchWith'].length,
                                         itemBuilder: (context, index) {
-                                          print('helooooooooooooooooo');
+                                          //print('helooooooooooooooooo');
                                           // print(snapshot2
                                           //   .data!.docs[0]['matchWith'].length);
-                                          print(index);
+                                          //print(index);
                                           return SingleChildScrollView(
                                             child: Row(
                                               children: [
                                                 UserMatchTile(
-                                                    snapshot2.data!
-                                                        .docs[0]["email"]
-                                                        ,
                                                     snapshot2.data!.docs[0]
-                                                        ["matchWith"][index]["name"],
+                                                        ["email"],
+                                                    snapshot2.data!.docs[0]
+                                                            ["matchWith"][index]
+                                                        ["name"],
                                                     snapshot2.data!.docs[0]
                                                         ["matchWith"][index]),
                                               ],
@@ -269,7 +269,7 @@ class UserMatchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()async {
+      onTap: () async {
         // Navigator.push(
         //   context,
         //   MaterialPageRoute(
@@ -280,10 +280,10 @@ class UserMatchTile extends StatelessWidget {
         // print('id is $otherid');
         //get otheremail with func from match_provider
         await _matchingProvider.getMatchedEmail(otherid);
-        String targetEmail =  MatchData.email;
+        String targetEmail = MatchData.email;
         //now we need to check if we already have a chatroom because right now if 2person that have first letter name similar gonna have a bug
-        String chatRoomId =
-            await _matchingProvider.checkChatRoomID(targetEmail, currentUserEmail);
+        String chatRoomId = await _matchingProvider.checkChatRoomID(
+            targetEmail, currentUserEmail);
         if (chatRoomId == '') {
           //if this the first time we create a new chatroom
           chatRoomId = getChatRoomId(targetEmail, currentUserEmail);
@@ -299,21 +299,23 @@ class UserMatchTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ConversationScreen(chatRoomId, targetEmail)),
+              builder: (context) =>
+                  ConversationScreen(chatRoomId, targetEmail)),
         );
       },
       child: Container(
+        //alignment: Alignment.centerRight,
         color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
         child: Row(
           children: [
             Container(
-              height: 61,
-              width: 61,
+              height: 51,
+              width: 51,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: Color(0xFFF69090),
-                  borderRadius: BorderRadius.circular(40)),
+                  color: Color(0xFFE29AC4),
+                  borderRadius: BorderRadius.circular(25)),
               child: Text(
                   "${userName.toUpperCase()}"), //this child will show the name or thumbnail
             ),
