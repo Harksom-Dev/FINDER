@@ -57,11 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     getData();
     super.initState();
-    Timer(Duration(milliseconds: 900), () {
-      setState(() {
-        _isLoading = false;
-      });
-    });
+    Future.delayed(Duration(milliseconds: 1500), () {});
   }
 
   @override
