@@ -6,7 +6,7 @@ import 'package:loginsystem/models/user_model.dart';
 class UnmatchProvider{
   final DatabaseRepository _databaseRepository = DatabaseRepository();
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final COLLECTION = "tempusers";
+  final COLLECTION = "users";
 
   //TODO unmath in matched db , delete like on the unmath user , delete chatroom
 
