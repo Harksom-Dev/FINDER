@@ -57,7 +57,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     builder: (context, snapshot) {
                       return Column(
                         children: [
-                          SizedBox(
+                          Expanded(
                             child: Stack(
                               children: [
                                 snapshot.hasData
