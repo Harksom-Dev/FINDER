@@ -25,7 +25,10 @@ class MatchData extends Equatable {
         matchWith,
       ];
 
-
+  static setEmail(String useremail){
+    email = useremail;
+  }
+  static String email = '';
 
 }
 

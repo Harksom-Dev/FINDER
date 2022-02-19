@@ -18,7 +18,9 @@ class UnmatchProvider{
 
     User? unmatchUser = await _databaseRepository.getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email);    
     int? currentUserID = unmatchUser?.id;
+    String? currentUserName = unmatchUser?.name;
     int? gettingUnmatchUserID = gotUnmathUser?.id;
+    String? gettingUnmatchUserName = gotUnmathUser?.name;
     //need to change id to uid in the future
     QuerySnapshot snap = 
           await _firebaseFirestore
@@ -44,11 +46,11 @@ class UnmatchProvider{
         "like": FieldValue.arrayRemove([currentUserID])
       });
 
-      removeMatchingDB(currentUserID,gettingUnmatchUserID);
+      removeMatchingDB(currentUserID,currentUserName,gettingUnmatchUserID,gettingUnmatchUserName);
   }
 
   //delete matching db in firebase
-  removeMatchingDB(var currentUserID,var gettingUnmatchUserID) async{
+  removeMatchingDB(var currentUserID,var currentUserName,var gettingUnmatchUserID, var gettingUnmatchUserName) async{
     QuerySnapshot snap = 
           await _firebaseFirestore
               .collection('MatchedData')
@@ -62,17 +64,20 @@ class UnmatchProvider{
               .where("id",isEqualTo: gettingUnmatchUserID).get();
 
     String gotunmatchDocID = snap2.docs[0].id;
-
     await _firebaseFirestore.collection('MatchedData')
       .doc(currentDocID)
       .update({
-        "matchWith": FieldValue.arrayRemove([gettingUnmatchUserID])
+        "matchWith": FieldValue.arrayRemove([{
+          "id" :gettingUnmatchUserID,
+          "name":gettingUnmatchUserName}])
       });
 
     await _firebaseFirestore.collection('MatchedData')
       .doc(gotunmatchDocID)
       .update({
-        "matchWith": FieldValue.arrayRemove([currentUserID])
+        "matchWith": FieldValue.arrayRemove([{
+          "id":currentUserID,
+          "name":currentUserName}])
       });
 
   }
@@ -86,6 +91,16 @@ class UnmatchProvider{
               .collection('ChatRoom')
               .where("chatroomid",isEqualTo: chatrommid).get();
 
+    if(snap.docs.isEmpty){
+      chatrommid = getChatRoomId(userEmail2, userEmail1);
+
+      snap = 
+          await _firebaseFirestore
+              .collection('ChatRoom')
+              .where("chatroomid",isEqualTo: chatrommid).get();
+    }
+
+    
     String currentDocID = snap.docs[0].id;
 
     //navigate through chats collection and delete every chat message

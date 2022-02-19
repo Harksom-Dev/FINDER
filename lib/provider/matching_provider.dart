@@ -13,10 +13,13 @@ class MatchingProvider {
 
   Future<void> checkMatchByEmail(
       String cerentUserEmail, String userWhoGotLikedEmail) async {
+
     var tempCurrenUser = 
         _databaseRepository.getUserByEmail(cerentUserEmail);
+
     var tempUserWhoGotLiked =
         _databaseRepository.getUserByEmail(userWhoGotLikedEmail);
+        
     User? currentUser = await tempCurrenUser;
     User? userWhoGotLiked = await tempUserWhoGotLiked;
 
@@ -28,11 +31,8 @@ class MatchingProvider {
 
     if (likeList.contains(currentUser!.id)) {
       print(currentUser.name + " match with " + userWhoGotLiked.name);
-      addMatchedUserToMatchedData(currentUser, userWhoGotLiked);
-      addMatchedUserToMatchedData(userWhoGotLiked, currentUser);
-      getMatchedDataByUser(currentUser).then((response) {
-        print(response);
-      });
+      await addMatchedUserToMatchedData(currentUser, userWhoGotLiked);
+      await addMatchedUserToMatchedData(userWhoGotLiked, currentUser);
     } else {
       print(currentUser.name + " not match with " + userWhoGotLiked.name);
     }
@@ -54,10 +54,12 @@ class MatchingProvider {
           if (snapshot.docs.isEmpty) {
             // if dont have any object contains id = currentUser.id
             // it will create new doc and field to collection
-
+            Map<String, dynamic> mapForMatchWith = {"id": user.id,"name": user.name};
             Map<String, dynamic> dataForCurrentUser = {
+              "email": currentUser.email,
+              "name": currentUser.name,
               "id": currentUserID,
-              "matchWith": [userID],
+              "matchWith": [mapForMatchWith]
             };
 
             _firebaseFirestore
@@ -68,7 +70,7 @@ class MatchingProvider {
           } else {
             // if have any object contains id = currentUser.id
             // it will update field matchWith to collection
-
+            Map<String, dynamic> mapForMatchWith = {"id": user.id,"name": user.name};
             QuerySnapshot snap = 
             await _firebaseFirestore
                 .collection(COLLECTION)
@@ -79,20 +81,65 @@ class MatchingProvider {
                 .collection(COLLECTION)
                 .doc(currentDocID)
                 .update({
-              "matchWith": FieldValue.arrayUnion([userID])
+              "matchWith": FieldValue.arrayUnion([mapForMatchWith])
             });
           }
     });
   }
 
-  Future<MatchData> getMatchedDataByUser(User user) async {
-    QuerySnapshot qsnap = await _firebaseFirestore
-        .collection(COLLECTION)
-        .where("id", isEqualTo: user.id)
-        .get();
-    return  MatchData(
-              id: qsnap.docs[0].get('id'),
-              matchWith: qsnap.docs[0].get('matchWith'));
+  // Future<MatchData> getMatchedDataByUser(User user) async {
+  //   QuerySnapshot qsnap = await _firebaseFirestore
+  //       .collection(COLLECTION)
+  //       .where("id", isEqualTo: user.id)
+  //       .get();
+  //   return  MatchData(
+  //             id: qsnap.docs[0].get('id'),
+  //             matchWith: qsnap.docs[0].get('matchWith'));
+  // }
+
+  getMatchedEmail(var id) async {
+    await _firebaseFirestore.collection('tempusers')
+        .where('id',isEqualTo: id)
+        .get().then((snap){
+          MatchData.setEmail(snap.docs[0]['email']);
+        });
+  }
+
+  checkChatRoomID(String userEmail1,String userEmail2)async {
+    String chatrommid = getChatRoomId(userEmail1, userEmail2);
+    QuerySnapshot snap = 
+          await _firebaseFirestore
+              .collection('ChatRoom')
+              .where("chatroomid",isEqualTo: chatrommid).get();
+
+    if(snap.docs.isEmpty){
+      chatrommid = getChatRoomId(userEmail2, userEmail1);
+
+      snap = 
+          await _firebaseFirestore
+              .collection('ChatRoom')
+              .where("chatroomid",isEqualTo: chatrommid).get();
+      if(snap.docs.isEmpty){
+        return '';
+      }else{
+        return snap.docs[0]['chatroomid'];
+      }
+    }else{
+      return snap.docs[0]['chatroomid'];
+    }
+
+    
+  }
+
+  getChatRoomId(String a, String b) {
+    print('check');
+    print(a);
+    print(b);
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
+  }
   }
 
 }
