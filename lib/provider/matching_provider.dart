@@ -87,14 +87,14 @@ class MatchingProvider {
     });
   }
 
-  Future<MatchData> getMatchedDataByUser(User user) async {
-    QuerySnapshot qsnap = await _firebaseFirestore
-        .collection(COLLECTION)
-        .where("id", isEqualTo: user.id)
-        .get();
-    return  MatchData(
-              id: qsnap.docs[0].get('id'),
-              matchWith: qsnap.docs[0].get('matchWith'));
-  }
+  // Future<MatchData> getMatchedDataByUser(User user) async {
+  //   QuerySnapshot qsnap = await _firebaseFirestore
+  //       .collection(COLLECTION)
+  //       .where("id", isEqualTo: user.id)
+  //       .get();
+  //   return  MatchData(
+  //             id: qsnap.docs[0].get('id'),
+  //             matchWith: qsnap.docs[0].get('matchWith'));
+  // }
 
 }

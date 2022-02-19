@@ -62,7 +62,8 @@ class UnmatchProvider{
               .where("id",isEqualTo: gettingUnmatchUserID).get();
 
     String gotunmatchDocID = snap2.docs[0].id;
-
+    print(gettingUnmatchUserID);
+    print(currentUserID);
     await _firebaseFirestore.collection('MatchedData')
       .doc(currentDocID)
       .update({
@@ -86,6 +87,16 @@ class UnmatchProvider{
               .collection('ChatRoom')
               .where("chatroomid",isEqualTo: chatrommid).get();
 
+    if(snap.docs.isEmpty){
+      chatrommid = getChatRoomId(userEmail2, userEmail1);
+
+      snap = 
+          await _firebaseFirestore
+              .collection('ChatRoom')
+              .where("chatroomid",isEqualTo: chatrommid).get();
+    }
+
+    
     String currentDocID = snap.docs[0].id;
 
     //navigate through chats collection and delete every chat message
