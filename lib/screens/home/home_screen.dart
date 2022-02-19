@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loginsystem/widgets/choice_button.dart';
 import 'package:loginsystem/widgets/Menu_button.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/';
@@ -313,7 +314,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             vertical: 10,
                             horizontal: 60,
                           ),
-                          child: Row(
+                          child: Container(
+                            height: 60,
+                          ), /* Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               InkWell(
@@ -349,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     size: 30),
                               ),
                             ],
-                          ),
+                          ), */
                         ),
                         Container(
                           decoration: BoxDecoration(
