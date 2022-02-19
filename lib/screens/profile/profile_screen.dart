@@ -17,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final User user = User.users[0];
     DatabaseRepository _databaseRepository = DatabaseRepository();
-    
+    //print(user);
 
     return Scaffold(
       appBar: buildAppBar(context),

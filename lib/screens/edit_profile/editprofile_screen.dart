@@ -3,12 +3,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/models/database_repository.dart';
-import 'package:loginsystem/models/models.dart';
+import 'package:loginsystem/models/user_model.dart';
+//import 'package:loginsystem/models/user_model.dart';
+//import 'package:loginsystem/models/models.dart';
+//import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/widget.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 class EditProfileScreen extends StatefulWidget {
   static const String routeName = '/editprofile';
-
   static Route route() {
     return MaterialPageRoute(
       builder: (_) => EditProfileScreen(),
@@ -21,15 +24,16 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final User user = User.users[0];
+  //final User user = User.users[0];
 
+  User? userFromDB;
   
+  //DatabaseRepository _databaseRepository = DatabaseRepository();
 
-  DatabaseRepository _databaseRepository = DatabaseRepository();
- 
-  
   @override
   Widget build(BuildContext context) {
+    getData();
+    print("after set userFromDB = $userFromDB");
     return Scaffold(
       appBar: buildAppBar(context),
       body: ListView(
@@ -37,29 +41,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         physics: BouncingScrollPhysics(),
         children: [
           ProfileWidget(
-            imagePath: user.imageUrls[0],
+            imagePath: userFromDB!.imageUrls[0],
             onClicked: () async {
               Navigator.pushNamed(context, "/uploadPicture");
             },
           ),
           const SizedBox(height: 24),
-          TextFieldWidget(
-            label: 'Full Name',
-            text: user.name,
-            onChanged: (name) {
-              print("Text $name");
-            },
-          ),
+          //TextFieldWidget(
+          //  label: 'Full Name',
+          //  text: user.name,
+          //  onChanged: (name) {
+          //    print("Text $name");
+          //  },
+          //),
           const SizedBox(height: 24),
-          TextFieldWidget(
-            label: 'About',
-            text: user.bio,
-            maxLines: 3,
-            onChanged: (about) {
-              print('name ');
-            },
-          ),
-          
+          //TextFieldWidget(
+          //  label: 'About',
+          //  text: user.bio,
+          //  maxLines: 3,
+          //  onChanged: (about) {
+          //    print('name ');
+          //  },
+          //),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -74,6 +77,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
     );
   }
-}
 
+
+
+
+
+  Future<void> getData() async {
+    await DatabaseRepository()
+      .getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email)
+      .then((userData) { 
+        print("before set userFromDB = $userData");
+        userFromDB = userData;
+        });
+
+      
+
+  } 
+
+}
 
