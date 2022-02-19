@@ -30,9 +30,9 @@ class MatchingProvider {
       print(currentUser.name + " match with " + userWhoGotLiked.name);
       addMatchedUserToMatchedData(currentUser, userWhoGotLiked);
       addMatchedUserToMatchedData(userWhoGotLiked, currentUser);
-      getMatchedDataByUser(currentUser).then((response) {
-        print(response);
-      });
+      // getMatchedDataByUser(currentUser).then((response) {
+      //   print(response);
+      // });
     } else {
       print(currentUser.name + " not match with " + userWhoGotLiked.name);
     }
