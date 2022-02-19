@@ -54,7 +54,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     stream: matchedStream,
                     builder: (context, snapshot2) {
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: Row(
                           children: [
                             Expanded(
@@ -71,6 +71,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                             //   .data!.docs[0]['matchWith'].length);
                                             //print(index);
                                             return SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
                                               child: UserMatchTile(
                                                   snapshot2.data!.docs[0]
                                                       ["email"],
@@ -109,6 +110,7 @@ class _ChatRoomState extends State<ChatRoom> {
                           controller: _scrollController,
                           itemBuilder: (context, index) {
                             return SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -195,13 +197,13 @@ class _ChatRoomState extends State<ChatRoom> {
         ],
       ),
       body: chatRoomList(),
-      floatingActionButton: FloatingActionButton(
+      /* floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),
         onPressed: () {
           Navigator.pushNamed(context, "/search");
           print("searching");
         },
-      ),
+      ) ,*/
     );
   }
 
@@ -311,12 +313,12 @@ class UserMatchTile extends StatelessWidget {
         child: Container(
           //alignment: Alignment.centerRight,
           color: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 1.0),
+          //padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 1.0),
           child: Container(
             child: Row(
               children: [
                 Container(
-                  height: 61,
+                  height: 81,
                   width: 61,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
