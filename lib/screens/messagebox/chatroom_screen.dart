@@ -53,53 +53,55 @@ class _ChatRoomState extends State<ChatRoom> {
                 child: StreamBuilder<dynamic>(
                     stream: matchedStream,
                     builder: (context, snapshot2) {
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: Stack(
-                              children: <Widget>[
-                                snapshot2.hasData
-                                    ? ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: snapshot2
-                                            .data!.docs[0]['matchWith'].length,
-                                        itemBuilder: (context, index) {
-                                          //print('helooooooooooooooooo');
-                                          // print(snapshot2
-                                          //   .data!.docs[0]['matchWith'].length);
-                                          //print(index);
-                                          return SingleChildScrollView(
-                                            child: Row(
-                                              children: [
-                                                UserMatchTile(
-                                                    snapshot2.data!.docs[0]
-                                                        ["email"],
-                                                    snapshot2.data!.docs[0]
-                                                            ["matchWith"][index]
-                                                        ["name"],
-                                                    snapshot2.data!.docs[0]
-                                                        ["matchWith"][index]),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    : Container(),
-                              ],
-                            ),
-                          )
-                        ],
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Stack(
+                                children: <Widget>[
+                                  snapshot2.hasData
+                                      ? ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: snapshot2.data!
+                                              .docs[0]['matchWith'].length,
+                                          itemBuilder: (context, index) {
+                                            //print('helooooooooooooooooo');
+                                            // print(snapshot2
+                                            //   .data!.docs[0]['matchWith'].length);
+                                            //print(index);
+                                            return SingleChildScrollView(
+                                              child: UserMatchTile(
+                                                  snapshot2.data!.docs[0]
+                                                      ["email"],
+                                                  snapshot2.data!.docs[0]
+                                                          ["matchWith"][index]
+                                                      ["name"],
+                                                  snapshot2.data!.docs[0]
+                                                      ["matchWith"][index]),
+                                            );
+                                          },
+                                        )
+                                      : Container(),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       );
                     }
                     // match person replace here
 
                     ),
+              ),
+              SizedBox(
+                height: 10,
               ), // end of match person section
               Text("Messages", style: Theme.of(context).textTheme.headline2),
               SizedBox(
                 // message list
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 1.78,
+                height: MediaQuery.of(context).size.height / 1.9,
                 child: Stack(children: [
                   snapshot.hasData
                       ? ListView.builder(
@@ -108,6 +110,7 @@ class _ChatRoomState extends State<ChatRoom> {
                           itemBuilder: (context, index) {
                             return SingleChildScrollView(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ChatRoomTile(
                                       snapshot.data!.docs[index]["chatroomid"]
@@ -268,58 +271,63 @@ class UserMatchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => ConversationScreen(chatRoomId, userEmail)),
-        // );
-        var otherid =
-            matchwith['id']; // get other id from map that we get from firebase
-        // print('id is $otherid');
-        //get otheremail with func from match_provider
-        await _matchingProvider.getMatchedEmail(otherid);
-        String targetEmail = MatchData.email;
-        //now we need to check if we already have a chatroom because right now if 2person that have first letter name similar gonna have a bug
-        String chatRoomId = await _matchingProvider.checkChatRoomID(
-            targetEmail, currentUserEmail);
-        if (chatRoomId == '') {
-          //if this the first time we create a new chatroom
-          chatRoomId = getChatRoomId(targetEmail, currentUserEmail);
-        }
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      child: GestureDetector(
+        onTap: () async {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => ConversationScreen(chatRoomId, userEmail)),
+          // );
+          var otherid = matchwith[
+              'id']; // get other id from map that we get from firebase
+          // print('id is $otherid');
+          //get otheremail with func from match_provider
+          await _matchingProvider.getMatchedEmail(otherid);
+          String targetEmail = MatchData.email;
+          //now we need to check if we already have a chatroom because right now if 2person that have first letter name similar gonna have a bug
+          String chatRoomId = await _matchingProvider.checkChatRoomID(
+              targetEmail, currentUserEmail);
+          if (chatRoomId == '') {
+            //if this the first time we create a new chatroom
+            chatRoomId = getChatRoomId(targetEmail, currentUserEmail);
+          }
 
-        List<String> users = [targetEmail, currentUserEmail];
-        Map<String, dynamic> chatRoomMap = {
-          "users": users,
-          "chatroomid": chatRoomId
-        };
-        DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
-        //hope this work!!
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  ConversationScreen(chatRoomId, targetEmail)),
-        );
-      },
-      child: Container(
-        //alignment: Alignment.centerRight,
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
-        child: Row(
-          children: [
-            Container(
-              height: 51,
-              width: 51,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: Color(0xFFE29AC4),
-                  borderRadius: BorderRadius.circular(25)),
-              child: Text(
-                  "${userName.toUpperCase()}"), //this child will show the name or thumbnail
+          List<String> users = [targetEmail, currentUserEmail];
+          Map<String, dynamic> chatRoomMap = {
+            "users": users,
+            "chatroomid": chatRoomId
+          };
+          DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+          //hope this work!!
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ConversationScreen(chatRoomId, targetEmail)),
+          );
+        },
+        child: Container(
+          //alignment: Alignment.centerRight,
+          color: Colors.white,
+          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 1.0),
+          child: Container(
+            child: Row(
+              children: [
+                Container(
+                  height: 61,
+                  width: 61,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFE29AC4),
+                      borderRadius: BorderRadius.circular(25)),
+                  child: Text(
+                      "${userName.toUpperCase()}"), //this child will show the name or thumbnail
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
