@@ -272,4 +272,21 @@ class User extends Equatable {
 
   static List<int> userdisliked = [1];
   static bool isdislikeclear = false;
+
+  static User dummyUser = 
+    const User(
+        id: 1,
+        name: 'dummyPack',
+        email: 'pack@g.coom',
+        age: 21,
+        imageUrls: [
+          'https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/image%2F1.jpg?alt=media&token=8235eca6-7195-4a16-bf9c-a95282e2a727',
+          'https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/image%2F1.jpg?alt=media&token=8235eca6-7195-4a16-bf9c-a95282e2a727',
+          'https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/image%2F1.jpg?alt=media&token=8235eca6-7195-4a16-bf9c-a95282e2a727',
+        ],
+        bio: 'i love coding',
+        interested: ['C++', 'python'],
+        like: [],
+        dislike: [],
+    );
 }

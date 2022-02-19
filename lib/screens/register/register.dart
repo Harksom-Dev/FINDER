@@ -28,7 +28,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool isLoading = false;
   final formKey = GlobalKey<FormState>();
-
+  
   Profile profile =
       Profile(name: '', email: '', password: '', dob: '', interest: []);
 
@@ -82,7 +82,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Form(
-                    key: formKey,
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

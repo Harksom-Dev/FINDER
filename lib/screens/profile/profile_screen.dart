@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/widget.dart';
 import 'package:loginsystem/models/database_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'dart:async';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
 
   static Route route() {
@@ -11,27 +13,44 @@ class ProfileScreen extends StatelessWidget {
       builder: (_) => ProfileScreen(),
       settings: RouteSettings(name: routeName),
     );
+
+
   }
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+  User? userFromDB = User.dummyUser;
+
+
+  @override
+    void initState() {
+      getData();
+      super.initState();
+    }
+  @override
   Widget build(BuildContext context) {
-    final User user = User.users[0];
+    // final User user = User.users[0];
+
     DatabaseRepository _databaseRepository = DatabaseRepository();
     //print(user);
-
     return Scaffold(
       appBar: buildAppBar(context),
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
           ProfileWidget(
-            imagePath: user.imageUrls[0],
+            imagePath: userFromDB?.imageUrls[0],
             onClicked: () async {},
           ),
           const SizedBox(height: 24),
-          buildName(user),
+           buildName(userFromDB!),
           const SizedBox(height: 0),
-          buildAbout(user),
+           buildAbout(userFromDB!),
           const SizedBox(height: 48),
           Center(child: buildEditButton(context)),
           const SizedBox(
@@ -66,9 +85,9 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextContainer(text: 'c++'),
-                    CustomTextContainer(text: 'Java'),
-                    CustomTextContainer(text: '...'),
+                    CustomTextContainer(text: userFromDB!.interested[0]),
+                    CustomTextContainer(text: userFromDB!.interested[1]),
+                    CustomTextContainer(text: userFromDB!.interested[1]),
                   ],
                 ),
               )
@@ -106,6 +125,7 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       );
+
   Widget buildEditButton(BuildContext context) => ButtonWidget(
         text: 'Edit Profile',
         onClicked: () {
@@ -127,6 +147,17 @@ class ProfileScreen extends StatelessWidget {
       );
 
   Widget buildinterest(User user) => Container();
+
+  Future getData() async {
+    print("perfrom getdata");
+    await DatabaseRepository()
+        .getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email)
+        .then((userData) {
+      print("before set userFromDB = $userData");
+      userFromDB = userData;
+      print("userFromDB = $userFromDB");
+    });
+  }
 }
 
 class CustomTextContainer extends StatelessWidget {

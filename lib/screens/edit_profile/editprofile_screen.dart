@@ -1,17 +1,22 @@
 // ignore_for_file: camel_case_types, use_function_type_syntax_for_parameters
 
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:loginsystem/models/UpdateUser.dart';
+import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/user_model.dart';
-//import 'package:loginsystem/models/user_model.dart';
-//import 'package:loginsystem/models/models.dart';
-//import 'package:loginsystem/models/user_model.dart';
+import 'package:loginsystem/screens/edit_profile/editprofile_interest.dart';
 import 'package:loginsystem/widgets/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 class EditProfileScreen extends StatefulWidget {
   static const String routeName = '/editprofile';
+  static User? userFromDB;
+
   static Route route() {
     return MaterialPageRoute(
       builder: (_) => EditProfileScreen(),
@@ -24,15 +29,43 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  bool _isLoading = true;
   //final User user = User.users[0];
+  final formKey = GlobalKey<FormState>();
+  final editnamecontroller = TextEditingController();
+  final editbiocontroller = TextEditingController();
+  UpdateUser updateprofile = UpdateUser(
+    name: '',
+    age: 0,
+    bio: '',
+    imageUrls: [],
+    interested: [],
+  );
+  final nameValidator = MultiValidator([
+    RequiredValidator(errorText: 'Please enter your the name.'),
+    PatternValidator(r'^([A-z\\.-ᶜ]*(\s))*[A-z\\.-ᶜ]*\D$',
+        errorText: "Name is invalid."),
+  ]);
+  final bioValidator = MultiValidator([
+    RequiredValidator(errorText: 'Please enter your the name.'),
+    PatternValidator(r'^([A-z\\.-ᶜ]*(\s))*[A-z\\.-ᶜ]*\D$',
+        errorText: "Bio is invalid."),
+  ]);
+  User? userFromDB = User.dummyUser;
 
-  User? userFromDB;
-  
-  //DatabaseRepository _databaseRepository = DatabaseRepository();
+  @override
+  void initState() {
+    getData();
+    super.initState();
+    Timer(Duration(milliseconds: 900), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    getData();
     print("after set userFromDB = $userFromDB");
     return Scaffold(
       appBar: buildAppBar(context),
@@ -47,29 +80,55 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             },
           ),
           const SizedBox(height: 24),
-          //TextFieldWidget(
-          //  label: 'Full Name',
-          //  text: user.name,
-          //  onChanged: (name) {
-          //    print("Text $name");
-          //  },
-          //),
+          Text(
+            "Name  ",
+            style: TextStyle(fontSize: 15),
+          ),
+          TextFormField(
+            controller: editnamecontroller,
+            decoration: const InputDecoration(
+              hintText: 'userFromDB!.name',
+            ),
+            onSaved: (String? valueF) {
+              updateprofile.name = valueF!;
+              debugPrint('valueF in test is  $valueF');
+            },
+          ),
           const SizedBox(height: 24),
-          //TextFieldWidget(
-          //  label: 'About',
-          //  text: user.bio,
-          //  maxLines: 3,
-          //  onChanged: (about) {
-          //    print('name ');
-          //  },
-          //),
+          TextFormField(
+            controller: editbiocontroller,
+            decoration: const InputDecoration(
+              hintText: 'userFromDB!.name',
+            ),
+            onSaved: (String? valueF) {
+              updateprofile.name = valueF!;
+              debugPrint('valueF in test is  $valueF');
+            },
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               ButtonTheme(
                   child: RaisedButton(
-                onPressed: () => {},
-                child: Text('Save'),
+                onPressed: () async {
+                  print(editnamecontroller.text);
+                  print(editbiocontroller.text);
+                  //await Future.delayed(const Duration(seconds: 2));
+                  //await Navigator.pushNamed(context, "/editprofile_interest");
+                  {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Editprofile_interest(
+                          updateprofile.name,
+                          updateprofile.bio,
+                          updateprofile.interested,
+                        ),
+                      ),
+                    );
+                  }
+                },
+                child: Text('Next'),
               ))
             ],
           )
@@ -78,21 +137,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-
-
-
-
-  Future<void> getData() async {
+  Future getData() async {
+    print("perfrom getdata");
     await DatabaseRepository()
-      .getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email)
-      .then((userData) { 
-        print("before set userFromDB = $userData");
-        userFromDB = userData;
-        });
-
-      
-
-  } 
-
+        .getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email)
+        .then((userData) {
+      print("before set userFromDB = $userData");
+      userFromDB = userData;
+      print("userFromDB = $userFromDB");
+    });
+  }
 }
-

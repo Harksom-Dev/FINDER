@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:loginsystem/screens/edit_profile/editprofile_screen.dart';
+import 'package:loginsystem/screens/profile/profile_screen.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   const CustomAppBar({

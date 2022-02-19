@@ -1,4 +1,5 @@
 import 'package:loginsystem/models/models.dart';
+import 'package:loginsystem/screens/edit_profile/editprofile_interest.dart';
 import 'package:loginsystem/screens/home/test_home.dart';
 import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
 import 'package:loginsystem/screens/chat/conversation_screen.dart';
@@ -36,6 +37,11 @@ class AppRouter {
         return UsersScreen.route(user: setting.arguments as User);
       case UploadPicture.routeName:
         return UploadPicture.route();
+      case Editprofile_interest.routeName:
+        return Editprofile_interest.route(
+          UpdateName: setting.arguments as String,
+          UpdateBio: setting.arguments as String,
+          UpdateInterest: setting.arguments as List<String>);
       case ConversationScreen.routeName: //chatroom
         return ConversationScreen.route(
             chatroomId: setting.arguments as String,
