@@ -1,12 +1,17 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/provider/google_sign_in.dart';
+import 'package:loginsystem/screens/register/register_for_google/register_forgoogle.dart';
 import 'package:provider/provider.dart';
 
 class FirstAuth extends StatelessWidget {
   static const String routeName = '/first';
 
-  const FirstAuth({Key? key}) : super(key: key);
+  final user = FirebaseAuth.instance.currentUser;
+
+  FirstAuth({Key? key}) : super(key: key);
 
   static Route route() {
     return MaterialPageRoute(
@@ -56,14 +61,38 @@ class FirstAuth extends StatelessWidget {
                   ),
                   SizedBox(
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
                         //todo: implement google login here!
                         final provider = Provider.of<GoogleSignInProvider>(
                             context,
                             listen: false);
-                        provider.googleLogin();
-                        Navigator.pushNamed(context, "/google login");
-                        print("google auth !");
+                        await provider.googleLogin();
+                        QuerySnapshot snapshot = await FirebaseFirestore
+                            .instance
+                            .collection('users')
+                            .where('email',
+                                isEqualTo:
+                                    FirebaseAuth.instance.currentUser!.email)
+                            .get();
+
+                        if (snapshot.docs.isEmpty) {
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            print(
+                                "google auth ! Name: ${FirebaseAuth.instance.currentUser!.displayName}");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterScreenForGoogle(
+                                    FirebaseAuth
+                                        .instance.currentUser!.displayName,
+                                    FirebaseAuth.instance.currentUser!.email,
+                                  ),
+                                ));
+                          }
+                        }
+                        else {
+                          Navigator.pushNamed(context, '/');
+                        }
                       },
                       child: Container(
                         width: 335,
