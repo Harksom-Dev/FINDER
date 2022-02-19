@@ -134,54 +134,64 @@ class UsersScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline3,
                       ), */
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Row(
-                            children: dupList
-                                .map(
-                                  (interest) => Container(
-                                    padding: const EdgeInsets.all(6.0),
-                                    margin: const EdgeInsets.only(
-                                        top: 5.0, right: 5.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: LinearGradient(colors: [
-                                          Color(0xFFF594B7),
-                                          Color(0xFFB6CBFE),
-                                        ])),
-                                    child: Text(
-                                      interest,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(color: Colors.white),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              //crossAxisAlignment: CrossAxisAlignment.start,
+                              children: dupList
+                                  .map(
+                                    (interest) => Container(
+                                      padding: const EdgeInsets.all(6.0),
+                                      margin: const EdgeInsets.only(
+                                          top: 5.0, right: 5.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          gradient: LinearGradient(colors: [
+                                            Color(0xFFF594B7),
+                                            Color(0xFFB6CBFE),
+                                          ])),
+                                      child: Text(
+                                        interest,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
+                                  )
+                                  .toList(),
+                            ),
                           ),
-                          Row(
-                            children: diffList
-                                .map(
-                                  (diffin) => Container(
-                                    padding: const EdgeInsets.all(6.0),
-                                    margin: const EdgeInsets.only(
-                                        top: 5.0, right: 5.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: LinearGradient(colors: [
-                                          Colors.black26,
-                                          Colors.black26,
-                                        ])),
-                                    child: Text(
-                                      diffin,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(color: Colors.white),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: diffList
+                                  .map(
+                                    (diffin) => Container(
+                                      padding: const EdgeInsets.all(6.0),
+                                      margin: const EdgeInsets.only(
+                                          top: 5.0, right: 5.0),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          gradient: LinearGradient(colors: [
+                                            Colors.black26,
+                                            Colors.black26,
+                                          ])),
+                                      child: Text(
+                                        diffin,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
+                                  )
+                                  .toList(),
+                            ),
                           )
                         ],
                       ),
