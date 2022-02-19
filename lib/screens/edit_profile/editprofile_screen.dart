@@ -40,7 +40,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     name: '',
     age: 0,
     bio: '',
-    imageUrls: [],
+    imageUrls: ['test'],
     interested: [],
   );
   final nameValidator = MultiValidator([
@@ -81,8 +81,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Row(
                   children: [
                     CustomImageContainer(),
-                    CustomImageContainer(),
-                    CustomImageContainer(),
+                    
                     
                     SizedBox(width: 15),]),
           Text(
