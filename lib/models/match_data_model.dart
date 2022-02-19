@@ -25,7 +25,7 @@ class MatchData extends Equatable {
         matchWith,
       ];
 
-
+  static String email = '';
 
 }
 

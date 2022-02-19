@@ -97,4 +97,12 @@ class MatchingProvider {
   //             matchWith: qsnap.docs[0].get('matchWith'));
   // }
 
+  getMatchedEmail(var id) async {
+    _firebaseFirestore.collection('tempusers')
+        .where('id',isEqualTo: id)
+        .get().then((snap){
+          MatchData.email = snap.docs[0]['email'];
+        });
+  }
+
 }
