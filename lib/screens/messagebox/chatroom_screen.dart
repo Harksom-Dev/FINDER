@@ -60,7 +60,7 @@ class _ChatRoomState extends State<ChatRoom> {
                             Expanded(
                               child: Stack(
                                 children: <Widget>[
-                                  snapshot2.hasData
+                                  snapshot2.data != null && snapshot2.data.docs.isNotEmpty
                                       ? ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           itemCount: snapshot2.data!
