@@ -264,6 +264,14 @@ class DatabaseRepository implements BaseDatabaseRepository {
     var userid = currentUser?.id;
 
     List<dynamic> reviewbyList = [];
+    QuerySnapshot snap = await _firebaseFirestore
+        .collection('UserRating')
+        .where("uid", isEqualTo: userid)
+        .get();
+    
+    if(snap.docs.isEmpty){
+      return 0;
+    }
     await _firebaseFirestore
         .collection('UserRating')
         .where("uid", isEqualTo: userid)
