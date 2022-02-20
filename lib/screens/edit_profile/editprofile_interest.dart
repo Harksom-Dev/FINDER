@@ -304,6 +304,7 @@ class Editprofile_interest_State extends State<Editprofile_interest> {
                                 userInfoMap, widget.updateEmail);
                           }
                            Navigator.pushNamed(context, '/');
+                           
                         },
                         child: Text('finish'),
                       ))
