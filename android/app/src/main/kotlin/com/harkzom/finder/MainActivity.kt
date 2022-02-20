@@ -1,4 +1,4 @@
-package com.example.finder_ui
+package com.harkzom.finder
 
 import io.flutter.embedding.android.FlutterActivity
 
