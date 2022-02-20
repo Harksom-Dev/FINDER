@@ -137,20 +137,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 )
               ],
             ),
-            Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (int i = 0; i < n; i++)
-                        CustomTextContainer(text: userFromDB?.interested[i]),
-                    ],
-                  ),
-                )
-              ],
-            )
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (int i = 0; i < n; i++)
+                            CustomTextContainer(
+                                text: userFromDB?.interested[i]),
+                        ],
+                      ),
+                      //
+                    )
+                  ],
+                )),
           ],
         ),
       );
