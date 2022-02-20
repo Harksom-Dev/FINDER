@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.finder_ui">
+    package="com.harkzom.finder">
    <application
         android:usesCleartextTraffic="true"
-        android:label="finder_ui"
+        android:label="FINDER"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
