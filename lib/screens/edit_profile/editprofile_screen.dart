@@ -4,7 +4,10 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:loginsystem/blocs/bloc/images_bloc.dart';
+
 import 'package:loginsystem/models/UpdateUser.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/models/database_repository.dart';
@@ -38,7 +41,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String currentName = '';
   String currentBio = '';
   UpdateUser updateprofile = UpdateUser(
-    
     name: '',
     age: 0,
     bio: '',
@@ -62,7 +64,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     getData();
     Future.delayed(Duration(milliseconds: 1500), () {});
     super.initState();
-    
   }
 
   @override
@@ -81,12 +82,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             },
           ),
           const SizedBox(height: 30),
-          Row(
-                  children: [
-                    CustomImageContainer(),
-                    
-                    
-                    SizedBox(width: 15),]),
+          BlocBuilder<ImagesBloc, ImagesState>(builder: (context, state) {
+            if (state is ImagesLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is ImagesLoaded) {
+              var imagesCount = state.imageUrls.length;
+              return Row(children: [
+                (imagesCount > 0)
+                ?CustomImageContainer(imageURL :state.imageUrls[0])
+                :CustomImageContainer(),
+                (imagesCount > 1)
+                ?CustomImageContainer(imageURL :state.imageUrls[1])
+                :CustomImageContainer(),
+                (imagesCount > 2)
+                ?CustomImageContainer(imageURL :state.imageUrls[2])
+                :CustomImageContainer(),
+                SizedBox(width: 15),
+              ]);
+            } else {
+              return Text('Something went wrong');
+            }
+          }),
           Text(
             "Name  ",
             style: TextStyle(fontSize: 15),

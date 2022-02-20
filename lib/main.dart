@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:loginsystem/blocs/bloc/images_bloc.dart';
+
 import 'package:loginsystem/blocs/swipe/swipe_bloc.dart'
     show LoadUsersEvent, SwipeBloc;
 import 'package:loginsystem/config/app_router.dart';
@@ -84,6 +86,9 @@ class _MyAppState extends State<MyApp> {
           create: (_) => SwipeBloc(databaseRepository: DatabaseRepository())
           // ..add(LoadUsersEvent(users: User.users)),
         ),
+        BlocProvider(create: (_)=>ImagesBloc(databaseRepository: DatabaseRepository())
+        ..add(LoadImages()),)
+        
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

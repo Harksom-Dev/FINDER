@@ -39,7 +39,11 @@ class CustomImageContainer extends StatelessWidget {
                 ),
               ),
             ),
-            child: Align(
+
+            
+            child:
+            (imageURL == null)? 
+            Align(
               alignment: Alignment.bottomRight,
               child: IconButton(
                 icon: Icon(
@@ -67,7 +71,8 @@ class CustomImageContainer extends StatelessWidget {
                   }
                 },
               ),
-            )));
+            ):Image.network(imageURL!,fit: BoxFit.cover,)
+            ));
   }
 }
 
