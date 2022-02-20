@@ -275,7 +275,7 @@ class Editprofile_interest_State extends State<Editprofile_interest> {
                       ButtonTheme(
                           child: RaisedButton(
                         onPressed: () async {
-                          Navigator.pushNamed(context, "/profile");
+                          Navigator.pushNamed(context, "/");
                           _Selected.addAll(_SelectedProLang);
                           _Selected.addAll(_SelectedMusics);
                           _Selected.addAll(_SelectedSports);

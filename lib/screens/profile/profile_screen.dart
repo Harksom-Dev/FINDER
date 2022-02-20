@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:loginsystem/models/models.dart';
 import 'package:loginsystem/models/user_model.dart';
 import 'package:loginsystem/widgets/widget.dart';
 import 'package:loginsystem/models/database_repository.dart';
@@ -13,13 +16,10 @@ class ProfileScreen extends StatefulWidget {
       builder: (_) => ProfileScreen(),
       settings: RouteSettings(name: routeName),
     );
-
-
   }
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
-
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -27,22 +27,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   User? userFromDB = User.dummyUser;
   bool _isLoading = true;
   double rating = 0;
+  int n = 0;
+
   @override
-    void initState() {
-      getData();
-      
-      super.initState();
-      Timer(Duration(milliseconds: 2000), () {
+  void initState() {
+    getData();
+
+    super.initState();
+    Timer(Duration(milliseconds: 2000), () {
       setState(() {
         _isLoading = false;
       });
-      });
-    }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // final User user = User.users[0];
 
-    
     //print(user);
     return Scaffold(
       appBar: buildAppBar(context),
@@ -54,9 +56,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onClicked: () async {},
           ),
           const SizedBox(height: 24),
-           buildName(userFromDB!),
+          buildName(userFromDB!),
           const SizedBox(height: 0),
-           buildAbout(userFromDB!),
+          buildAbout(userFromDB!),
           const SizedBox(height: 48),
           Center(child: buildEditButton(context)),
           const SizedBox(
@@ -91,9 +93,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextContainer(text: userFromDB!.interested[0]),
-                    CustomTextContainer(text: userFromDB!.interested[1]),
-                    CustomTextContainer(text: userFromDB!.interested[1]),
+                    
+                      
+                        for (int i = 0; i < n; i++)
+                          CustomTextContainer(text: userFromDB?.interested[i]),
+                    
+                    
                   ],
                 ),
               )
@@ -163,10 +168,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       userFromDB = userData;
       print("userFromDB = $userFromDB");
     });
-    await _databaseRepository.getUserRating()
-            .then((rated) =>{
-              rating = rated,
-            });
+    await _databaseRepository.getUserRating().then((rated) => {
+          rating = rated,
+        });
+    await _databaseRepository
+        .getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email)
+        .then((userData) => n = User.userInterested.length);
   }
 }
 

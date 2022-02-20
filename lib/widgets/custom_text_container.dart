@@ -13,7 +13,7 @@ class CustomTextContainer extends StatelessWidget {
         right: 5,
       ),
       child: Container(
-        height: 30,
+        height: 10,
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
         ),
