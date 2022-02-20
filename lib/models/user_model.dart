@@ -234,7 +234,7 @@ class User extends Equatable {
   static List<User> users = [
     const User(
         id: 1,
-        name: 'dummyPack',
+        name: 'Loading',
         email: 'pack@g.coom',
         age: 21,
         imageUrls: [

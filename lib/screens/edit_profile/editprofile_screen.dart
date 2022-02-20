@@ -58,18 +58,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         errorText: "Bio is invalid."),
   ]);
   User? userFromDB = User.dummyUser;
-
   @override
   void initState() {
     getData();
-    Future.delayed(Duration(milliseconds: 1500), () {});
+    
     super.initState();
+
+    Timer(Duration(milliseconds: 2000), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     print("after set userFromDB = $userFromDB");
-    return Scaffold(
+    if(_isLoading){
+      return Container(
+                decoration: BoxDecoration(color: Colors.white),
+                child: Center(
+                  child: const CircularProgressIndicator(
+                    color: Colors.pink,
+                    backgroundColor: Colors.transparent,
+                  ),
+                ),
+              );
+    }else{
+      return Scaffold(
       appBar: buildAppBar(context),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -82,30 +98,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             },
           ),
           const SizedBox(height: 30),
-          BlocBuilder<ImagesBloc, ImagesState>(builder: (context, state) {
-            if (state is ImagesLoading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is ImagesLoaded) {
-              var imagesCount = state.imageUrls.length;
-              return Row(children: [
-                (imagesCount > 0)
-                ?CustomImageContainer(imageURL :state.imageUrls[0])
-                :CustomImageContainer(),
-                (imagesCount > 1)
-                ?CustomImageContainer(imageURL :state.imageUrls[1])
-                :CustomImageContainer(),
-                (imagesCount > 2)
-                ?CustomImageContainer(imageURL :state.imageUrls[2])
-                :CustomImageContainer(),
-                SizedBox(width: 15),
-              ]);
-            } else {
-              return Text('Something went wrong');
-            }
-          }),
+          // BlocBuilder<ImagesBloc, ImagesState>(builder: (context, state) {
+          //   // if (state is ImagesLoading) {
+          //   //   return Center(
+          //   //     child: CircularProgressIndicator(),
+          //   //   );
+          //   // }else
+          //   if (state is ImagesLoaded) {
+          //     var imagesCount = state.imageUrls.length;
+          //     return Row(children: [
+          //       (imagesCount > 0)
+          //       ?CustomImageContainer(imageURL :state.imageUrls[0])
+          //       :CustomImageContainer(),
+          //       (imagesCount > 1)
+          //       ?CustomImageContainer(imageURL :state.imageUrls[1])
+          //       :CustomImageContainer(),
+          //       (imagesCount > 2)
+          //       ?CustomImageContainer(imageURL :state.imageUrls[2])
+          //       :CustomImageContainer(),
+          //       SizedBox(width: 15),
+          //     ]);
+          //   } 
+          //   else {
+          //     return Text('');
+          //   }
+          // }),
           Text(
             "Name  ",
             style: TextStyle(fontSize: 15),
@@ -164,6 +181,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ],
       ),
     );
+    }
+    
   }
 
   Future getData() async {

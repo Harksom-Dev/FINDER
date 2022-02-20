@@ -34,6 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     getData();
 
     super.initState();
+    
     Timer(Duration(milliseconds: 2000), () {
       setState(() {
         _isLoading = false;
@@ -44,9 +45,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     // final User user = User.users[0];
-
     //print(user);
-    return Scaffold(
+      if(_isLoading){
+        return Container(
+          decoration: BoxDecoration(color: Colors.white),
+          child: Center(
+            child: const CircularProgressIndicator(
+              color: Colors.pink,
+              backgroundColor: Colors.transparent,
+            ),
+          ),
+        );
+      }else{
+        return Scaffold(
       appBar: buildAppBar(context),
       body: ListView(
         physics: const BouncingScrollPhysics(),
@@ -107,6 +118,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
+      }
+
+      
   }
 
   Widget buildName(User user) => Column(

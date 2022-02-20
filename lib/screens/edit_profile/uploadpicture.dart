@@ -42,7 +42,10 @@ class _UploadPictureState extends State<UploadPicture> {
           }
           if (_image != null) {
             print('Uploading . . . .');
-            StoragePicture().uploadImage(_image);
+            await StoragePicture().uploadImage(_image);
+
+            String imageUrl = await StoragePicture().getDownloadURL(_image.name);
+            DatabaseRepository().updateUserPicture(imageUrl);
           }
           
         },
@@ -60,18 +63,20 @@ class StoragePicture {
   @override
   Future<void> uploadImage(XFile image) async {
     try {
+      print('uploading to clound . . .');
+      String name = image.name;
       await storage
-          .ref('image/${'user_1.jpg'}')
-          .putFile(File(image.path))
-          .then((p0) => DatabaseRepository().updateUserPicture(image.name));
+          .ref('image/$name')
+          .putFile(File(image.path));
+          
     } catch (_) {}
   }
 
   @override
   Future<String> getDownloadURL(String imageName) async {
-    print('uploading to clound . . .');
+    
 
-    String downloadURL = await storage.ref('tempusers/$imageName').getDownloadURL();
+    String downloadURL = await storage.ref('image/$imageName').getDownloadURL();
     print('getDownloadURL');
 
     return downloadURL;

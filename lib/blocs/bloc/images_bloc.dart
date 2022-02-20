@@ -16,7 +16,9 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
         super(ImagesLoading());
 
   @override
-  Stream<ImagesState> _mapEventToState(ImagesEvent event) async* {
+  Stream<ImagesState> _mapEventToState(
+    ImagesEvent event)
+    async* {
     if (event is LoadImages) {
       yield* _mapLoadImagesToState();
     }
@@ -27,7 +29,7 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
 
   Stream<ImagesState> _mapLoadImagesToState() async* {
     _databaseSubscription?.cancel();
-
+    print('ehllo');
     await DatabaseRepository()
         .getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email)
         .then((userData) => add(UpdateImages(userData!.imageUrls)));
@@ -36,6 +38,7 @@ class ImagesBloc extends Bloc<ImagesEvent, ImagesState> {
   }
 
   Stream<ImagesState> _mapUpdateImagesToState(UpdateImages event) async* {
+    print('hello');
     yield ImagesLoaded(imageUrls: event.imageUrls);
     print('State Loaded Image');
   }
