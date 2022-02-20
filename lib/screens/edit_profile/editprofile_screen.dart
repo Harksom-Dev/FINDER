@@ -124,9 +124,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           //   }
           // }),
 
-          Row(children: [
-            CustomImageContainer()
-          ],),
           Text(
             "Name  ",
             style: TextStyle(fontSize: 15),
