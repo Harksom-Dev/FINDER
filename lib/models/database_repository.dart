@@ -243,7 +243,7 @@ class DatabaseRepository implements BaseDatabaseRepository {
 
   // backend for get current user rating
   //return an double of all rating
-  getUserRating() async {
+  Future<double> getUserRating() async {
     User? currentUser =
         await getUserByEmail(auth.FirebaseAuth.instance.currentUser!.email);
     var userid = currentUser?.id;

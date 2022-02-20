@@ -23,10 +23,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
+  DatabaseRepository _databaseRepository = DatabaseRepository();
   User? userFromDB = User.dummyUser;
   bool _isLoading = true;
-
+  double rating = 0;
   @override
     void initState() {
       getData();
@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     // final User user = User.users[0];
 
-    DatabaseRepository _databaseRepository = DatabaseRepository();
+    
     //print(user);
     return Scaffold(
       appBar: buildAppBar(context),
@@ -75,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      _databaseRepository.getUserRating().toString(),
+                      rating.toString(),
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                     )
@@ -163,6 +163,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       userFromDB = userData;
       print("userFromDB = $userFromDB");
     });
+    await _databaseRepository.getUserRating()
+            .then((rated) =>{
+              rating = rated,
+            });
   }
 }
 
