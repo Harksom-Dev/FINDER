@@ -144,7 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               //     return ChatRoom();
                                               // }));
                                               await new Future.delayed(
-                                                  const Duration(seconds: 1));
+                                                  const Duration(
+                                                      milliseconds: 300));
                                               Navigator.pushNamed(context, "/");
                                               print("swipe screen is home!");
                                             });

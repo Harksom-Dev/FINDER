@@ -56,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
 // create chatroom, send user to conversation screen,pushreplacement
   createChatroomAndStartConversation({required String userEmail}) {
     //so long function name ;-;
-    print(Constants);
+    // print(Constants);
     if (userEmail != Constants.myEmail) {
       String chatRoomId = getChatRoomId(userEmail, Constants.myEmail);
       List<String> users = [userEmail, Constants.myEmail];

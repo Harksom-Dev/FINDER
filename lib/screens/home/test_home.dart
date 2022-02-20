@@ -1,19 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/screens/home/first_auth.dart';
-import 'package:loginsystem/widgets/auth/logged_in_widget.dart';
+import 'package:loginsystem/screens/register/register_for_google/register_forgoogle.dart';
 
 class TestHome extends StatelessWidget {
   static const String routeName = '/google login';
 
-  const TestHome({Key? key}) : super(key: key);
-
-  static Route route() {
+  static Route route({
+    required String profileName,
+    required String profileEmail,
+  }) {
     return MaterialPageRoute(
-      builder: (_) => const TestHome(),
+      builder: (_) => TestHome(profileName, profileEmail),
       settings: const RouteSettings(name: routeName),
     );
   }
+
+  final String? profileName;
+  final String? profileEmail;
+
+
+  const TestHome(String this.profileName, this.profileEmail, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +32,13 @@ class TestHome extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           else if (snapshot.hasData) {
-            return const LoggedInWidget();
+            return RegisterScreenForGoogle(profileName, profileEmail);
           }
           else if (snapshot.hasError) {
             return const Center(child: Text('Something went wrong!'));
           }
           else {//todo must be logout
-            return const FirstAuth();
+            return FirstAuth();
           }
         },
       ),

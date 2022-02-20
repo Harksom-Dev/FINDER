@@ -1,42 +1,46 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, must_be_immutable
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loginsystem/helper/helperfunction.dart';
 import 'package:loginsystem/models/database.dart';
 import 'package:loginsystem/widgets/widget.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
-class RegisterInterestScreen extends StatefulWidget {
-  static const String routeName = '/resigterInterest';
+class RegisterInterestScreenForGoogle extends StatefulWidget {
+  static const String routeName = '/resigterInterestForGoogle';
 
   static Route route({
     required String profileName,
     required String profileEmail,
     required dob,
-    required String profilePassword,
     required List<String> profileInterest,
   }) {
     return MaterialPageRoute(
-      builder: (_) => RegisterInterestScreen(
-          profileName, profileEmail, dob, profilePassword, profileInterest),
-      settings: RouteSettings(name: routeName),
+      builder: (_) => RegisterInterestScreenForGoogle(
+          profileName, profileEmail, dob, profileInterest),
+      settings: const RouteSettings(name: routeName),
     );
   }
 
   final String profileName;
   final String profileEmail;
   final dob;
-  final String profilePassword;
   List<String> profileInterest = [];
 
-  RegisterInterestScreen(this.profileName, this.profileEmail, this.dob,
-      this.profilePassword, this.profileInterest);
+  RegisterInterestScreenForGoogle(
+      this.profileName, this.profileEmail, this.dob, this.profileInterest,
+      {Key? key})
+      : super(key: key);
 
+  @override
   _RegisterInterestScreenState createState() => _RegisterInterestScreenState();
 }
 
-class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
+class _RegisterInterestScreenState
+    extends State<RegisterInterestScreenForGoogle> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
   @override
@@ -88,9 +92,7 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
     List<Object?> _SelectedMusics = [];
     List<Object?> _SelectedSports = [];
     List<Object?> _Selected = [];
-    final _multiSelectKey = GlobalKey<FormFieldState>();
 
-    // TODO: implement build
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: RegisterAppbar(),
@@ -102,7 +104,7 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
               end: Alignment.bottomCenter,
               colors: [
                 Color(0xFF8FAEF8),
-                Color(0xFF4B5C83),
+                Color(0xFF654B92),
               ]),
         ),
         child: Container(
@@ -150,17 +152,6 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                       },
                     ),
                   ),
-                  _SelectedProLang == null && _SelectedProLang.isEmpty
-                      ? Container(
-                          padding: EdgeInsets.all(10),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "None Selected",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black45),
-                          ),
-                        )
-                      : Container(),
                 ],
               ),
               //################################################################################################
@@ -202,17 +193,6 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                       },
                     ),
                   ),
-                  _SelectedSports == null && _SelectedSports.isEmpty
-                      ? Container(
-                          padding: EdgeInsets.all(10),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "None Selected",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black45),
-                          ),
-                        )
-                      : Container(),
                 ],
               ),
               //################################################################################################
@@ -254,17 +234,6 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                       },
                     ),
                   ),
-                  _SelectedMusics == null && _SelectedMusics.isEmpty
-                      ? Container(
-                          padding: EdgeInsets.all(10),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "None Selected",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black45),
-                          ),
-                        )
-                      : Container(),
                 ],
               ),
               //################################################################################################
@@ -293,18 +262,17 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                     HelperFunction.saveUserEmailSharedPreference(
                         widget.profileEmail);
 
-                    await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: widget.profileEmail,
-                            password: widget.profilePassword)
-                        .then((value) {
-                      Fluttertoast.showToast(
-                          msg: "Account has been created.",
-                          gravity: ToastGravity.TOP);
-                      Navigator.pushNamed(context, "/");
-                      print("swipescreen !");
-                    });
+                    Navigator.pushNamed(context, "/");
+                    print("swipescreen !");
                     //try to get email and passfrom profie() and store to map
+                    int lastID = 0;
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .orderBy('id')
+                        .get()
+                        .then((snap) {
+                      lastID = snap.docs[snap.docs.length - 1]['id'];
+                    });
                     String defaultImagePath = "https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/blankProfile%2Fblank-profile-.png?alt=media&token=10f3a8be-b87d-4e35-8e0f-6cd3d904d42e";
                     Map<String, dynamic> userInfoMap = {
                       "uid": FirebaseAuth.instance.currentUser?.uid,
@@ -315,12 +283,13 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                       "interested": widget.profileInterest,
                       "imageUrls": [defaultImagePath,defaultImagePath,defaultImagePath],
                       "like": [],
-                      "age": calculateAge(widget.dob),
                       "dislike": [],
+                      "age": calculateAge(widget.dob),
+                      "id": lastID + 1,
                       //can add more attribute for further update
                     };
                     //call uploaduserinfo from database.dart to update user to firestore
-                    DatabaseMethods().uploadUserInfo(userInfoMap);
+                    await DatabaseMethods().uploadUserInfo(userInfoMap);
                   }, // edit here
                   // ################## end ######################
                   child: Container(
@@ -355,6 +324,7 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
       ),
     );
   }
+
   calculateAge(DateTime birthDate) {
     DateTime currentDate = DateTime.now();
     int age = currentDate.year - birthDate.year;

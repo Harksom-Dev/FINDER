@@ -7,12 +7,9 @@ import 'package:loginsystem/screens/home/first_auth.dart';
 import 'package:loginsystem/screens/profile/login.dart';
 import 'package:loginsystem/screens/register/register.dart';
 import 'package:loginsystem/screens/messagebox/search.dart';
-import 'package:loginsystem/screens/edit_profile/editprofile_screen.dart';
-import 'package:loginsystem/screens/home/home_screen.dart';
-import 'package:loginsystem/screens/messagebox/messagebox_screen.dart';
-import 'package:loginsystem/screens/profile/profile_screen.dart';
 import 'package:loginsystem/screens/register/register_2.dart';
-import 'package:loginsystem/screens/review/review_screen.dart';
+import 'package:loginsystem/screens/register/register_for_google/register_2_forgoogle.dart';
+import 'package:loginsystem/screens/register/register_for_google/register_forgoogle.dart';
 import 'package:loginsystem/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:loginsystem/screens/edit_profile/uploadpicture.dart';
@@ -69,7 +66,18 @@ class AppRouter {
       case ChatRoom.routeName:
         return ChatRoom.route();
       case TestHome.routeName:
-        return TestHome.route();
+        return TestHome.route(
+          profileName: setting.arguments as String,
+          profileEmail: setting.arguments as String,
+        );
+      case RegisterInterestScreenForGoogle.routeName:
+        return RegisterInterestScreenForGoogle.route(
+          profileName: setting.arguments as String,
+          profileEmail: setting.arguments as String,
+          dob: setting.arguments as String,
+          profileInterest: setting.arguments as List<String>,
+        );
+        
       default:
         return _errorRoute();
     }

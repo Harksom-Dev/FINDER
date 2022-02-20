@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:loginsystem/models/database_repository.dart';
@@ -105,11 +104,18 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     if (!likeList.contains(userWhoGotLiked!.id)) {
       likeList.add(userWhoGotLiked.id);
     }
-
+    QuerySnapshot snap = await FirebaseFirestore.instance.collection('users').where("email",isEqualTo: auth.FirebaseAuth.instance.currentUser?.email).get();
+    String curuser = snap.docs[0].id;
     FirebaseFirestore.instance
-        .collection('tempusers')
-        .doc('user' + curentUser.id.toString())
+        .collection('users')
+        .doc(curuser)
         .update({'like': likeList});
+    //แก้แล้ว
+    // FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc('user' + curentUser.id.toString())
+    //     .update({'like': likeList});
+
   }
 
   Future<void> addDisLikedUserToList(User user) async {
@@ -122,10 +128,11 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     if (!disLikeList.contains(userWhoGotDisLiked!.id)) {
       disLikeList.add(userWhoGotDisLiked.id);
     }
-
+    QuerySnapshot snap = await FirebaseFirestore.instance.collection('users').where("email",isEqualTo: auth.FirebaseAuth.instance.currentUser?.email).get();
+    String curuser = snap.docs[0].id;
     FirebaseFirestore.instance
-        .collection('tempusers')
-        .doc('user' + curentUser.id.toString())
+        .collection('users')
+        .doc(curuser)
         .update({'dislike': disLikeList});
   }
 }

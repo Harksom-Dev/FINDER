@@ -5,7 +5,7 @@ import 'package:loginsystem/models/user_model.dart';
 
 class DatabaseRepository implements BaseDatabaseRepository {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final COLLECTION = 'tempusers'; //current collection use
+  final COLLECTION = 'users'; //current collection use
 
   @override
   Future<List<User>> getAllDataFromCollection(String collectionName) async {
