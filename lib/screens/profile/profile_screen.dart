@@ -34,8 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     getData();
 
     super.initState();
-    
-    Timer(Duration(milliseconds: 2000), () {
+
+    Timer(Duration(milliseconds: 3000), () {
       setState(() {
         _isLoading = false;
       });
@@ -46,81 +46,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     // final User user = User.users[0];
     //print(user);
-      if(_isLoading){
-        return Container(
-          decoration: BoxDecoration(color: Colors.white),
-          child: Center(
-            child: const CircularProgressIndicator(
-              color: Colors.pink,
-              backgroundColor: Colors.transparent,
+    if (_isLoading) {
+      return Container(
+        decoration: BoxDecoration(color: Colors.white),
+        child: Center(
+          child: const CircularProgressIndicator(
+            color: Colors.pink,
+            backgroundColor: Colors.transparent,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            ProfileWidget(
+              imagePath: userFromDB?.imageUrls[0],
+              onClicked: () async {},
             ),
-          ),
-        );
-      }else{
-        return Scaffold(
-      appBar: buildAppBar(context),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          ProfileWidget(
-            imagePath: userFromDB?.imageUrls[0],
-            onClicked: () async {},
-          ),
-          const SizedBox(height: 24),
-          buildName(userFromDB!),
-          const SizedBox(height: 0),
-          buildAbout(userFromDB!),
-          const SizedBox(height: 48),
-          Center(child: buildEditButton(context)),
-          const SizedBox(
-            height: 10,
-          ),
-          Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Review',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      rating.toString(),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-          Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    
-                      
-                        for (int i = 0; i < n; i++)
-                          CustomTextContainer(text: userFromDB?.interested[i]),
-                    
-                    
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-      }
-
-      
+            const SizedBox(height: 24),
+            buildName(userFromDB!),
+            const SizedBox(height: 0),
+            buildAbout(userFromDB!),
+            const SizedBox(height: 48),
+            Center(child: buildEditButton(context)),
+            const SizedBox(
+              height: 10,
+            ),
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Review',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        rating.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (int i = 0; i < n; i++)
+                        CustomTextContainer(text: userFromDB?.interested[i]),
+                    ],
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    }
   }
 
   Widget buildName(User user) => Column(
@@ -182,12 +176,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       userFromDB = userData;
       print("userFromDB = $userFromDB");
     });
-    await _databaseRepository.getUserRating().then((rated) => {
-          rating = rated,
-        });
     await _databaseRepository
         .getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email)
         .then((userData) => n = User.userInterested.length);
+    
+    await _databaseRepository.getUserRating().then((rated) => {
+          rating = rated,
+        });
+    
+    print(n);
   }
 }
 

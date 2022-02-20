@@ -23,7 +23,7 @@ class Editprofile_interest extends StatefulWidget {
   }) {
     return MaterialPageRoute(
       builder: (_) => Editprofile_interest(
-          UpdateName, UpdateBio, UpdateInterest, updateEmail,updateimageURL),
+          UpdateName, UpdateBio, UpdateInterest, updateEmail, updateimageURL),
       settings: RouteSettings(name: routeName),
     );
   }
@@ -34,8 +34,8 @@ class Editprofile_interest extends StatefulWidget {
   final String updateEmail;
   final String updateimageURL;
 
-  Editprofile_interest(
-      this.UpdateName, this.UpdateBio, this.UpdateInterest, this.updateEmail,this.updateimageURL);
+  Editprofile_interest(this.UpdateName, this.UpdateBio, this.UpdateInterest,
+      this.updateEmail, this.updateimageURL);
   Editprofile_interest_State createState() => Editprofile_interest_State();
 }
 
@@ -275,7 +275,7 @@ class Editprofile_interest_State extends State<Editprofile_interest> {
                       ButtonTheme(
                           child: RaisedButton(
                         onPressed: () async {
-                          Navigator.pushNamed(context, "/");
+                          
                           _Selected.addAll(_SelectedProLang);
                           _Selected.addAll(_SelectedMusics);
                           _Selected.addAll(_SelectedSports);
@@ -284,16 +284,26 @@ class Editprofile_interest_State extends State<Editprofile_interest> {
                             String current = _Selected.elementAt(i).toString();
                             widget.UpdateInterest.add(current);
                           }
-                          Map<String, dynamic> userInfoMap = {
-                            "uid": FirebaseAuth.instance.currentUser?.uid,
-                            "name": widget.UpdateName,
-                            "bio": widget.UpdateBio,
-                            "interested": widget.UpdateInterest,
+                          if (widget.UpdateInterest.length == 0) {
+                            Navigator.pushNamed(context, "/profile");
+                          }
 
-                            //can add more attribute for further update
-                          };
-                          DatabaseUpdateMethods()
-                              .updateUserInfo(userInfoMap, widget.updateEmail);
+                          if (widget.UpdateInterest.length != 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('interest was selected')));
+                            
+                            Map<String, dynamic> userInfoMap = {
+                              "uid": FirebaseAuth.instance.currentUser?.uid,
+                              "name": widget.UpdateName,
+                              "bio": widget.UpdateBio,
+                              "interested": widget.UpdateInterest,
+
+                              //can add more attribute for further update
+                            };
+                            DatabaseUpdateMethods().updateUserInfo(
+                                userInfoMap, widget.updateEmail);
+                          }
+                           Navigator.pushNamed(context, '/');
                         },
                         child: Text('finish'),
                       ))
