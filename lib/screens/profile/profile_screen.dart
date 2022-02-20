@@ -30,8 +30,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
     void initState() {
       getData();
+      
       super.initState();
-      Future.delayed(Duration(milliseconds: 1500), () {});
+      Timer(Duration(milliseconds: 2000), () {
+      setState(() {
+        _isLoading = false;
+      });
+      });
     }
   @override
   Widget build(BuildContext context) {

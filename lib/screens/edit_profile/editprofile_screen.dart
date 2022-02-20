@@ -35,6 +35,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final formKey = GlobalKey<FormState>();
   final editnamecontroller = TextEditingController();
   final editbiocontroller = TextEditingController();
+  String currentName = '';
+  String currentBio = '';
   UpdateUser updateprofile = UpdateUser(
     
     name: '',
@@ -58,8 +60,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     getData();
-    super.initState();
     Future.delayed(Duration(milliseconds: 1500), () {});
+    super.initState();
+    
   }
 
   @override
@@ -90,8 +93,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
           TextFormField(
             controller: editnamecontroller,
-            decoration: const InputDecoration(
-              hintText: 'userFromDB!.name',
+            decoration: new InputDecoration(
+              hintText: currentName,
             ),
             onSaved: (String? valueF) {
               updateprofile.name = valueF!;
@@ -101,8 +104,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           const SizedBox(height: 24),
           TextFormField(
             controller: editbiocontroller,
-            decoration: const InputDecoration(
-              hintText: 'userFromDB!.name',
+            decoration: new InputDecoration(
+              hintText: currentBio,
             ),
             onSaved: (String? valueF) {
               updateprofile.name = valueF!;
@@ -150,6 +153,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         .getUserByEmail(auth.FirebaseAuth.instance.currentUser?.email)
         .then((userData) {
       print("before set userFromDB = $userData");
+      currentName = userData!.name;
+      currentBio = userData.bio;
       userFromDB = userData;
       print("userFromDB = $userFromDB");
     });

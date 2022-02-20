@@ -289,7 +289,6 @@ class Editprofile_interest_State extends State<Editprofile_interest> {
                             "name": widget.UpdateName,
                             "bio": widget.UpdateBio,
                             "interested": widget.UpdateInterest,
-                            "imageUrls": [],
 
                             //can add more attribute for further update
                           };

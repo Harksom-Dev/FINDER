@@ -60,7 +60,7 @@ class DatabaseRepository implements BaseDatabaseRepository {
           .collection(COLLECTION)
           .doc(docID)
           .update({
-            'imageUrls':FieldValue.arrayUnion([downloadUrl])
+            'imageUrls':[downloadUrl,downloadUrl,downloadUrl]
           });
     // String downloadUrl = await StorageRepository().getDownloadURL(imageName);
     // return _firebaseFirestore.collection('users').doc('user1').update({'imageUrls':FieldValue.arrayUnion([downloadUrl])});
