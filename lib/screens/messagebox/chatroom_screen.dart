@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loginsystem/models/database_repository.dart';
 import 'package:loginsystem/models/match_data_model.dart';
 import 'package:loginsystem/provider/matching_provider.dart';
@@ -60,7 +61,8 @@ class _ChatRoomState extends State<ChatRoom> {
                             Expanded(
                               child: Stack(
                                 children: <Widget>[
-                                  snapshot2.data != null && snapshot2.data.docs.isNotEmpty
+                                  snapshot2.data != null &&
+                                          snapshot2.data.docs.isNotEmpty
                                       ? ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           itemCount: snapshot2.data!
@@ -146,7 +148,7 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   getUserInfo() async {
-    Constants.myEmail = (await HelperFunction.getUserEmailSharedPreference());
+    Constants.myEmail = (FirebaseAuth.instance.currentUser?.email)!;
     databaseMethods.getChatRoom(Constants.myEmail).then((value) {
       setState(() {
         chatRoomStream = value;
@@ -156,8 +158,8 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   getMatchedData() async {
-    Constants.myEmail = (await HelperFunction.getUserEmailSharedPreference());
-    print(Constants.myEmail);
+    Constants.myEmail = (FirebaseAuth.instance.currentUser?.email)!;
+    // print(Constants.myEmail);
     databaseMethods.getMatchdata(Constants.myEmail).then((value) {
       setState(() {
         matchedStream = value;

@@ -46,7 +46,6 @@ class menutab extends StatelessWidget {
             InkWell(
               // home
               onTap: () async {
-                Navigator.pushNamed(context, "/realmessageBox");
                 print("Message box !");
               },
               child: Menubutton(

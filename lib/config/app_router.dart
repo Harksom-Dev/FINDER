@@ -1,4 +1,5 @@
 import 'package:loginsystem/models/models.dart';
+import 'package:loginsystem/screens/edit_profile/editprofile_interest.dart';
 import 'package:loginsystem/screens/home/test_home.dart';
 import 'package:loginsystem/screens/messagebox/chatroom_screen.dart';
 import 'package:loginsystem/screens/chat/conversation_screen.dart';
@@ -11,6 +12,7 @@ import 'package:loginsystem/screens/register/register_for_google/register_2_forg
 import 'package:loginsystem/screens/register/register_for_google/register_forgoogle.dart';
 import 'package:loginsystem/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:loginsystem/screens/edit_profile/uploadpicture.dart';
 
 class AppRouter {
   static Route onGenerateRoute(RouteSettings setting) {
@@ -30,6 +32,16 @@ class AppRouter {
         return ReviewScreen.route(userEmail: setting.arguments as String);
       case UsersScreen.routeName:
         return UsersScreen.route(user: setting.arguments as User);
+      case UploadPicture.routeName:
+        return UploadPicture.route();
+      case Editprofile_interest.routeName:
+        return Editprofile_interest.route(
+            UpdateName: setting.arguments as String,
+            UpdateBio: setting.arguments as String,
+            UpdateInterest: setting.arguments as List<String>,
+            updateEmail: setting.arguments as String,
+            updateimageURL: setting.arguments as String);
+
       case ConversationScreen.routeName: //chatroom
         return ConversationScreen.route(
             chatroomId: setting.arguments as String,
@@ -65,7 +77,7 @@ class AppRouter {
           dob: setting.arguments as String,
           profileInterest: setting.arguments as List<String>,
         );
-        
+
       default:
         return _errorRoute();
     }
