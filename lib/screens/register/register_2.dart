@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -304,19 +305,33 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                       Navigator.pushNamed(context, "/");
                       print("swipescreen !");
                     });
+                    int lastID = 0;
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .orderBy('id')
+                        .get()
+                        .then((snap) {
+                      lastID = snap.docs[snap.docs.length - 1]['id'];
+                    });
                     //try to get email and passfrom profie() and store to map
-                    String defaultImagePath = "https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/blankProfile%2Fblank-profile-.png?alt=media&token=10f3a8be-b87d-4e35-8e0f-6cd3d904d42e";
+                    String defaultImagePath =
+                        "https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/blankProfile%2Fblank-profile-.png?alt=media&token=10f3a8be-b87d-4e35-8e0f-6cd3d904d42e";
                     Map<String, dynamic> userInfoMap = {
                       "uid": FirebaseAuth.instance.currentUser?.uid,
                       "name": widget.profileName,
                       "email": widget.profileEmail,
-                      "bio":'',
+                      "bio": '',
                       "dob": widget.dob,
                       "interested": widget.profileInterest,
-                      "imageUrls": [defaultImagePath,defaultImagePath,defaultImagePath],
+                      "imageUrls": [
+                        defaultImagePath,
+                        defaultImagePath,
+                        defaultImagePath
+                      ],
                       "like": [],
                       "age": calculateAge(widget.dob),
                       "dislike": [],
+                      "id": lastID + 1,
                       //can add more attribute for further update
                     };
                     //call uploaduserinfo from database.dart to update user to firestore
@@ -355,6 +370,7 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
       ),
     );
   }
+
   calculateAge(DateTime birthDate) {
     DateTime currentDate = DateTime.now();
     int age = currentDate.year - birthDate.year;
