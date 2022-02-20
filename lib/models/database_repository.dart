@@ -43,6 +43,21 @@ class DatabaseRepository implements BaseDatabaseRepository {
     }
     return null;
   }
+ @override
+  getUser() async {
+    String? email;
+    email = auth.FirebaseAuth.instance.currentUser?.email;
+    QuerySnapshot snap = await _firebaseFirestore
+        .collection(COLLECTION)
+        .where('email', isEqualTo: email)
+        .get();
+    String docID = snap.docs[0].id;
+    return _firebaseFirestore
+        .collection(COLLECTION)
+        .doc(docID)
+        .snapshots()
+        .map((snap) => User.fromSnapshot(snap));
+  }
 
   @override
   Future<void> updateUserPicture(String downloadUrl) async {
