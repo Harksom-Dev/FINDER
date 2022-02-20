@@ -25,12 +25,13 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
 
   User? userFromDB = User.dummyUser;
-
+  bool _isLoading = true;
 
   @override
     void initState() {
       getData();
       super.initState();
+      Future.delayed(Duration(milliseconds: 1500), () {});
     }
   @override
   Widget build(BuildContext context) {

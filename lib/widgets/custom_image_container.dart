@@ -60,7 +60,7 @@ class CustomImageContainer extends StatelessWidget {
                     await StoragePicture().uploadImage(_image);
                     String path = _image.path;
 
-                    print(_image.path);
+                    // print(_image.path);
                     String imageUrl = await StoragePicture().getDownloadURL(_image.name);
                     DatabaseRepository().updateUserPicture(imageUrl);
 
@@ -78,7 +78,8 @@ class StoragePicture {
   @override
   Future<void> uploadImage(XFile image) async {
     try {
-      await storage.ref('image/${'user_1.jpg'}').putFile(File(image.path));
+      String name = image.name;
+      await storage.ref('image/$name').putFile(File(image.path));
     } catch (_) {}
   }
 
