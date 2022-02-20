@@ -132,12 +132,15 @@ class UsersScreen extends StatelessWidget {
                         'Interest',
                         style: Theme.of(context).textTheme.headline3,
                       ), */
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            /* SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child:  */
+                            Row(
                               //crossAxisAlignment: CrossAxisAlignment.start,
                               children: dupList
                                   .map(
@@ -163,10 +166,11 @@ class UsersScreen extends StatelessWidget {
                                   )
                                   .toList(),
                             ),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
+                            //),
+                            /* SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child:  */
+                            Row(
                               children: diffList
                                   .map(
                                     (diffin) => Container(
@@ -191,8 +195,9 @@ class UsersScreen extends StatelessWidget {
                                   )
                                   .toList(),
                             ),
-                          )
-                        ],
+                            //)
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
