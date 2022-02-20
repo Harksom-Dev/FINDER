@@ -8,6 +8,7 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> dupList = sameInterest(User.userInterested, user.interested);
     return Hero(
       tag: 'user_image',
       child: Center(
@@ -67,6 +68,34 @@ class UserCard extends StatelessWidget {
                               fontWeight: FontWeight.normal,
                             ),
                       ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          //crossAxisAlignment: CrossAxisAlignment.start,
+                          children: dupList
+                              .map(
+                                (interest) => Container(
+                                  padding: const EdgeInsets.all(6.0),
+                                  margin: const EdgeInsets.only(
+                                      top: 5.0, right: 5.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      gradient: LinearGradient(colors: [
+                                        Color(0xFFF594B7),
+                                        Color(0xFFB6CBFE),
+                                      ])),
+                                  child: Text(
+                                    interest,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
                       /*Row(
                         children: [
                           UserImageSmall(imageUrl: user.imageUrls[1]),
@@ -102,5 +131,19 @@ class UserCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  sameInterest(List<String> cUser, List<dynamic> oUser) {
+    List dupInterest = [];
+    List dump = [];
+    oUser.forEach((data) {
+      if (cUser.contains(data)) {
+        dupInterest.add(data);
+      } /* else {
+        dump.add(data);
+      } */
+    });
+    //dupInterest.addAll(dump);
+    return dupInterest;
   }
 }

@@ -71,18 +71,18 @@ class User extends Equatable {
     if (user.length >= 15) {
       //in this case random number in our of user length 10 time and add to users list
       //first we need to random 10 number and check not to duplicate that number
-      int size = user.length-userLiked.length;
-      int likeanddislike = userLiked.length + userdisliked.length; 
+      int size = user.length - userLiked.length;
+      int likeanddislike = userLiked.length + userdisliked.length;
       print('likeanddis is  $likeanddislike');
-      print(user.length-1);
-      if(likeanddislike == user.length){
+      print(user.length - 1);
+      if (likeanddislike == user.length) {
         print('clear');
         userdisliked.clear();
         isdislikeclear = true;
-      }else{
-          size = user.length - userdisliked.length - userLiked.length;
-        }
-      for(int i = 0;i<size;i++){
+      } else {
+        size = user.length - userdisliked.length - userLiked.length;
+      }
+      for (int i = 0; i < size; i++) {
         int r = 0 + rnd.nextInt(user.length);
         int targetuser =
             user[r].id; //in the future we gonna change to String and become uid
@@ -270,4 +270,20 @@ class User extends Equatable {
 
   static List<int> userdisliked = [1];
   static bool isdislikeclear = false;
+
+  static User dummyUser = const User(
+    id: 1,
+    name: 'dummyPack',
+    email: 'pack@g.coom',
+    age: 21,
+    imageUrls: [
+      'https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/image%2F1.jpg?alt=media&token=8235eca6-7195-4a16-bf9c-a95282e2a727',
+      'https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/image%2F1.jpg?alt=media&token=8235eca6-7195-4a16-bf9c-a95282e2a727',
+      'https://firebasestorage.googleapis.com/v0/b/finder-login-application.appspot.com/o/image%2F1.jpg?alt=media&token=8235eca6-7195-4a16-bf9c-a95282e2a727',
+    ],
+    bio: 'i love coding',
+    interested: ['C++', 'python'],
+    like: [],
+    dislike: [],
+  );
 }

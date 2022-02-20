@@ -128,17 +128,19 @@ class UsersScreen extends StatelessWidget {
                       SizedBox(
                         height: 15,
                       ),
-
                       /* Text(
                         'Interest',
                         style: Theme.of(context).textTheme.headline3,
                       ), */
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            /* SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child:  */
+                            Row(
                               //crossAxisAlignment: CrossAxisAlignment.start,
                               children: dupList
                                   .map(
@@ -164,10 +166,11 @@ class UsersScreen extends StatelessWidget {
                                   )
                                   .toList(),
                             ),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
+                            //),
+                            /* SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child:  */
+                            Row(
                               children: diffList
                                   .map(
                                     (diffin) => Container(
@@ -192,8 +195,9 @@ class UsersScreen extends StatelessWidget {
                                   )
                                   .toList(),
                             ),
-                          )
-                        ],
+                            //)
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
@@ -236,9 +240,15 @@ class UsersScreen extends StatelessWidget {
 
   sameInterest(List<String> cUser, List<dynamic> oUser) {
     List dupInterest = [];
+    List dump = [];
     oUser.forEach((data) {
-      if (cUser.contains(data)) dupInterest.add(data);
+      if (cUser.contains(data)) {
+        dupInterest.add(data);
+      } /* else {
+        dump.add(data);
+      } */
     });
+    //dupInterest.addAll(dump);
     return dupInterest;
   }
 
