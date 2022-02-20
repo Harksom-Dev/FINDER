@@ -1,25 +1,20 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loginsystem/models/match_data_model.dart';
 import '../models/database_repository.dart';
 import '../models/user_model.dart';
 
 class MatchingProvider {
-
   final _databaseRepository = DatabaseRepository();
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final COLLECTION = "MatchedData";
 
   Future<void> checkMatchByEmail(
       String cerentUserEmail, String userWhoGotLikedEmail) async {
-
-    var tempCurrenUser = 
-        _databaseRepository.getUserByEmail(cerentUserEmail);
+    var tempCurrenUser = _databaseRepository.getUserByEmail(cerentUserEmail);
 
     var tempUserWhoGotLiked =
         _databaseRepository.getUserByEmail(userWhoGotLikedEmail);
-        
+
     User? currentUser = await tempCurrenUser;
     User? userWhoGotLiked = await tempUserWhoGotLiked;
 
@@ -37,53 +32,49 @@ class MatchingProvider {
       print(currentUser.name + " not match with " + userWhoGotLiked.name);
     }
   }
-  
+
   Future<void> addMatchedUserToMatchedData(User currentUser, User user) async {
-    
     //TODO: need to change to UID
     int currentUserID = currentUser.id;
     int userID = user.id;
-
 
     await _firebaseFirestore
         .collection(COLLECTION)
         .where("id", isEqualTo: currentUser.id)
         .get()
         .then((snapshot) async {
-        
-          if (snapshot.docs.isEmpty) {
-            // if dont have any object contains id = currentUser.id
-            // it will create new doc and field to collection
-            Map<String, dynamic> mapForMatchWith = {"id": user.id,"name": user.name};
-            Map<String, dynamic> dataForCurrentUser = {
-              "email": currentUser.email,
-              "name": currentUser.name,
-              "id": currentUserID,
-              "matchWith": [mapForMatchWith]
-            };
+      if (snapshot.docs.isEmpty) {
+        // if dont have any object contains id = currentUser.id
+        // it will create new doc and field to collection
+        Map<String, dynamic> mapForMatchWith = {
+          "id": user.id,
+          "name": user.name
+        };
+        Map<String, dynamic> dataForCurrentUser = {
+          "email": currentUser.email,
+          "name": currentUser.name,
+          "id": currentUserID,
+          "matchWith": [mapForMatchWith]
+        };
 
-            _firebaseFirestore
-                .collection(COLLECTION)
-                .add(dataForCurrentUser);
-                
+        _firebaseFirestore.collection(COLLECTION).add(dataForCurrentUser);
+      } else {
+        // if have any object contains id = currentUser.id
+        // it will update field matchWith to collection
+        Map<String, dynamic> mapForMatchWith = {
+          "id": user.id,
+          "name": user.name
+        };
+        QuerySnapshot snap = await _firebaseFirestore
+            .collection(COLLECTION)
+            .where("id", isEqualTo: currentUserID)
+            .get();
+        String currentDocID = snap.docs[0].id;
 
-          } else {
-            // if have any object contains id = currentUser.id
-            // it will update field matchWith to collection
-            Map<String, dynamic> mapForMatchWith = {"id": user.id,"name": user.name};
-            QuerySnapshot snap = 
-            await _firebaseFirestore
-                .collection(COLLECTION)
-                .where("id",isEqualTo: currentUserID).get();
-            String currentDocID = snap.docs[0].id;
-
-            _firebaseFirestore
-                .collection(COLLECTION)
-                .doc(currentDocID)
-                .update({
-              "matchWith": FieldValue.arrayUnion([mapForMatchWith])
-            });
-          }
+        _firebaseFirestore.collection(COLLECTION).doc(currentDocID).update({
+          "matchWith": FieldValue.arrayUnion([mapForMatchWith])
+        });
+      }
     });
   }
 
@@ -98,48 +89,47 @@ class MatchingProvider {
   // }
 
   getMatchedEmail(var id) async {
-    await _firebaseFirestore.collection('tempusers')
-        .where('id',isEqualTo: id)
-        .get().then((snap){
-          MatchData.setEmail(snap.docs[0]['email']);
-        });
+    await _firebaseFirestore
+        .collection('users')
+        .where('id', isEqualTo: id)
+        .get()
+        .then((snap) {
+      MatchData.setEmail(snap.docs[0]['email']);
+    });
   }
 
-  checkChatRoomID(String userEmail1,String userEmail2)async {
+  checkChatRoomID(String userEmail1, String userEmail2) async {
     String chatrommid = getChatRoomId(userEmail1, userEmail2);
-    QuerySnapshot snap = 
-          await _firebaseFirestore
-              .collection('ChatRoom')
-              .where("chatroomid",isEqualTo: chatrommid).get();
+    QuerySnapshot snap = await _firebaseFirestore
+        .collection('ChatRoom')
+        .where("chatroomid", isEqualTo: chatrommid)
+        .get();
 
-    if(snap.docs.isEmpty){
+    if (snap.docs.isEmpty) {
       chatrommid = getChatRoomId(userEmail2, userEmail1);
 
-      snap = 
-          await _firebaseFirestore
-              .collection('ChatRoom')
-              .where("chatroomid",isEqualTo: chatrommid).get();
-      if(snap.docs.isEmpty){
+      snap = await _firebaseFirestore
+          .collection('ChatRoom')
+          .where("chatroomid", isEqualTo: chatrommid)
+          .get();
+      if (snap.docs.isEmpty) {
         return '';
-      }else{
+      } else {
         return snap.docs[0]['chatroomid'];
       }
-    }else{
+    } else {
       return snap.docs[0]['chatroomid'];
     }
-
-    
   }
 
   getChatRoomId(String a, String b) {
     print('check');
     print(a);
     print(b);
-  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
-    return "$b\_$a";
-  } else {
-    return "$a\_$b";
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
   }
-  }
-
 }
