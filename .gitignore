@@ -57,5 +57,4 @@ android/.gradle/checksums/checksums.lock
 android/.gradle/checksums/md5-checksums.bin
 android/.gradle/checksums/sha1-checksums.bin
 android/.gradle/buildOutputCleanup/cache.properties
-ios/Runner/GeneratedPluginRegistrant.m
 ios/Runner/GeneratedPluginRegistrant.h
