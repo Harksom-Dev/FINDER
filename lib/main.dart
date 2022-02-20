@@ -37,7 +37,6 @@ class _MyAppState extends State<MyApp> {
   final DatabaseRepository _databaseRepository = DatabaseRepository();
   @override
   void initState() {
-
     WidgetsFlutterBinding.ensureInitialized();
     Firebase.initializeApp(
         // options: DefaultFirebaseOptions.currentPlatform,
@@ -62,15 +61,13 @@ class _MyAppState extends State<MyApp> {
     user.cancel();
     super.dispose();
   }
-  getLoggedInState() async {
-    
 
+  getLoggedInState() async {
     // await HelperFunction.getUserLoggedInSharedPreference().then((value) {
     //   setState(() {
     //     userIsLoggedIn = auth.FirebaseAuth.instance.currentUser != null;
     //   });
     // });
-    
   }
 
   @override
@@ -81,17 +78,18 @@ class _MyAppState extends State<MyApp> {
           create: (context) => GoogleSignInProvider(),
         ),
         BlocProvider(
-          create: (_) => SwipeBloc(databaseRepository: DatabaseRepository())
-          // ..add(LoadUsersEvent(users: User.users)),
-        ),
+            create: (_) => SwipeBloc(databaseRepository: DatabaseRepository())
+            // ..add(LoadUsersEvent(users: User.users)),
+            ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'FINDER',
         theme: theme(),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.onGenerateRoute,
-        initialRoute:
-            auth.FirebaseAuth.instance.currentUser != null ? HomeScreen.routeName : FirstAuth.routeName,
+        initialRoute: auth.FirebaseAuth.instance.currentUser != null
+            ? HomeScreen.routeName
+            : FirstAuth.routeName,
         //initialRoute: userIsLoggedIn ? HomeScreen.routeName : first_auth.routeName,
       ),
       // home: userIsLoggedIn ? ChatRoom() : HomeScreen()
