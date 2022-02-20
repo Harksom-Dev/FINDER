@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +41,7 @@ class RegisterInterestScreen extends StatefulWidget {
 
 class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
-
+  bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
     final List<String> _progLang = [
@@ -302,8 +304,11 @@ class _RegisterInterestScreenState extends State<RegisterInterestScreen> {
                       Fluttertoast.showToast(
                           msg: "Account has been created.",
                           gravity: ToastGravity.TOP);
-                      Navigator.pushNamed(context, "/");
-                      print("swipescreen !");
+                      Timer(Duration(milliseconds: 2000), () {
+                        Navigator.pushNamed(context, "/");
+                        print("swipescreen !");
+                        });
+                      
                     });
                     int lastID = 0;
                     await FirebaseFirestore.instance
