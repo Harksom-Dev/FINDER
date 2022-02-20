@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -303,7 +305,11 @@ class Editprofile_interest_State extends State<Editprofile_interest> {
                             DatabaseUpdateMethods().updateUserInfo(
                                 userInfoMap, widget.updateEmail);
                           }
-                           Navigator.pushNamed(context, '/');
+
+                          Timer(Duration(milliseconds: 2000), () {
+                            Navigator.pushNamed(context, '/');
+                          });
+                           
                            
                         },
                         child: Text('finish'),

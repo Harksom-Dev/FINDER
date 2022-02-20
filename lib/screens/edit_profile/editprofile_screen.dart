@@ -123,7 +123,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           //     return Text('');
           //   }
           // }),
-
           Text(
             "Name  ",
             style: TextStyle(fontSize: 15),
